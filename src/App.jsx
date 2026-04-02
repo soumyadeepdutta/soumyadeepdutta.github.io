@@ -70,6 +70,8 @@ export default function App() {
 
   return (
     <>
+      <div className="bg-squares" aria-hidden="true" />
+      <div className="bg-squares-secondary" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>

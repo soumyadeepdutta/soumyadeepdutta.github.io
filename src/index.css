@@ -65,6 +65,50 @@ body {
   transition: background var(--transition), color var(--transition);
 }
 
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Geometric Background Squares ─────────────────────── */
+.bg-squares,
+.bg-squares-secondary {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-squares {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at 20% 10%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 20% 10%, black 20%, transparent 70%);
+}
+
+.bg-squares-secondary {
+  background-image:
+    linear-gradient(var(--accent-dim) 2px, transparent 2px),
+    linear-gradient(90deg, var(--accent-dim) 2px, transparent 2px);
+  background-size: 220px 220px;
+  background-position: 40px 120px;
+  opacity: 0.55;
+  mask-image: radial-gradient(circle at 80% 40%, black 18%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 80% 40%, black 18%, transparent 72%);
+}
+
+[data-theme="light"] .bg-squares {
+  background-image:
+    linear-gradient(rgba(24, 35, 58, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 35, 58, 0.08) 1px, transparent 1px);
+}
+
+[data-theme="light"] .bg-squares-secondary {
+  opacity: 0.45;
+}
+
 img { max-width: 100%; display: block; }
 
 a { color: var(--accent); text-decoration: none; transition: color var(--transition), opacity var(--transition); }
