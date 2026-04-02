@@ -1,0 +1,29 @@
+.footer {
+  border-top: 1px solid var(--border-sub);
+  padding: 1.25rem 0 1.75rem;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.text {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.topLink {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.topLink:hover {
+  color: var(--accent);
+  opacity: 1;
+}

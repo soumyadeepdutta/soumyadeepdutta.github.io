@@ -1,0 +1,140 @@
+/* Timeline layout */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: 2rem;
+}
+
+/* Vertical line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--accent) 0%,
+    var(--border-sub) 100%
+  );
+}
+
+/* Each row */
+.item {
+  position: relative;
+  padding-bottom: 2rem;
+}
+.item:last-child { padding-bottom: 0; }
+
+/* Dot on the timeline */
+.dot {
+  position: absolute;
+  left: -2rem;
+  top: 1.6rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2.5px solid var(--accent);
+  z-index: 1;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+.item:hover .dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.first .dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Card overrides */
+.card {
+  margin: 0;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.company {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sep { color: var(--text-faint); }
+
+.location {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.dates {
+  font-size: 0.75rem;
+  color: var(--accent);
+  white-space: nowrap;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(255,153,0,0.15);
+  flex-shrink: 0;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+/* Bullets */
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+}
+
+.bullet {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.bulletDot {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  font-size: 0.7rem;
+}
+
+@media (max-width: 600px) {
+  .header { flex-direction: column; }
+  .dates  { font-size: 0.7rem; }
+}
