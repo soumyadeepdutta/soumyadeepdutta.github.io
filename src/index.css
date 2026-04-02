@@ -6,21 +6,21 @@
 /* ── Custom Properties ────────────────────────────────── */
 :root {
   /* Dark theme (default) */
-  --bg:          #0a0f1e;
-  --bg-alt:      #0e1528;
-  --surface:     #111827;
-  --surface-2:   #1a2234;
-  --border:      rgba(255, 153, 0, 0.15);
-  --border-sub:  rgba(255,255,255,0.07);
-  --text:        #e2e8f0;
-  --text-muted:  #8898aa;
-  --text-faint:  #4a5568;
-  --accent:      #FF9900;       /* AWS orange */
-  --accent-dim:  rgba(255,153,0,0.12);
-  --accent-glow: rgba(255,153,0,0.25);
-  --green:       #4ade80;
-  --blue:        #60a5fa;
-  --purple:      #a78bfa;
+  --bg:          #0c1220;
+  --bg-alt:      #121b2f;
+  --surface:     #18243b;
+  --surface-2:   #223252;
+  --border:      rgba(217, 160, 111, 0.3);
+  --border-sub:  rgba(255,255,255,0.1);
+  --text:        #f4f7fb;
+  --text-muted:  #b5c0d4;
+  --text-faint:  #7f8da8;
+  --accent:      #d9a06f;
+  --accent-dim:  rgba(217,160,111,0.18);
+  --accent-glow: rgba(217,160,111,0.32);
+  --green:       #45c486;
+  --blue:        #5aa9ff;
+  --purple:      #9f8cff;
   --nav-height:  64px;
   --radius:      12px;
   --radius-sm:   6px;
@@ -31,17 +31,17 @@
 }
 
 [data-theme="light"] {
-  --bg:          #f5f5f0;
-  --bg-alt:      #ebebeb;
+  --bg:          #f5f7fb;
+  --bg-alt:      #eaf0f8;
   --surface:     #ffffff;
-  --surface-2:   #f7f7f5;
-  --border:      rgba(255, 153, 0, 0.25);
+  --surface-2:   #f3f7fd;
+  --border:      rgba(217, 160, 111, 0.28);
   --border-sub:  rgba(0,0,0,0.08);
-  --text:        #1a202c;
-  --text-muted:  #4a5568;
-  --text-faint:  #a0aec0;
-  --accent-dim:  rgba(255,153,0,0.08);
-  --accent-glow: rgba(255,153,0,0.15);
+  --text:        #18233a;
+  --text-muted:  #40526f;
+  --text-faint:  #7788a3;
+  --accent-dim:  rgba(217,160,111,0.12);
+  --accent-glow: rgba(217,160,111,0.24);
   --shadow:      0 4px 24px rgba(0,0,0,0.08);
   --shadow-card: 0 2px 12px rgba(0,0,0,0.07);
   color-scheme:  light;

@@ -119,7 +119,7 @@ export default function Hero() {
         <div className={`${styles.photoWrap} reveal reveal-3`}>
           <div className={styles.photoRing}>
             <img
-              src="/profile.jpg"
+              src="/profile.png"
               alt="Soumyadeep Dutta"
               className={styles.photo}
               width="320"

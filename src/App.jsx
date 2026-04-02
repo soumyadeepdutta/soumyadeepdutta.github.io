@@ -18,15 +18,22 @@ export default function App() {
   const [internalLoading, setInternalLoading] = useState(false)
 
   useEffect(() => {
-    const finishInitialLoad = () => setInitialLoading(false)
+    let isDone = false
 
-    if (document.readyState === 'complete') {
-      window.setTimeout(finishInitialLoad, 650)
-      return
+    const finishInitialLoad = () => {
+      if (isDone) return
+      isDone = true
+      setInitialLoading(false)
     }
 
-    window.addEventListener('load', finishInitialLoad)
-    const fallbackTimer = window.setTimeout(finishInitialLoad, 1800)
+    // Fallback ensures loader always exits even if a load event is missed.
+    const fallbackTimer = window.setTimeout(finishInitialLoad, 1200)
+
+    if (document.readyState === 'complete') {
+      finishInitialLoad()
+    } else {
+      window.addEventListener('load', finishInitialLoad, { once: true })
+    }
 
     return () => {
       window.removeEventListener('load', finishInitialLoad)

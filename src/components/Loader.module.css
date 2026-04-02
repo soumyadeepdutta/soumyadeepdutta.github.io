@@ -6,8 +6,8 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(ellipse at top, rgba(255, 153, 0, 0.14), transparent 55%),
-    var(--bg);
+    radial-gradient(ellipse at top, rgba(255, 153, 0, 0.18), transparent 55%),
+    #0a0f1e;
 }
 
 .initialCard {
