@@ -212,6 +212,20 @@ ul { list-style: none; }
   border-color: rgba(167,139,250,0.2);
 }
 
+.tag-with-icon {
+  min-height: 2rem;
+}
+
+.tag-icon {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+}
+
+.tag-label {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* ── Buttons ──────────────────────────────────────────── */
 .btn {
   display: inline-flex;

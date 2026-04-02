@@ -1,4 +1,5 @@
 import styles from './Projects.module.css'
+import TechTag from './TechTag'
 
 const GitHubIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -12,20 +13,11 @@ const ExternalIcon = () => (
   </svg>
 )
 
-const COLOR_TAG = {
-  accent: 'tag',
-  blue:   'tag tag-blue',
-  green:  'tag tag-green',
-  purple: 'tag tag-purple',
-}
-
 /**
  * Reusable project card.
  * Props: { name, description, tags[], github, live, color }
  */
 export default function ProjectCard({ name, description, tags, github, live, color }) {
-  const tagClass = COLOR_TAG[color] || 'tag'
-
   return (
     <div className={`card ${styles.card}`}>
       {/* Top bar accent */}
@@ -51,8 +43,8 @@ export default function ProjectCard({ name, description, tags, github, live, col
         <p className={styles.description}>{description}</p>
 
         <div className={styles.tags}>
-          {tags.map(t => (
-            <span key={t} className={tagClass}>{t}</span>
+          {tags.map(tag => (
+            <TechTag key={tag} item={tag} color={color} />
           ))}
         </div>
       </div>

@@ -37,13 +37,3 @@
   min-height: 2rem;
   padding-inline: 0.8rem;
 }
-
-.skillIcon {
-  flex: 0 0 auto;
-  font-size: 0.85rem;
-}
-
-.skillLabel {
-  display: inline-flex;
-  align-items: center;
-}

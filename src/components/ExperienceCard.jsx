@@ -1,4 +1,5 @@
 import styles from './Experience.module.css'
+import TechTag from './TechTag'
 
 /**
  * Reusable experience card.
@@ -29,7 +30,7 @@ export default function ExperienceCard({ title, company, location, start, end, t
         {/* Tags */}
         {tags?.length > 0 && (
           <div className={styles.tags}>
-            {tags.map(t => <span key={t} className="tag">{t}</span>)}
+            {tags.map(tag => <TechTag key={tag} item={tag} />)}
           </div>
         )}
 
