@@ -32,3 +32,8 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+.skillTag {
+  min-height: 2rem;
+  padding-inline: 0.8rem;
+}

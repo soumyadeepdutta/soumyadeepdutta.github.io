@@ -1,12 +1,6 @@
+import TechTag from './TechTag'
 import { skills } from '../data/skills'
 import styles from './Skills.module.css'
-
-const COLOR_MAP = {
-  accent: 'tag',
-  blue:   'tag tag-blue',
-  green:  'tag tag-green',
-  purple: 'tag tag-purple',
-}
 
 export default function Skills() {
   return (
@@ -30,9 +24,7 @@ export default function Skills() {
               <h3 className={styles.catTitle}>{cat.category}</h3>
               <div className={styles.tags}>
                 {cat.items.map(item => (
-                  <span key={item} className={COLOR_MAP[cat.color] || 'tag'}>
-                    {item}
-                  </span>
+                  <TechTag key={item.label} item={item} color={cat.color} className={styles.skillTag} />
                 ))}
               </div>
             </div>
