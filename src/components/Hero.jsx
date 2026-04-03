@@ -133,8 +133,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Background grid */}
-      <div className={styles.bgGrid} aria-hidden="true" />
       <div className={styles.bgGlow} aria-hidden="true" />
 
       {/* Scroll indicator */}
