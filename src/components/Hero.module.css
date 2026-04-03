@@ -13,6 +13,8 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 /* ── Content ── */
@@ -185,18 +187,6 @@
 }
 
 /* ── Background ── */
-.bgGrid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--border-sub) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
-  background-size: 60px 60px;
-  z-index: -1;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-}
-
 .bgGlow {
   position: absolute;
   top: 20%;
@@ -205,8 +195,9 @@
   width: 600px;
   height: 400px;
   background: radial-gradient(ellipse, var(--accent-glow), transparent 70%);
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
+  opacity: 0.34;
 }
 
 /* ── Scroll indicator ── */

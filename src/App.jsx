@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Skills from './components/Skills'
@@ -11,6 +11,8 @@ import Footer from './components/Footer'
 import Loader from './components/Loader'
 import { useTheme } from './hooks/useTheme'
 import { appNavigationEvents } from './utils/navigation'
+
+const NetworkScene = lazy(() => import('./components/NetworkScene'))
 
 export default function App() {
   const { theme, toggleTheme } = useTheme()
@@ -70,8 +72,9 @@ export default function App() {
 
   return (
     <>
-      <div className="bg-squares" aria-hidden="true" />
-      <div className="bg-squares-secondary" aria-hidden="true" />
+      <Suspense fallback={null}>
+        <NetworkScene theme={theme} className="network-scene" />
+      </Suspense>
       {internalLoading && <Loader mode="internal" />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
