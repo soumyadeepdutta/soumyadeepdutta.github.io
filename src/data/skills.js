@@ -67,6 +67,7 @@ export const skills = [
       skill('Nginx', 'nginx'),
       skill('Linux', 'linux'),
       skill('Git', 'git'),
+      skill('Jenkins', 'jenkins')
     ],
   },
   {

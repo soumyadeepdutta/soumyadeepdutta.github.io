@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import styles from './Navbar.module.css'
 import { navigateToSection, navigateToTop } from '../utils/navigation'
@@ -11,12 +12,15 @@ const NAV_LINKS = [
   { href: '#certifications', label: 'Certifications' },
   { href: '#education',      label: 'Education'      },
   { href: '#contact',        label: 'Contact'        },
+  { href: '/blog',           label: 'Blog'           },
 ]
 
 export default function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -26,6 +30,8 @@ export default function Navbar({ theme, toggleTheme }) {
 
   // Highlight the active nav link based on scroll position
   useEffect(() => {
+    if (location.pathname !== '/') return
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(e => {
@@ -35,15 +41,40 @@ export default function Navbar({ theme, toggleTheme }) {
       { threshold: 0.3 }
     )
     NAV_LINKS.forEach(({ href }) => {
-      const el = document.querySelector(href)
-      if (el) observer.observe(el)
+      if (href.startsWith('#')) {
+        const el = document.querySelector(href)
+        if (el) observer.observe(el)
+      }
     })
     return () => observer.disconnect()
-  }, [])
+  }, [location.pathname])
 
   const handleNavClick = (href) => {
     setMenuOpen(false)
-    navigateToSection(href)
+    if (href.startsWith('#')) {
+      if (location.pathname !== '/') {
+        navigate(`/${href}`)
+        // The App will need to handle scrolling to hash on load, or the user can click again
+      } else {
+        navigateToSection(href)
+      }
+    } else {
+      navigate(href)
+    }
+  }
+
+  // Handle hash scrolling on page load/navigation if needed
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash) {
+      setTimeout(() => navigateToSection(location.hash), 100)
+    }
+  }, [location.pathname, location.hash])
+
+  const isActive = (href) => {
+    if (href.startsWith('#')) {
+      return location.pathname === '/' && activeSection === href.slice(1)
+    }
+    return location.pathname.startsWith(href)
   }
 
   return (
@@ -51,11 +82,15 @@ export default function Navbar({ theme, toggleTheme }) {
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
         <a
-          href="#"
+          href="/"
           className={styles.logo}
           onClick={e => {
             e.preventDefault()
-            navigateToTop()
+            if (location.pathname !== '/') {
+              navigate('/')
+            } else {
+              navigateToTop()
+            }
           }}
         >
           <span className={styles.logoText}>SD</span>
@@ -68,7 +103,7 @@ export default function Navbar({ theme, toggleTheme }) {
             <a
               key={href}
               href={href}
-              className={`${styles.navLink} ${activeSection === href.slice(1) ? styles.active : ''}`}
+              className={`${styles.navLink} ${isActive(href) ? styles.active : ''}`}
               onClick={e => { e.preventDefault(); handleNavClick(href) }}
             >
               {label}
@@ -108,7 +143,7 @@ export default function Navbar({ theme, toggleTheme }) {
             <a
               key={href}
               href={href}
-              className={`${styles.mobileLink} ${activeSection === href.slice(1) ? styles.active : ''}`}
+              className={`${styles.mobileLink} ${isActive(href) ? styles.active : ''}`}
               onClick={e => { e.preventDefault(); handleNavClick(href) }}
             >
               {label}

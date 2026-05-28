@@ -39,6 +39,7 @@ import {
   SiSocketdotio,
   SiTerraform,
   SiTypescript,
+  SiJenkins
 } from 'react-icons/si'
 import { TbApi } from 'react-icons/tb'
 
@@ -66,6 +67,7 @@ const ICON_MAP = {
   graphql: SiGraphql,
   javascript: SiJavascript,
   jest: SiJest,
+  jenkins: SiJenkins,
   langchain: FiLink2,
   linux: SiLinux,
   mongodb: SiMongodb,
@@ -135,6 +137,7 @@ const LABEL_ICON_MAP = {
   terraform: 'terraform',
   typescript: 'typescript',
   websockets: 'websockets',
+  jenkins: 'jenkins',
 }
 
 export function getTechIcon(iconKey) {

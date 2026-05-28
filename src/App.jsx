@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Skills from './components/Skills'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
-import Certifications from './components/Certifications'
-import Education from './components/Education'
-import Contact from './components/Contact'
+import { Routes, Route } from 'react-router-dom'
+import Home from './components/Home'
+import BlogList from './components/BlogList'
+import BlogPost from './components/BlogPost'
 import Footer from './components/Footer'
 import Loader from './components/Loader'
 import { useTheme } from './hooks/useTheme'
@@ -74,15 +71,11 @@ export default function App() {
       <div className="bg-squares-secondary" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main>
-        <Hero />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Certifications />
-        <Education />
-        <Contact />
-      </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+      </Routes>
       <Footer />
     </>
   )
