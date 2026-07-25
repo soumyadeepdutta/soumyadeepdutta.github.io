@@ -10,6 +10,19 @@ export const blogs = [
 
 ![Apache Ecosystem](/blog/apache-projects.png)
 
+\`\`\`mermaid
+graph LR
+    A[Client] --> B[API Gateway / Camel]
+    B --> C[Kafka Topics]
+    C --> D[Microservices / Tomcat]
+    D --> E[(Cassandra DB)]
+    style A fill:#4a90e2,stroke:#fff,stroke-width:2px,color:#fff
+    style B fill:#f39c12,stroke:#fff,stroke-width:2px,color:#fff
+    style C fill:#27ae60,stroke:#fff,stroke-width:2px,color:#fff
+    style D fill:#8e44ad,stroke:#fff,stroke-width:2px,color:#fff
+    style E fill:#e74c3c,stroke:#fff,stroke-width:2px,color:#fff
+\`\`\`
+
 Over the last 4 years of building software, I realized something interesting:
 
 We often talk about cloud providers, frameworks, databases, and the newest technologies. But behind many systems we build every day, there is a huge open-source ecosystem quietly doing the heavy lifting.

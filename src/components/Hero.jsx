@@ -68,9 +68,7 @@ export default function Hero() {
           </div>
 
           <p className={`${styles.bio} reveal reveal-4`}>
-            5+ years building scalable backend systems and cloud infrastructure.
-            Passionate about distributed architectures, serverless patterns, and
-            applying AI to real-world engineering challenges.
+            Backend Engineer with 4+ years of experience building scalable Node.js and AWS-based systems across fintech, healthcare, and SaaS domains. Proven track record in event-driven architecture, serverless pipelines, high-throughput data infrastructure, and CI/CD automation.
           </p>
 
           <div className={`${styles.ctaRow} reveal reveal-5`}>
@@ -99,18 +97,18 @@ export default function Hero() {
           {/* Quick stats */}
           <div className={`${styles.stats} reveal reveal-5`}>
             <div className={styles.stat}>
-              <span className={styles.statNum}>5+</span>
+              <span className={styles.statNum}>4+</span>
               <span className={styles.statLabel}>Years Exp.</span>
             </div>
             <div className={styles.statDivider} />
             <div className={styles.stat}>
-              <span className={styles.statNum}>AWS</span>
-              <span className={styles.statLabel}>SAA Certified</span>
+              <span className={styles.statNum}>700k+</span>
+              <span className={styles.statLabel}>Req / Day</span>
             </div>
             <div className={styles.statDivider} />
             <div className={styles.stat}>
-              <span className={styles.statNum}>10+</span>
-              <span className={styles.statLabel}>Projects</span>
+              <span className={styles.statNum}>10M+</span>
+              <span className={styles.statLabel}>Daily Events</span>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { blogs } from '../data/blogs'
 import styles from './Blog.module.css'
 import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
+import Mermaid from './Mermaid'
 
 export default function BlogPost() {
   const { slug } = useParams()
@@ -55,7 +56,20 @@ export default function BlogPost() {
         </div>
         
         <div className={styles.postContent}>
-          <ReactMarkdown>{blog.content}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              code(props) {
+                const {children, className, node, ...rest} = props
+                const match = /language-(\w+)/.exec(className || '')
+                if (match && match[1] === 'mermaid') {
+                  return <Mermaid chart={String(children).replace(/\n$/, '')} />
+                }
+                return <code {...rest} className={className}>{children}</code>
+              }
+            }}
+          >
+            {blog.content}
+          </ReactMarkdown>
         </div>
       </div>
     </section>

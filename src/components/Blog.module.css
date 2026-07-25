@@ -157,3 +157,34 @@
 .postContent strong {
   color: var(--primary);
 }
+
+.mermaidWrapper {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--bg-card, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.mermaidError {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  color: #ff8080;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+.mermaidError pre {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}

@@ -10,7 +10,7 @@ export const education = [
     location: 'Mankundu, Hooghly',
     start: '2017',
     end: '2021',
-    grade: 'CGPA 7.65',
+    grade: 'CGPA 8.40',
     bullets: [
       'Published article titled "Quantum Information Science" in departmental magazine.',
       'Organised "Coding School" — a workshop series for non-programmers on campus.',
