@@ -16,6 +16,19 @@
   color: var(--text-faint);
 }
 
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.updatedText {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.85;
+}
+
 .topLink {
   font-size: 0.72rem;
   text-transform: uppercase;
