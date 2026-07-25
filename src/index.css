@@ -219,6 +219,25 @@ ul { list-style: none; }
 .tag-icon {
   flex: 0 0 auto;
   font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* AWS Architecture Icons: hide the solid colored tile background & make inner paths inherit badge color */
+.tag-icon svg path[d^="M0 0h64"],
+.tag-icon svg path[d^="M0 0h48"],
+.tag-icon svg path[d="M0 0h64v64H0z"],
+.tag-icon svg path[d="M0 0h48v48H0z"] {
+  display: none !important;
+}
+
+.tag-icon svg path:not([fill="none"]),
+.tag-icon svg rect:not([fill="none"]),
+.tag-icon svg circle:not([fill="none"]),
+.tag-icon svg polygon:not([fill="none"]),
+.tag-icon svg g:not([fill="none"]) {
+  fill: currentColor !important;
 }
 
 .tag-label {

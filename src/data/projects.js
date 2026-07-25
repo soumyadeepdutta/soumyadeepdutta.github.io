@@ -4,39 +4,30 @@
  */
 export const projects = [
   {
-    name: 'CloudDeploy CLI',
+    name: 'Group SIP — Corporate Investment Portal',
     description:
-      'A Node.js CLI tool that scaffolds production-ready AWS CloudFormation stacks for common patterns (VPC, ECS Fargate service, RDS, S3 static site). Reduces infra setup from hours to minutes.',
-    tags: ['Node.js', 'AWS CDK', 'CloudFormation', 'CLI'],
+      'Led end-to-end backend development of a corporate SIP portal enabling salary-linked investments across multiple AMC funds. Implemented JWE/JWS financial-grade security and deployed on AWS ECS with Jenkins CI/CD.',
+    tags: ['NestJS', 'MongoDB', 'AWS ECS', 'Jenkins', 'JWE/JWS'],
     github: 'https://github.com/soumyadeepdutta',
     live: null,
     color: 'accent',
   },
   {
-    name: 'AI Resume Screener',
+    name: 'LAMF Log Ingestion Pipeline',
     description:
-      'Python FastAPI service backed by AWS Bedrock (Claude) that parses resumes and job descriptions, scores candidate fit, and returns structured JSON. Deployed as an AWS Lambda function behind API Gateway.',
-    tags: ['Python', 'FastAPI', 'AWS Bedrock', 'Lambda', 'AI'],
+      'Migrated on-prem MongoDB logs to a cloud-native pipeline processing 10,000,000+ events/day via Kinesis Firehose → AWS Glue → S3 (Parquet) → Athena. Reduced query time from 15s to under 3s with full Prometheus, Tempo, and Grafana observability.',
+    tags: ['Kinesis Firehose', 'AWS Glue', 'S3', 'Athena', 'Prometheus', 'Grafana'],
     github: 'https://github.com/soumyadeepdutta',
     live: null,
     color: 'blue',
   },
   {
-    name: 'Distributed Task Queue',
+    name: 'PGDM Admissions Platform',
     description:
-      'A horizontally-scalable background job system using Bull (Redis) and Node.js workers. Supports retries, dead-letter queues, and a real-time job-status dashboard built with Socket.IO.',
-    tags: ['Node.js', 'Redis', 'Bull', 'Socket.IO', 'Docker'],
+      'Backend for a national-level PGDM onboarding system handling high-concurrency admission flows, merit list generation, and secure fee payment integration across multiple institutions.',
+    tags: ['Node.js', 'PostgreSQL', 'Django', 'Python'],
     github: 'https://github.com/soumyadeepdutta',
     live: null,
     color: 'green',
-  },
-  {
-    name: 'Serverless URL Shortener',
-    description:
-      'A fully serverless URL-shortening service built with AWS Lambda, API Gateway, DynamoDB, and CloudFront. Handles 10K+ requests/second at near-zero cost thanks to a pay-per-use architecture.',
-    tags: ['Python', 'AWS Lambda', 'DynamoDB', 'API Gateway', 'CloudFront'],
-    github: 'https://github.com/soumyadeepdutta',
-    live: null,
-    color: 'purple',
   },
 ]
