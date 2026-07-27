@@ -65,6 +65,7 @@ export const skills = [
       skill('Serverless', 'serverless'),
       skill('REST API Design', 'rest'),
       skill('Distributed Systems', 'distributed-systems'),
+      skill('mTLS Security', 'mtls'),
       skill('JWE/JWS Security', 'jwe-jws'),
       skill('SSO / OAuth', 'sso-oauth'),
       skill('Jest', 'jest'),
@@ -72,9 +73,12 @@ export const skills = [
     ],
   },
   {
-    category: 'Tooling & Ecosystem',
+    category: 'Tooling & AI Ecosystem',
     color: 'purple',
     items: [
+      skill('Whisper (Audio Transcription)', 'whisper'),
+      skill('Llama 2 / LLMs', 'llama'),
+      skill('Pydantic', 'pydantic'),
       skill('Git', 'git'),
       skill('Swagger', 'swagger'),
       skill('AI Editors (Kiro, Cursor)', 'ai-editors'),
