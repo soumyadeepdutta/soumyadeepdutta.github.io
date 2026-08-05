@@ -21,7 +21,10 @@ export default function Skills() {
               key={cat.category}
               className={`${styles.category} reveal reveal-${Math.min(i + 1, 5)}`}
             >
-              <h3 className={styles.catTitle}>{cat.category}</h3>
+              <div className={styles.catHeader}>
+                <span className={styles.catDot} />
+                <h3 className={styles.catTitle}>{cat.category}</h3>
+              </div>
               <div className={styles.tags}>
                 {cat.items.map(item => (
                   <TechTag key={item.label} item={item} color={cat.color} className={styles.skillTag} />

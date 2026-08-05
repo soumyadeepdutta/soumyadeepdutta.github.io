@@ -3,7 +3,7 @@ import TechTag from './TechTag'
 
 /**
  * Reusable experience card.
- * Props: { title, company, location, start, end, tags, bullets }
+ * Props: { title, company, location, start, end, tags, bullets, isFirst }
  */
 export default function ExperienceCard({ title, company, location, start, end, tags, bullets, isFirst }) {
   return (
@@ -39,7 +39,7 @@ export default function ExperienceCard({ title, company, location, start, end, t
           <ul className={styles.bullets}>
             {bullets.map((b, i) => (
               <li key={i} className={styles.bullet}>
-                <span className={styles.bulletDot} aria-hidden="true">▸</span>
+                <span className={styles.bulletDot} aria-hidden="true">–</span>
                 {b}
               </li>
             ))}
@@ -49,3 +49,4 @@ export default function ExperienceCard({ title, company, location, start, end, t
     </div>
   )
 }
+

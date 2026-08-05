@@ -13,7 +13,7 @@ export default function Loader({ mode = 'initial' }) {
     <div className={styles.initialOverlay} role="status" aria-live="polite" aria-label="Loading portfolio">
       <div className={styles.initialCard}>
         <div className={styles.spinner} />
-        <p className={`mono ${styles.label}`}>Booting cloud portfolio...</p>
+        <p className={`mono ${styles.label}`}>Initializing systems…</p>
       </div>
     </div>
   )

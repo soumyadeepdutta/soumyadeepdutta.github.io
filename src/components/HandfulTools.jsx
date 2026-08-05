@@ -8,13 +8,13 @@ export default function HandfulTools() {
       <div className="container">
         <div className="section-header reveal reveal-1">
           <p className="section-label">Things I built for utility</p>
-          <h2 className="section-title">Handful Tools</h2>
+          <h2 className="section-title">Utility Projects</h2>
           <div className="divider" />
         </div>
 
         <div className={styles.grid}>
           {tools.map((tool, i) => (
-            <div key={tool.name} className={`reveal reveal-${Math.min(i + 1, 5)}`}>
+            <div key={tool.name} className={`${styles.gridItem} reveal reveal-${Math.min(i + 1, 5)}`}>
               <ProjectCard {...tool} />
             </div>
           ))}

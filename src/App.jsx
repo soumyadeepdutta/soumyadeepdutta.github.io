@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './components/Home'
 import BlogList from './components/BlogList'
 import BlogPost from './components/BlogPost'
@@ -61,14 +61,42 @@ export default function App() {
     }
   }, [])
 
+  const location = useLocation()
+
+  // Intersection Observer for scroll-reveal animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            // Optionally unobserve if you only want the animation to happen once
+            // observer.unobserve(entry.target) 
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+
+    // Using a timeout allows the DOM to render the new route's elements before observing
+    const timer = setTimeout(() => {
+      const revealEls = document.querySelectorAll('.reveal')
+      revealEls.forEach(el => observer.observe(el))
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+      observer.disconnect()
+    }
+  }, [location.pathname, initialLoading])
+
   if (initialLoading) {
     return <Loader mode="initial" />
   }
 
   return (
     <>
-      <div className="bg-squares" aria-hidden="true" />
-      <div className="bg-squares-secondary" aria-hidden="true" />
+      <div className="bg-dots" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Routes>

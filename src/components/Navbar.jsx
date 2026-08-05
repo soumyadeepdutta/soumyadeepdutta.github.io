@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import styles from './Navbar.module.css'
 import { navigateToSection, navigateToTop } from '../utils/navigation'
@@ -55,7 +55,6 @@ export default function Navbar({ theme, toggleTheme }) {
     if (href.startsWith('#')) {
       if (location.pathname !== '/') {
         navigate(`/${href}`)
-        // The App will need to handle scrolling to hash on load, or the user can click again
       } else {
         navigateToSection(href)
       }
@@ -81,7 +80,7 @@ export default function Navbar({ theme, toggleTheme }) {
   return (
     <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
-        {/* Logo */}
+        {/* Logo with avatar */}
         <a
           href="/"
           className={styles.logo}
@@ -94,8 +93,14 @@ export default function Navbar({ theme, toggleTheme }) {
             }
           }}
         >
+          <img
+            src="/profile.png"
+            alt=""
+            className={styles.avatar}
+            width="28"
+            height="28"
+          />
           <span className={styles.logoText}>SD</span>
-          <span className={styles.logoDot}>.</span>
         </a>
 
         {/* Desktop nav */}
@@ -120,7 +125,7 @@ export default function Navbar({ theme, toggleTheme }) {
             className="btn btn-outline"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ padding: '0.45rem 1.1rem', fontSize: '0.8rem' }}
+            style={{ padding: '0.4rem 1rem', fontSize: '0.78rem' }}
           >
             GitHub
           </a>

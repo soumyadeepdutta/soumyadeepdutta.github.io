@@ -1,140 +1,9 @@
-.hero {
-  position: relative;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: calc(var(--nav-height) + 3rem) 0 5rem;
-  overflow: hidden;
-}
-
-.inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 3rem;
-}
-
-/* ── Content ── */
-.content {
-  max-width: 560px;
-}
-
-/* Status indicator */
-.statusRow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.statusDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
-  animation: pulse-dot 2.5s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
-  50%      { opacity: 0.6; box-shadow: 0 0 2px rgba(74, 222, 128, 0.2); }
-}
-
-.statusText {
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  color: var(--text-faint);
-  text-transform: uppercase;
-}
-
-/* Name */
-.name {
-  font-size: clamp(2.6rem, 6.5vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  color: var(--text-heading);
-  margin-bottom: 1rem;
-}
-
-/* Role ticker */
-.roleRow {
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
-  font-weight: 500;
-  color: var(--text-muted);
-  min-height: 2rem;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-}
-
-.roleFade {
-  display: block;
-  animation: fadeRole 0.5s ease both;
-}
-
-@keyframes fadeRole {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Bio */
-.bio {
-  font-size: 0.92rem;
-  color: var(--text-muted);
-  line-height: 1.75;
-  margin-bottom: 2rem;
-  max-width: 460px;
-}
-
-/* CTA */
-.ctaRow {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 2.5rem;
-}
-
-/* ── Metrics ── */
-.metrics {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.metric {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.metricValue {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-heading);
-  letter-spacing: -0.01em;
-}
-
-.metricLabel {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--text-faint);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.metricDivider {
-  width: 1px;
-  height: 28px;
-  background: var(--border);
-}
-
-/* ── Architecture Diagram Container & Card ── */
+/* ── Experience Architecture Diagram ── */
 .diagramCard {
   position: relative;
   width: 100%;
-  max-width: 680px;
+  max-width: 1000px;
+  margin: 0 auto 2.5rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -163,15 +32,16 @@
   padding-bottom: 0.75rem;
   margin-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-sub);
+  flex-wrap: wrap;
 }
 
-.diagramTitleRow {
+.titleRow {
   display: flex;
   align-items: center;
   gap: 0.45rem;
 }
 
-.diagramStatusDot {
+.statusDot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -180,7 +50,7 @@
   animation: pulse-dot 2.5s ease-in-out infinite;
 }
 
-.diagramTitleText {
+.titleText {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem;
   font-weight: 600;
@@ -188,15 +58,15 @@
   color: var(--text-heading);
 }
 
-/* Flow Filter Pills */
-.flowTabs {
+/* Company Tenure Filter Tabs */
+.companyTabs {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
-.flowTab {
+.companyTab {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -218,24 +88,16 @@
   flex-shrink: 0;
 }
 
-.flowTab:hover {
+.companyTab:hover {
   color: var(--text-heading);
   border-color: var(--border-hover);
 }
 
-.flowTabActive {
+.companyTabActive {
   color: var(--text-heading);
   background: var(--accent-dim);
   border-color: var(--accent);
   box-shadow: 0 0 8px var(--accent-glow);
-}
-
-.flowDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: inline-block;
 }
 
 /* SVG Viewport */
@@ -251,51 +113,113 @@
   display: block;
 }
 
-/* Swimlanes & Grid */
-.swimlaneLabel {
+/* Swimlanes & Radial Radar */
+.radarRingInner {
+  fill: none;
+  stroke: var(--border);
+  stroke-dasharray: 4 4;
+  opacity: 0.5;
+}
+
+.radarRingOuter {
+  fill: none;
+  stroke: var(--border-sub);
+  stroke-dasharray: 6 4;
+  opacity: 0.35;
+}
+
+.wingLabel {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 8.5px;
+  font-size: 9px;
   font-weight: 600;
   fill: var(--text-faint);
   letter-spacing: 0.08em;
   text-anchor: middle;
 }
 
-.swimlaneDivider {
-  stroke: var(--border-sub);
-  stroke-dasharray: 3 3;
-  stroke-width: 0.75;
-}
-
-/* Paths */
-.connPath {
+/* Radial Spoke Lines */
+.spokeLine {
   stroke-dasharray: 4 3;
   transition: stroke 0.3s ease, stroke-width 0.3s ease;
 }
 
-/* Nodes */
+/* Central Core Hub */
+.coreCircle {
+  fill: var(--surface-2);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+.corePulseRing {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0.3;
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { r: 52px; opacity: 0.2; }
+  50%      { r: 58px; opacity: 0.45; }
+}
+
+.coreGroup:hover .coreCircle {
+  fill: var(--surface);
+  filter: drop-shadow(0 0 16px var(--accent-glow));
+}
+
+.coreIconBox {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.coreIcon {
+  font-size: 1.1rem;
+}
+
+.coreTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--text-heading);
+  text-anchor: middle;
+}
+
+.coreSubtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7.5px;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+
+/* Nodes & Pods */
 .nodeGroup {
   transform-box: fill-box;
 }
 
-.nodeBox {
+.nodePod {
   fill: var(--surface-2);
   stroke: var(--border);
   stroke-width: 1;
   transition: all 0.25s ease;
 }
 
-.nodeBoxActive {
+.nodePodActive {
   stroke: var(--border-hover);
 }
 
-.nodeBoxHovered {
+.nodePodHovered {
   fill: var(--surface);
   stroke: var(--accent);
-  filter: drop-shadow(0 2px 10px rgba(180, 154, 110, 0.3));
+  filter: drop-shadow(0 2px 10px rgba(180, 154, 110, 0.35));
 }
 
-[data-theme="light"] .nodeBoxHovered {
+[data-theme="light"] .nodePodHovered {
   filter: drop-shadow(0 2px 8px rgba(150, 128, 78, 0.25));
 }
 
@@ -317,14 +241,14 @@
 
 .nodeTitle {
   font-family: 'DM Sans', sans-serif;
-  font-size: 9.5px;
+  font-size: 8.8px;
   font-weight: 600;
   fill: var(--text-heading);
 }
 
 .nodeSubtitle {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 7.8px;
+  font-size: 7.2px;
   fill: var(--text-muted);
 }
 
@@ -334,7 +258,7 @@
 
 /* Info Banner Inspector */
 .infoBanner {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   padding: 0.6rem 0.75rem;
   background: var(--surface-2);
   border: 1px solid var(--border-sub);
@@ -400,47 +324,16 @@
   font-size: 0.85rem;
 }
 
-/* ── Scroll indicator ── */
-.scrollIndicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--text-faint);
-  transition: color var(--transition);
-}
-.scrollIndicator:hover { color: var(--text-muted); }
-
-.scrollArrow {
-  font-size: 1rem;
-  animation: bounce 2.5s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(5px); }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
+  50%      { opacity: 0.6; box-shadow: 0 0 2px rgba(74, 222, 128, 0.2); }
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 2rem;
-  }
-
-  .diagram {
-    order: -1;
-    width: 100%;
-  }
-
   .diagramCard {
-    max-width: 100%;
     padding: 0.85rem;
+    margin-bottom: 1.75rem;
   }
 
   .diagramHeader {
@@ -449,36 +342,22 @@
     gap: 0.5rem;
   }
 
-  .flowTabs {
+  .companyTabs {
     width: 100%;
     overflow-x: auto;
     padding-bottom: 0.25rem;
     -webkit-overflow-scrolling: touch;
   }
-
-  .bio { max-width: 100%; }
-  .metrics { justify-content: center; }
-  .ctaRow { justify-content: center; }
-  .statusRow { justify-content: center; }
-  .content { max-width: 100%; }
 }
 
 @media (max-width: 480px) {
   .diagramCard {
     padding: 0.65rem;
   }
-}
 
-@media (max-width: 480px) {
-  .diagramSvg {
-    max-width: 300px;
-  }
-
-  .metrics {
-    gap: 1rem;
-  }
-
-  .metricValue {
-    font-size: 1rem;
+  .companyTab {
+    height: 26px;
+    padding: 0 0.6rem;
+    font-size: 0.6rem;
   }
 }
