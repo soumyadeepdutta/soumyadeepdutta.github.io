@@ -16,11 +16,20 @@ import {
   startDeskDraw,
 } from '../utils/introChoreography'
 
-const NAV_LINKS = [
+const PORTFOLIO_LINKS = [
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Story' },
   { href: '/blog', label: 'Notes' },
   { href: '#contact', label: 'Say hi' },
+]
+
+const BRIEF_LINKS = [
+  { href: '#simple-profile', label: 'Profile' },
+  { href: '#simple-experience', label: 'Experience' },
+  { href: '#simple-systems', label: 'Systems' },
+  { href: '#simple-skills', label: 'Skills' },
+  { href: '#simple-contact', label: 'Contact' },
+  { href: '/blog', label: 'Notes' },
 ]
 
 const RESUME_HREF = 'https://www.linkedin.com/in/soumyadeep-dutta/'
@@ -29,8 +38,9 @@ const DESKTOP_MQ = '(min-width: 821px)'
 const easeOut = [0.22, 1, 0.36, 1]
 const brandFlySpring = { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
 
-function readInitialIntroPhase() {
+function readInitialIntroPhase(viewMode) {
   if (typeof window === 'undefined') return 'done'
+  if (viewMode === 'brief') return 'done'
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return 'done'
   }
@@ -50,7 +60,12 @@ function measureBrandFly(splashEl, brandEl) {
   return { x, y, scale }
 }
 
-export default function Navbar({ theme, toggleTheme }) {
+export default function Navbar({
+  theme,
+  toggleTheme,
+  viewMode = 'portfolio',
+  onViewModeChange,
+}) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [pillHovered, setPillHovered] = useState(false)
@@ -58,13 +73,16 @@ export default function Navbar({ theme, toggleTheme }) {
     typeof window !== 'undefined' ? window.matchMedia(DESKTOP_MQ).matches : true
   )
   const [activeSection, setActiveSection] = useState('')
-  const [introPhase, setIntroPhase] = useState(readInitialIntroPhase)
+  const [introPhase, setIntroPhase] = useState(() =>
+    readInitialIntroPhase(viewMode)
+  )
   const [flyTarget, setFlyTarget] = useState(null)
   const prefersReduced = useReducedMotion()
   const location = useLocation()
   const navigate = useNavigate()
   const brandRef = useRef(null)
   const splashWordRef = useRef(null)
+  const navLinks = viewMode === 'brief' ? BRIEF_LINKS : PORTFOLIO_LINKS
 
   const finishIntro = useCallback(() => {
     setIntroPhase('done')
@@ -73,6 +91,10 @@ export default function Navbar({ theme, toggleTheme }) {
   useEffect(() => {
     if (prefersReduced && introPhase !== 'done') finishIntro()
   }, [prefersReduced, introPhase, finishIntro])
+
+  useEffect(() => {
+    if (viewMode === 'brief' && introPhase !== 'done') finishIntro()
+  }, [viewMode, introPhase, finishIntro])
 
   // hold → fly into the real nav brand label
   useEffect(() => {
@@ -169,7 +191,7 @@ export default function Navbar({ theme, toggleTheme }) {
       { threshold: 0.3 }
     )
 
-    const sectionIds = NAV_LINKS.map(({ href }) => href).filter((href) =>
+    const sectionIds = navLinks.map(({ href }) => href).filter((href) =>
       href.startsWith('#')
     )
 
@@ -178,7 +200,7 @@ export default function Navbar({ theme, toggleTheme }) {
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [location.pathname])
+  }, [location.pathname, viewMode])
 
   useEffect(() => {
     if (location.pathname === '/' && location.hash) {
@@ -229,6 +251,8 @@ export default function Navbar({ theme, toggleTheme }) {
   const linksVisible = showExtras && isDesktop && chromeExpanded
   const sheetOpen = !isDesktop && menuOpen && showExtras
   const themeVisible = showExtras && chromeExpanded
+  const viewSwitchVisible =
+    showExtras && chromeExpanded && location.pathname === '/'
 
   const instant = prefersReduced ? { duration: 0 } : undefined
 
@@ -288,7 +312,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
       <header
         className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${
-          linksVisible || sheetOpen || themeVisible
+          linksVisible || sheetOpen || themeVisible || viewSwitchVisible
             ? styles.expanded
             : styles.collapsed
         } ${introBusy ? styles.introBusy : ''}`}
@@ -362,7 +386,7 @@ export default function Navbar({ theme, toggleTheme }) {
                     aria-hidden={linksVisible ? undefined : true}
                   >
                     <div className={styles.linkRow}>
-                      {NAV_LINKS.map(({ href, label }) => (
+                      {navLinks.map(({ href, label }) => (
                         <a
                           key={href}
                           href={href}
@@ -385,6 +409,51 @@ export default function Navbar({ theme, toggleTheme }) {
               }`}
               aria-hidden={brandRevealed ? undefined : true}
             >
+              <div
+                className={`${styles.viewSlot} ${
+                  viewSwitchVisible ? styles.viewSlotOpen : ''
+                }`}
+                aria-hidden={viewSwitchVisible ? undefined : true}
+              >
+                <div className={styles.viewSlotInner}>
+                  <div
+                    className={styles.viewSwitch}
+                    role="group"
+                    aria-label="Portfolio view"
+                  >
+                    <button
+                      type="button"
+                      className={
+                        viewMode === 'portfolio' ? styles.viewOptionActive : ''
+                      }
+                      aria-pressed={viewMode === 'portfolio'}
+                      tabIndex={viewSwitchVisible ? undefined : -1}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        setMenuOpen(false)
+                        onViewModeChange?.('portfolio')
+                      }}
+                    >
+                      Portfolio
+                    </button>
+                    <button
+                      type="button"
+                      className={
+                        viewMode === 'brief' ? styles.viewOptionActive : ''
+                      }
+                      aria-pressed={viewMode === 'brief'}
+                      tabIndex={viewSwitchVisible ? undefined : -1}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        setMenuOpen(false)
+                        onViewModeChange?.('brief')
+                      }}
+                    >
+                      Brief
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div
                 className={`${styles.themeSlot} ${
                   themeVisible ? styles.themeSlotOpen : ''
@@ -439,7 +508,7 @@ export default function Navbar({ theme, toggleTheme }) {
                 initial={prefersReduced ? false : 'hidden'}
                 animate="show"
               >
-                {NAV_LINKS.map(({ href, label }) => (
+                {navLinks.map(({ href, label }) => (
                   <motion.a
                     key={`${href}-${label}`}
                     href={href}

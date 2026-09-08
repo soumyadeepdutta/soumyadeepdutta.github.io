@@ -1,0 +1,2219 @@
+{
+  "version": "2.15",
+  "fileToken": "bed9508d-971f-4ea3-bbbd-a877a3d79a83",
+  "themes": {
+    "mode": [
+      "dark",
+      "light"
+    ]
+  },
+  "variables": {
+    "bg": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#0B0F19",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#F8FAFC",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "card-bg": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#111827",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "card-surface": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1E293B",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#F1F5F9",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "aws-amber": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FF9900",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#EC7211",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "cyan-accent": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#06B6D4",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#0284C7",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "emerald-accent": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#10B981",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#059669",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "text-primary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#F9FAFB",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#0F172A",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "text-secondary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#9CA3AF",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#475569",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "border": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1F293D",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#E2E8F0",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "border-amber": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FF990040",
+          "theme": {
+            "mode": "dark"
+          }
+        },
+        {
+          "value": "#EC721140",
+          "theme": {
+            "mode": "light"
+          }
+        }
+      ]
+    },
+    "font-display": {
+      "type": "string",
+      "value": "Plus Jakarta Sans"
+    },
+    "font-body": {
+      "type": "string",
+      "value": "Outfit"
+    },
+    "font-mono": {
+      "type": "string",
+      "value": "JetBrains Mono"
+    }
+  },
+  "children": [
+    {
+      "type": "frame",
+      "id": "frame_portfolio_dark",
+      "x": 0,
+      "y": 0,
+      "name": "Backend & AWS Portfolio \u2014 Desktop (Dark)",
+      "theme": {
+        "mode": "dark"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 2680,
+      "fill": "$bg",
+      "layout": "vertical",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header_nav",
+          "name": "Header Navigation",
+          "width": 1440,
+          "height": 88,
+          "fill": "$bg",
+          "stroke": "$border",
+          "strokeWidth": 1,
+          "padding": [
+            0,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "logo_container",
+              "name": "Logo & Status",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "aws_badge_icon",
+                  "name": "AWS Logo Badge",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "$card-surface",
+                  "cornerRadius": 10,
+                  "stroke": "$border-amber",
+                  "strokeWidth": 1,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "cloud_icon_head",
+                      "name": "Cloud Icon",
+                      "width": 22,
+                      "height": 22,
+                      "icon": "cloud",
+                      "library": "lucide",
+                      "fill": "$aws-amber"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "name_title_box",
+                  "name": "Name & Role Box",
+                  "layout": "vertical",
+                  "gap": 2,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "brand_name",
+                      "name": "Brand Name",
+                      "fill": "$text-primary",
+                      "content": "Soumyadeep Dutta",
+                      "fontFamily": "$font-display",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "brand_role",
+                      "name": "Role Subtitle",
+                      "fill": "$aws-amber",
+                      "content": "Senior Backend & AWS Solutions Architect",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "status_pill",
+              "name": "AWS System Status Pill",
+              "fill": "#064E3B",
+              "cornerRadius": 20,
+              "stroke": "#10B98160",
+              "strokeWidth": 1,
+              "padding": [
+                6,
+                14
+              ],
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "green_dot",
+                  "name": "Status Indicator Dot",
+                  "width": 8,
+                  "height": 8,
+                  "fill": "$emerald-accent",
+                  "cornerRadius": 4
+                },
+                {
+                  "type": "text",
+                  "id": "status_text",
+                  "name": "Status Text",
+                  "fill": "#D1FAE5",
+                  "content": "Available for Backend & Cloud Engineering Roles",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nav_actions",
+              "name": "Nav Items & Action CTA",
+              "gap": 32,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nav_arch",
+                  "name": "Nav Architecture",
+                  "fill": "$text-primary",
+                  "content": "Architecture",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "nav_stack",
+                  "name": "Nav Cloud Stack",
+                  "fill": "$text-secondary",
+                  "content": "Cloud Stack",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "nav_projects",
+                  "name": "Nav Case Studies",
+                  "fill": "$text-secondary",
+                  "content": "Case Studies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "nav_metrics",
+                  "name": "Nav Telemetry",
+                  "fill": "$text-secondary",
+                  "content": "Telemetry",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "cta_consult_btn",
+                  "name": "Consultation CTA",
+                  "fill": "$aws-amber",
+                  "cornerRadius": 10,
+                  "padding": [
+                    10,
+                    20
+                  ],
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cta_btn_lbl",
+                      "name": "Button Label",
+                      "fill": "#000000",
+                      "content": "Deploy Request",
+                      "fontFamily": "$font-display",
+                      "fontSize": 14,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "cta_arrow_ic",
+                      "name": "Arrow Right",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "arrow-right",
+                      "library": "lucide",
+                      "fill": "#000000"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hero_container",
+          "name": "Hero Section",
+          "width": 1440,
+          "padding": [
+            96,
+            80,
+            72,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "hero_text_col",
+              "name": "Hero Text Column",
+              "width": 640,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cloud_tag_pill",
+                  "name": "Cloud Badge Tag",
+                  "fill": "#1E293B",
+                  "stroke": "$border-amber",
+                  "strokeWidth": 1,
+                  "cornerRadius": 20,
+                  "padding": [
+                    6,
+                    16
+                  ],
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "zap_ic",
+                      "name": "Zap Icon",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "zap",
+                      "library": "lucide",
+                      "fill": "$aws-amber"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hero_badge_txt",
+                      "name": "Hero Tagline",
+                      "fill": "$aws-amber",
+                      "content": "DISTRIBUTED SYSTEMS & AWS CLOUD ARCHITECT",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "letterSpacing": 0.8
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "hero_headline",
+                  "name": "Hero Headline",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 640,
+                  "content": "Architecting resilient, sub-15ms backend systems on AWS",
+                  "fontFamily": "$font-display",
+                  "fontSize": 48,
+                  "fontWeight": "800",
+                  "lineHeight": 1.15
+                },
+                {
+                  "type": "text",
+                  "id": "hero_subtext",
+                  "name": "Hero Description",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "I specialize in building resilient backend microservices, event-driven pipelines, and automated AWS infrastructure to deliver fast, secure, and cost-effective cloud applications.",
+                  "fontFamily": "$font-body",
+                  "fontSize": 18,
+                  "lineHeight": 1.6
+                },
+                {
+                  "type": "frame",
+                  "id": "hero_actions_row",
+                  "name": "Action Buttons Row",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "btn_explore_arch",
+                      "name": "Explore Architecture Button",
+                      "fill": "$aws-amber",
+                      "cornerRadius": 12,
+                      "padding": [
+                        16,
+                        28
+                      ],
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "arch_icon",
+                          "name": "Layers Icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "layers",
+                          "library": "lucide",
+                          "fill": "#000000"
+                        },
+                        {
+                          "type": "text",
+                          "id": "btn_exp_text",
+                          "name": "Explore Label",
+                          "fill": "#000000",
+                          "content": "Explore System Specs",
+                          "fontFamily": "$font-display",
+                          "fontSize": 15,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "btn_terminal_test",
+                      "name": "Terminal Command Button",
+                      "fill": "$card-surface",
+                      "stroke": "$border",
+                      "strokeWidth": 1,
+                      "cornerRadius": 12,
+                      "padding": [
+                        16,
+                        28
+                      ],
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "term_icon",
+                          "name": "Terminal Icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "terminal",
+                          "library": "lucide",
+                          "fill": "$emerald-accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "btn_term_text",
+                          "name": "Terminal Command Label",
+                          "fill": "$text-primary",
+                          "content": "curl api.soumyadeep.dev",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hero_console_card",
+              "name": "AWS Cloud Watch Terminal Console Card",
+              "width": 580,
+              "fill": "$card-bg",
+              "cornerRadius": 20,
+              "stroke": "$border-amber",
+              "strokeWidth": 1,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000080",
+                "offset": {
+                  "x": 0,
+                  "y": 20
+                },
+                "blur": 40
+              },
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "titlebar",
+                  "name": "Console Titlebar",
+                  "width": "fill_container",
+                  "fill": "$card-surface",
+                  "padding": [
+                    14,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dots_row",
+                      "name": "Window Dots",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "dot_red",
+                          "width": 12,
+                          "height": 12,
+                          "fill": "#EF4444",
+                          "cornerRadius": 6
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dot_yellow",
+                          "width": 12,
+                          "height": 12,
+                          "fill": "#F59E0B",
+                          "cornerRadius": 6
+                        },
+                        {
+                          "type": "frame",
+                          "id": "dot_green",
+                          "width": 12,
+                          "height": 12,
+                          "fill": "#10B981",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "console_title",
+                      "name": "Console Header Title",
+                      "fill": "$text-secondary",
+                      "content": "soumyadeep@aws-terminal ~ % info --profile",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "activity_icon",
+                      "name": "Activity Icon",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "activity",
+                      "library": "lucide",
+                      "fill": "$emerald-accent"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "terminal_body",
+                  "name": "Terminal Body Output",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "term_line1",
+                      "name": "Terminal Line 1",
+                      "fill": "$aws-amber",
+                      "content": "👤 Developer: Soumyadeep Dutta (Backend & AWS Cloud Specialist)",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "term_line2",
+                      "name": "Terminal Line 2",
+                      "fill": "$emerald-accent",
+                      "content": "🎯 Focus: Event-Driven Microservices, Go/Node APIs, FinOps & IaC",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "term_line3",
+                      "name": "Terminal Line 3",
+                      "fill": "$cyan-accent",
+                      "content": "📜 Certification: AWS Certified Solutions Architect",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "term_line4",
+                      "name": "Terminal Line 4",
+                      "fill": "$text-secondary",
+                      "content": "🌐 Tech Stack: AWS (Lambda, EKS, DynamoDB), Go, TypeScript, Terraform",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "code_snippet_box",
+                      "name": "Code Snippet Box",
+                      "width": "fill_container",
+                      "fill": "#090D16",
+                      "cornerRadius": 10,
+                      "padding": 16,
+                      "stroke": "$border",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "snippet_c1",
+                          "name": "Snippet Line 1",
+                          "fill": "#60A5FA",
+                          "content": "// AWS Lambda Event Handler (Golang)",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 12
+                        },
+                        {
+                          "type": "text",
+                          "id": "snippet_c2",
+                          "name": "Snippet Line 2",
+                          "fill": "$text-primary",
+                          "content": "func HandleOrderEvent(ctx context.Context, event events.SQSEvent) error {",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 12
+                        },
+                        {
+                          "type": "text",
+                          "id": "snippet_c3",
+                          "name": "Snippet Line 3",
+                          "fill": "$aws-amber",
+                          "content": "    return pipeline.ProcessBatch(ctx, event.Records) // sub-10ms P99",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 12
+                        },
+                        {
+                          "type": "text",
+                          "id": "snippet_c4",
+                          "name": "Snippet Line 4",
+                          "fill": "#60A5FA",
+                          "content": "}",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 12
+                        },
+                        {
+                          "type": "text",
+                          "id": "snippet_c5",
+                          "name": "Snippet Line 5",
+                          "fill": "$text-secondary",
+                          "content": "// Zero cold-starts & automated dead-letter retries",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 11
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "metrics_container",
+          "name": "System Metrics & SLA Banner",
+          "width": 1440,
+          "padding": [
+            0,
+            80,
+            80,
+            80
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "metrics_grid",
+              "name": "Metrics Grid Wrapper",
+              "width": 1280,
+              "fill": "$card-bg",
+              "cornerRadius": 20,
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "padding": 36,
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "stat_card_1",
+                  "name": "Stat 1 Uptime",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "stat_val_1",
+                      "name": "Stat 1 Value",
+                      "fill": "$emerald-accent",
+                      "content": "4+ Yrs",
+                      "fontFamily": "$font-display",
+                      "fontSize": 36,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_lbl_1",
+                      "name": "Stat 1 Label",
+                      "fill": "$text-primary",
+                      "content": "AWS & Backend Experience",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_sub_1",
+                      "name": "Stat 1 Subtitle",
+                      "fill": "$text-secondary",
+                      "content": "Production System Engineering",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "div_1",
+                  "width": 1,
+                  "height": 70,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "stat_card_2",
+                  "name": "Stat 2 Throughput",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "stat_val_2",
+                      "name": "Stat 2 Value",
+                      "fill": "$aws-amber",
+                      "content": "100M+",
+                      "fontFamily": "$font-display",
+                      "fontSize": 36,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_lbl_2",
+                      "name": "Stat 2 Label",
+                      "fill": "$text-primary",
+                      "content": "Monthly Events Processed",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_sub_2",
+                      "name": "Stat 2 Subtitle",
+                      "fill": "$text-secondary",
+                      "content": "AWS Kinesis & SQS Queue Mesh",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "div_2",
+                  "width": 1,
+                  "height": 70,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "stat_card_3",
+                  "name": "Stat 3 Latency",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "stat_val_3",
+                      "name": "Stat 3 Value",
+                      "fill": "$cyan-accent",
+                      "content": "< 12ms",
+                      "fontFamily": "$font-display",
+                      "fontSize": 36,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_lbl_3",
+                      "name": "Stat 3 Label",
+                      "fill": "$text-primary",
+                      "content": "Average P99 API Latency",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_sub_3",
+                      "name": "Stat 3 Subtitle",
+                      "fill": "$text-secondary",
+                      "content": "ElastiCache Redis + Go Microservices",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "div_3",
+                  "width": 1,
+                  "height": 70,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "stat_card_4",
+                  "name": "Stat 4 FinOps Cost",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "stat_val_4",
+                      "name": "Stat 4 Value",
+                      "fill": "#A855F7",
+                      "content": "-42%",
+                      "fontFamily": "$font-display",
+                      "fontSize": 36,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_lbl_4",
+                      "name": "Stat 4 Label",
+                      "fill": "$text-primary",
+                      "content": "Cloud FinOps Savings",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "stat_sub_4",
+                      "name": "Stat 4 Subtitle",
+                      "fill": "$text-secondary",
+                      "content": "Graviton3 + Spot Auto-scaling",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "stack_container",
+          "name": "Cloud Ecosystem Section",
+          "width": 1440,
+          "padding": [
+            32,
+            80,
+            96,
+            80
+          ],
+          "layout": "vertical",
+          "gap": 48,
+          "children": [
+            {
+              "type": "frame",
+              "id": "stack_sec_header",
+              "name": "Stack Section Header",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "stack_pill_tag",
+                  "name": "Stack Tag",
+                  "fill": "$aws-amber",
+                  "content": "ENGINEERING TOOLBELT",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 13,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "stack_title",
+                  "name": "Stack Title",
+                  "fill": "$text-primary",
+                  "content": "Production Tech Ecosystem & AWS Stack",
+                  "fontFamily": "$font-display",
+                  "fontSize": 32,
+                  "fontWeight": "800"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "stack_cards_row",
+              "name": "Stack 3 Cards Row",
+              "width": 1280,
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "stack_c1",
+                  "name": "Stack Card 1 AWS Core",
+                  "width": 400,
+                  "fill": "$card-bg",
+                  "cornerRadius": 16,
+                  "stroke": "$border-amber",
+                  "strokeWidth": 1,
+                  "padding": 28,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "c1_head",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "c1_ic",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "cloud",
+                          "library": "lucide",
+                          "fill": "$aws-amber"
+                        },
+                        {
+                          "type": "text",
+                          "id": "c1_title",
+                          "fill": "$text-primary",
+                          "content": "AWS Cloud Native",
+                          "fontFamily": "$font-display",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "c1_desc",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Serverless architectures, compute management, event streaming, and managed database services.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "lineHeight": 1.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c1_chips",
+                      "name": "Tech Chips Container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c1_chips_r1",
+                          "name": "Row 1",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t1",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt1",
+                                  "fill": "$aws-amber",
+                                  "content": "AWS Lambda",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t2",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2",
+                                  "fill": "$text-primary",
+                                  "content": "ECS / EKS",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t3",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3",
+                                  "fill": "$text-primary",
+                                  "content": "DynamoDB",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "c1_chips_r2",
+                          "name": "Row 2",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t4",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt4",
+                                  "fill": "$text-primary",
+                                  "content": "EventBridge",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t5",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt5",
+                                  "fill": "$text-primary",
+                                  "content": "S3 & CloudFront",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "stack_c2",
+                  "name": "Stack Card 2 Backend Core",
+                  "width": 400,
+                  "fill": "$card-bg",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "padding": 28,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "c2_head",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "c2_ic",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "server",
+                          "library": "lucide",
+                          "fill": "$cyan-accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "c2_title",
+                          "fill": "$text-primary",
+                          "content": "Backend Languages & Storage",
+                          "fontFamily": "$font-display",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "c2_desc",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Concurrent runtimes, relational & NoSQL engines, in-memory caches, and messaging protocols.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "lineHeight": 1.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c2_chips",
+                      "name": "Tech Chips Container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c2_chips_r1",
+                          "name": "Row 1",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t2_1",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2_1",
+                                  "fill": "$cyan-accent",
+                                  "content": "Golang (Go)",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t2_2",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2_2",
+                                  "fill": "$text-primary",
+                                  "content": "Node.js / TS",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t2_3",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2_3",
+                                  "fill": "$text-primary",
+                                  "content": "PostgreSQL",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "c2_chips_r2",
+                          "name": "Row 2",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t2_4",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2_4",
+                                  "fill": "$text-primary",
+                                  "content": "Redis Cache",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t2_5",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt2_5",
+                                  "fill": "$text-primary",
+                                  "content": "Kafka / gRPC",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "stack_c3",
+                  "name": "Stack Card 3 DevOps & IaC",
+                  "width": 400,
+                  "fill": "$card-bg",
+                  "cornerRadius": 16,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "padding": 28,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "c3_head",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "c3_ic",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "shield",
+                          "library": "lucide",
+                          "fill": "$emerald-accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "c3_title",
+                          "fill": "$text-primary",
+                          "content": "Infrastructure as Code & DevOps",
+                          "fontFamily": "$font-display",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "c3_desc",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Declarative cloud provisioning, CI/CD automated pipelines, monitoring and zero-trust security.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "lineHeight": 1.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c3_chips",
+                      "name": "Tech Chips Container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c3_chips_r1",
+                          "name": "Row 1",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t3_1",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3_1",
+                                  "fill": "$emerald-accent",
+                                  "content": "Terraform",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t3_2",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3_2",
+                                  "fill": "$text-primary",
+                                  "content": "Docker / K8s",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t3_3",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3_3",
+                                  "fill": "$text-primary",
+                                  "content": "GitHub Actions",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "c3_chips_r2",
+                          "name": "Row 2",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "t3_4",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3_4",
+                                  "fill": "$text-primary",
+                                  "content": "Prometheus",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "t5_5",
+                              "fill": "$card-surface",
+                              "cornerRadius": 6,
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "tt3_5",
+                                  "fill": "$text-primary",
+                                  "content": "Datadog / APM",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "projects_container",
+          "name": "Case Studies Section",
+          "width": 1440,
+          "padding": [
+            32,
+            80,
+            96,
+            80
+          ],
+          "layout": "vertical",
+          "gap": 48,
+          "children": [
+            {
+              "type": "frame",
+              "id": "proj_header",
+              "name": "Projects Section Header",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "proj_tag",
+                  "name": "Projects Tag",
+                  "fill": "$emerald-accent",
+                  "content": "FEATURED SYSTEM CASE STUDIES",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 13,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "proj_title",
+                  "name": "Projects Title",
+                  "fill": "$text-primary",
+                  "content": "High-Throughput Cloud Architectures Built & Deployed",
+                  "fontFamily": "$font-display",
+                  "fontSize": 32,
+                  "fontWeight": "800"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cs_card_1",
+              "name": "Case Study Card 1 Serverless Pipeline",
+              "width": 1280,
+              "fill": "$card-bg",
+              "cornerRadius": 20,
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "padding": 40,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cs1_left",
+                  "width": 640,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cs1_badge",
+                      "fill": "#064E3B",
+                      "cornerRadius": 6,
+                      "padding": [
+                        4,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cs1_badge_t",
+                          "fill": "$emerald-accent",
+                          "content": "FINTECH & E-COMMERCE",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "cs1_h",
+                      "fill": "$text-primary",
+                      "content": "Event-Driven Serverless Order & Payment Pipeline",
+                      "fontFamily": "$font-display",
+                      "fontSize": 26,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cs1_p",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Engineered an asynchronous, fault-tolerant transaction pipeline handling 50,000 peak events/sec with AWS EventBridge, SQS FIFO queues, and Step Functions to eliminate order drops.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "lineHeight": 1.6
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cs1_specs",
+                      "gap": 32,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sp1",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s1v",
+                              "fill": "$aws-amber",
+                              "content": "50K req/s",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s1l",
+                              "fill": "$text-secondary",
+                              "content": "Peak Ingestion",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "sp2",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s2v",
+                              "fill": "$emerald-accent",
+                              "content": "0ms",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s2l",
+                              "fill": "$text-secondary",
+                              "content": "Data Loss Rate",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "sp3",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s3v",
+                              "fill": "$cyan-accent",
+                              "content": "$0 / Idle",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s3l",
+                              "fill": "$text-secondary",
+                              "content": "Serverless Billing",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cs1_diagram_box",
+                  "name": "CS1 Diagram Box",
+                  "width": 480,
+                  "fill": "#0A0F1D",
+                  "cornerRadius": 14,
+                  "stroke": "$border-amber",
+                  "strokeWidth": 1,
+                  "padding": 24,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "diag_lbl1",
+                      "fill": "$aws-amber",
+                      "content": "AWS EventBridge \u2794 SQS FIFO \u2794 Lambda",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "diag_lbl2",
+                      "fill": "$text-secondary",
+                      "content": "[API Gateway] \u2500\u2500(HTTPS)\u2500\u2500\u25ba [EventBridge]",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "diag_lbl3",
+                      "fill": "$text-secondary",
+                      "content": "                                \u2502",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "diag_lbl4",
+                      "fill": "$emerald-accent",
+                      "content": "                                \u25bc",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "diag_lbl5",
+                      "fill": "$cyan-accent",
+                      "content": "[DynamoDB Stream] \u25c4\u2500\u2500 [Lambda Processor]",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "diag_lbl6",
+                      "fill": "$text-primary",
+                      "content": "  \u2713 Dead-Letter Queue (DLQ) Auto-Retry Enabled",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cs_card_2",
+              "name": "Case Study Card 2 Kubernetes Mesh",
+              "width": 1280,
+              "fill": "$card-bg",
+              "cornerRadius": 20,
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "padding": 40,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cs2_left",
+                  "width": 640,
+                  "layout": "vertical",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cs2_badge",
+                      "fill": "#1E293B",
+                      "cornerRadius": 6,
+                      "padding": [
+                        4,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cs2_badge_t",
+                          "fill": "$cyan-accent",
+                          "content": "DEVOPS & CONTAINER PLATFORMS",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "cs2_h",
+                      "fill": "$text-primary",
+                      "content": "Multi-Region AWS EKS Microservice Service Mesh",
+                      "fontFamily": "$font-display",
+                      "fontSize": 26,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cs2_p",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Provisioned automated Kubernetes clusters with Terraform & Helm, Istio mTLS service mesh, and Prometheus telemetry for multi-availability-zone fault tolerance.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 15,
+                      "lineHeight": 1.6
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cs2_specs",
+                      "gap": 32,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sp2_1",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s2_1v",
+                              "fill": "$cyan-accent",
+                              "content": "120+ Pods",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s2_1l",
+                              "fill": "$text-secondary",
+                              "content": "Container Scale",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "sp2_2",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s2_2v",
+                              "fill": "$emerald-accent",
+                              "content": "Zero",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s2_2l",
+                              "fill": "$text-secondary",
+                              "content": "Deploy Downtime",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "sp2_3",
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "s2_3v",
+                              "fill": "$aws-amber",
+                              "content": "3 AZs",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 18,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s2_3l",
+                              "fill": "$text-secondary",
+                              "content": "Redundancy Mesh",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cs2_diagram_box",
+                  "name": "CS2 Diagram Box",
+                  "width": 480,
+                  "fill": "#0A0F1D",
+                  "cornerRadius": 14,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "padding": 24,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "d2_1",
+                      "fill": "$cyan-accent",
+                      "content": "AWS EKS Cluster -- us-east-1a / 1b / 1c",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "d2_2",
+                      "fill": "$text-secondary",
+                      "content": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "d2_3",
+                      "fill": "$emerald-accent",
+                      "content": "\u2502 [Istio Ingress] \u2794 mTLS Pod Mesh     \u2502",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "d2_4",
+                      "fill": "$text-secondary",
+                      "content": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "d2_5",
+                      "fill": "$aws-amber",
+                      "content": "  \u2713 Terraform HCL Automated Infrastructure",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "contact_container",
+          "name": "Terminal Contact Section",
+          "width": 1440,
+          "padding": [
+            32,
+            80,
+            96,
+            80
+          ],
+          "layout": "vertical",
+          "gap": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "contact_card",
+              "name": "Terminal Contact Box",
+              "width": 1280,
+              "fill": "$card-bg",
+              "cornerRadius": 24,
+              "stroke": "$border-amber",
+              "strokeWidth": 1,
+              "padding": 48,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "term_c_tag",
+                  "fill": "$aws-amber",
+                  "content": "COMMISSION & ARCHITECTURE CONSULTATION",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "term_c_title",
+                  "fill": "$text-primary",
+                  "content": "Ready to build scalable cloud infrastructure?",
+                  "fontFamily": "$font-display",
+                  "fontSize": 32,
+                  "fontWeight": "800"
+                },
+                {
+                  "type": "frame",
+                  "id": "terminal_prompt_box",
+                  "width": "fill_container",
+                  "fill": "#070B14",
+                  "cornerRadius": 12,
+                  "padding": 24,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 10,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "c_cmd1",
+                      "fill": "$emerald-accent",
+                      "content": "$ curl -X POST https://api.soumyadeep.dev/v1/inquire \\",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "c_cmd2",
+                      "fill": "$cyan-accent",
+                      "content": "  -H \"Content-Type: application/json\" \\",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 14
+                    },
+                    {
+                      "type": "text",
+                      "id": "c_cmd3",
+                      "fill": "$aws-amber",
+                      "content": "  -d '{\"role\": \"Lead AWS Engineer\", \"availability\": \"Immediate\"}'",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 14
+                    },
+                    {
+                      "type": "text",
+                      "id": "c_cmd4",
+                      "fill": "$text-secondary",
+                      "content": "HTTP/2 200 OK - Connection established. Response time: 8.4ms",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 13
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "c_footer_row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "c_btn_main",
+                      "fill": "$aws-amber",
+                      "cornerRadius": 10,
+                      "padding": [
+                        14,
+                        24
+                      ],
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "c_btn_t",
+                          "fill": "#000000",
+                          "content": "Send Direct Message",
+                          "fontFamily": "$font-display",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c_socials",
+                      "gap": 24,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "s_gh",
+                          "fill": "$text-secondary",
+                          "content": "github.com/soumyadeepdutta",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 13
+                        },
+                        {
+                          "type": "text",
+                          "id": "s_li",
+                          "fill": "$text-secondary",
+                          "content": "linkedin.com/in/soumyadeepdutta",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 13
+                        },
+                        {
+                          "type": "text",
+                          "id": "s_aws",
+                          "fill": "$aws-amber",
+                          "content": "AWS Certified Solutions Architect",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "footer_container",
+          "name": "Footer Bar",
+          "width": 1440,
+          "height": 72,
+          "fill": "$bg",
+          "stroke": "$border",
+          "strokeWidth": 1,
+          "padding": [
+            0,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "copy_t",
+              "fill": "$text-secondary",
+              "content": "\u00a9 2026 Soumyadeep Dutta \u2014 Resilient Cloud & Backend Systems",
+              "fontFamily": "$font-body",
+              "fontSize": 13
+            },
+            {
+              "type": "text",
+              "id": "foot_aws_t",
+              "fill": "$aws-amber",
+              "content": "Powered by AWS Cloud Architecture & Serverless",
+              "fontFamily": "$font-mono",
+              "fontSize": 12
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

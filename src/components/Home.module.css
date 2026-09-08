@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.view {
+  width: 100%;
+}
+
 .spine {
   display: none;
 }

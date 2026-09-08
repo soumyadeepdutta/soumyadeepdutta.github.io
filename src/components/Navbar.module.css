@@ -5,6 +5,8 @@
   --nav-chalk: #f4f4f5;
   --nav-muted: #a1a1aa;
   --nav-ink: #09090b;
+  --nav-switch: #8ba3c7;
+  --nav-switch-ink: #09090b;
 
   position: fixed;
   top: 0;
@@ -24,6 +26,8 @@
   --nav-muted: #52525b;
   --nav-ink: #f4f4f5;
   --nav-steel-soft: #8ba3c766;
+  --nav-switch: #5b6f8c;
+  --nav-switch-ink: #ffffff;
 }
 
 .wrap {
@@ -87,7 +91,7 @@
   align-items: center;
   gap: 0.85rem;
   width: fit-content;
-  max-width: min(920px, 100%);
+  max-width: min(1120px, 100%);
   padding: 0.7rem 1.1rem;
   border-radius: 999px;
   background: var(--nav-pill);
@@ -177,6 +181,8 @@
   .desktopNavClipOpen,
   .desktopNav,
   .desktopNavClipOpen .desktopNav,
+  .viewSlot,
+  .viewSlotOpen,
   .themeSlot,
   .themeSlotOpen {
     transition: none;
@@ -235,6 +241,68 @@
   padding: 0;
   gap: 0;
   overflow: hidden;
+}
+
+.viewSlot {
+  display: grid;
+  grid-template-columns: 0fr;
+  min-width: 0;
+  transition: grid-template-columns 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.viewSlotOpen {
+  grid-template-columns: 1fr;
+  transition: grid-template-columns 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.viewSlotInner {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.viewSwitch {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+  padding: 0.2rem;
+  border: 1px solid var(--nav-steel-soft);
+  border-radius: 999px;
+}
+
+.viewSwitch button {
+  min-height: 1.85rem;
+  padding: 0.25rem 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--nav-muted);
+  font-family: 'IBM Plex Sans', 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.viewSwitch button:hover {
+  color: var(--nav-chalk);
+}
+
+.viewSwitch button.viewOptionActive {
+  background: var(--nav-switch);
+  color: var(--nav-switch-ink);
+  font-weight: 600;
+}
+
+.viewSwitch button:focus-visible {
+  outline: 2px solid var(--nav-steel);
+  outline-offset: 2px;
+}
+
+.viewSlot:not(.viewSlotOpen) .viewSwitch {
+  pointer-events: none;
 }
 
 .themeSlot {

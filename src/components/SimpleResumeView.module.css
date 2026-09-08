@@ -1,0 +1,445 @@
+.simpleView {
+  --simple-bg: #0d0f14;
+  --simple-tint: #12151b;
+  --simple-text: #f1f3f5;
+  --simple-body: #c9cdd3;
+  --simple-muted: #9ca3af;
+  --simple-line: #2a303b;
+  --simple-accent: #8ba3c7;
+  --simple-button-text: #0d0f14;
+
+  background: var(--simple-bg);
+  color: var(--simple-text);
+  font-family: 'IBM Plex Sans', 'DM Sans', sans-serif;
+}
+
+[data-theme='light'] .simpleView {
+  --simple-bg: #f4f5f7;
+  --simple-tint: #e8ecf1;
+  --simple-text: #18181b;
+  --simple-body: #343840;
+  --simple-muted: #52525b;
+  --simple-line: #cbd5e1;
+  --simple-accent: #5b6f8c;
+  --simple-button-text: #ffffff;
+}
+
+.hero,
+.section {
+  scroll-margin-top: var(--nav-height);
+}
+
+.hero {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(8rem, 11vw, 10rem) clamp(1.25rem, 7vw, 6.25rem)
+    clamp(4.5rem, 7vw, 6rem);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+  align-items: start;
+  gap: clamp(3rem, 7vw, 6.25rem);
+}
+
+.heroCopy {
+  max-width: 48rem;
+}
+
+.kicker {
+  margin: 0 0 1.25rem;
+  color: var(--simple-accent);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.section h2,
+.job h3,
+.job h4,
+.system h4,
+.systemGroup h3,
+.skillGroup h3 {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(3.25rem, 6vw, 5.25rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.role {
+  margin: 1.5rem 0 0;
+  color: var(--simple-text);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.summary {
+  max-width: 42rem;
+  margin: 0.8rem 0 0;
+  color: var(--simple-body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.contactLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.contactLine a {
+  color: var(--simple-muted);
+  font-size: 0.875rem;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--simple-accent) 60%,
+    transparent
+  );
+  text-underline-offset: 0.3rem;
+  transition: color 180ms ease;
+}
+
+.contactLine a:hover {
+  color: var(--simple-text);
+}
+
+.profileFacts {
+  margin: 0;
+}
+
+.profileFacts > div {
+  padding: 1rem 0;
+  border-top: 1px solid var(--simple-line);
+}
+
+.profileFacts dt,
+.metric span,
+.jobMeta span,
+.system span,
+.skillGroup dt {
+  color: var(--simple-muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.profileFacts dd {
+  margin: 0.4rem 0 0;
+  color: var(--simple-text);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+  border-top: 1px solid var(--simple-line);
+  border-bottom: 1px solid var(--simple-line);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--simple-line);
+}
+
+.metric:last-child {
+  border-right: 0;
+}
+
+.metric strong {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.section {
+  padding: clamp(5rem, 8vw, 7rem) max(1.25rem, calc((100vw - 1240px) / 2));
+}
+
+.sectionTint {
+  background: var(--simple-tint);
+}
+
+.sectionHeading {
+  max-width: 48rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.sectionHeading h2,
+.credentials h2 {
+  margin: 0;
+  color: var(--simple-text);
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.sectionHeading p {
+  max-width: 42rem;
+  margin: 0.8rem 0 0;
+  color: var(--simple-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.experienceList {
+  border-top: 1px solid var(--simple-line);
+}
+
+.job {
+  display: grid;
+  grid-template-columns: 16.25rem minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 4.5rem);
+  padding: 2.25rem 0;
+  border-bottom: 1px solid var(--simple-line);
+}
+
+.jobMeta h3 {
+  margin: 0;
+  color: var(--simple-text);
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.jobMeta p {
+  margin: 0.45rem 0 0.75rem;
+  color: var(--simple-muted);
+  font-size: 0.85rem;
+}
+
+.jobBody h4 {
+  margin: 0 0 1rem;
+  color: var(--simple-text);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.jobBody ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.jobBody li {
+  padding-left: 0.25rem;
+  color: var(--simple-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.jobBody li::marker {
+  color: var(--simple-accent);
+}
+
+.systemGroups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(3rem, 7vw, 6rem);
+}
+
+.systemGroup {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--simple-line);
+}
+
+.systemGroup h3,
+.skillGroup h3 {
+  margin: 0 0 1.75rem;
+  color: var(--simple-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.system + .system {
+  margin-top: 2.25rem;
+}
+
+.system h4 {
+  margin: 0;
+  color: var(--simple-text);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.system p {
+  margin: 0.6rem 0 0.8rem;
+  color: var(--simple-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.system span {
+  display: block;
+  color: var(--simple-accent);
+  line-height: 1.5;
+}
+
+.skillGroups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.skillGroup {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--simple-line);
+}
+
+.skillGroup dl,
+.credentials dl {
+  display: grid;
+  gap: 1.35rem;
+  margin: 0;
+}
+
+.skillGroup dd,
+.credentials dd {
+  margin: 0.4rem 0 0;
+  color: var(--simple-body);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.closing {
+  padding-bottom: clamp(5rem, 8vw, 7rem);
+}
+
+.credentials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(4rem, 9vw, 8rem);
+}
+
+.credentials h2 {
+  margin-bottom: 2.25rem;
+}
+
+.credentials dt {
+  color: var(--simple-text);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.contactBlock p {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--simple-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.emailLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.75rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  background: var(--simple-accent);
+  color: var(--simple-button-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.emailLink:hover {
+  color: var(--simple-button-text);
+  filter: brightness(1.06);
+}
+
+.emailLink:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .credentials {
+    grid-template-columns: 1fr;
+  }
+
+  .profileFacts {
+    max-width: 36rem;
+  }
+
+  .skillGroups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-top: calc(var(--nav-height) + 3rem);
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric:nth-child(2) {
+    border-right: 0;
+  }
+
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--simple-line);
+  }
+
+  .job,
+  .systemGroups {
+    grid-template-columns: 1fr;
+  }
+
+  .job {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .hero,
+  .section {
+    padding-inline: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 14vw, 3.5rem);
+  }
+
+  .contactLine {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contactLine a,
+  .emailLink {
+    transition: none;
+  }
+}

@@ -1,21 +1,47 @@
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Hero from './Hero'
 import ProductionProof from './ProductionProof'
 import SystemsUnderPressure from './SystemsUnderPressure'
 import ProductionDisciplines from './ProductionDisciplines'
 import CareerReleaseStack from './CareerReleaseStack'
 import StubbornProblemContact from './StubbornProblemContact'
+import SimpleResumeView from './SimpleResumeView'
 import styles from './Home.module.css'
 
-export default function Home() {
+export default function Home({ viewMode = 'portfolio' }) {
+  const reduce = useReducedMotion()
+  const simple = viewMode === 'brief'
+
   return (
     <main id="main" className={styles.home}>
-      <div className={styles.spine} aria-hidden="true" />
-      <Hero />
-      <ProductionProof />
-      <SystemsUnderPressure />
-      <ProductionDisciplines />
-      <CareerReleaseStack />
-      <StubbornProblemContact />
+      {!simple && <div className={styles.spine} aria-hidden="true" />}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={viewMode}
+          className={styles.view}
+          initial={reduce ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduce ? undefined : { opacity: 0, y: -8 }}
+          transition={
+            reduce
+              ? { duration: 0 }
+              : { duration: 0.32, ease: [0.16, 1, 0.3, 1] }
+          }
+        >
+          {simple ? (
+            <SimpleResumeView />
+          ) : (
+            <>
+              <Hero />
+              <ProductionProof />
+              <SystemsUnderPressure />
+              <ProductionDisciplines />
+              <CareerReleaseStack />
+              <StubbornProblemContact />
+            </>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </main>
   )
 }

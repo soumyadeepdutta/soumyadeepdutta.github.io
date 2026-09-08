@@ -10,10 +10,39 @@ import Loader from './components/Loader'
 import { useTheme } from './hooks/useTheme'
 import { appNavigationEvents } from './utils/navigation'
 
+const VIEW_MODE_KEY = 'portfolio-view-mode'
+
+function readViewMode() {
+  if (typeof window === 'undefined') return 'portfolio'
+  try {
+    return window.localStorage.getItem(VIEW_MODE_KEY) === 'brief'
+      ? 'brief'
+      : 'portfolio'
+  } catch {
+    return 'portfolio'
+  }
+}
+
 export default function App() {
   const { theme, toggleTheme } = useTheme()
+  const [viewMode, setViewMode] = useState(readViewMode)
   const [initialLoading, setInitialLoading] = useState(true)
   const [internalLoading, setInternalLoading] = useState(false)
+
+  const changeViewMode = (nextMode) => {
+    if (nextMode === viewMode) return
+    setViewMode(nextMode)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
+
+  useEffect(() => {
+    document.documentElement.dataset.view = viewMode
+    try {
+      window.localStorage.setItem(VIEW_MODE_KEY, viewMode)
+    } catch {
+      // Storage can be unavailable in privacy-restricted contexts.
+    }
+  }, [viewMode])
 
   useEffect(() => {
     let isDone = false
@@ -95,9 +124,14 @@ export default function App() {
       <a href="#main" className="skip-link">Skip to content</a>
       <div className="bg-dots" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Navbar
+        theme={theme}
+        toggleTheme={toggleTheme}
+        viewMode={viewMode}
+        onViewModeChange={changeViewMode}
+      />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home viewMode={viewMode} />} />
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
       </Routes>
