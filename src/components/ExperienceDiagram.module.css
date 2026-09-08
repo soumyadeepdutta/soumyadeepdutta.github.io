@@ -84,13 +84,18 @@
   cursor: pointer;
   white-space: nowrap;
   line-height: 1;
-  transition: all var(--transition);
+  transition: color var(--transition), border-color var(--transition), background var(--transition), box-shadow var(--transition);
   flex-shrink: 0;
 }
 
 .companyTab:hover {
   color: var(--text-heading);
   border-color: var(--border-hover);
+}
+
+.companyTab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .companyTabActive {
@@ -113,12 +118,17 @@
   display: block;
 }
 
+.gridFill {
+  pointer-events: none;
+}
+
 /* Swimlanes & Radial Radar */
 .radarRingInner {
   fill: none;
   stroke: var(--border);
   stroke-dasharray: 4 4;
   opacity: 0.5;
+  pointer-events: none;
 }
 
 .radarRingOuter {
@@ -126,21 +136,27 @@
   stroke: var(--border-sub);
   stroke-dasharray: 6 4;
   opacity: 0.35;
+  pointer-events: none;
 }
 
 .wingLabel {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 9px;
   font-weight: 600;
-  fill: var(--text-faint);
   letter-spacing: 0.08em;
   text-anchor: middle;
+  opacity: 0.85;
+  pointer-events: none;
 }
 
 /* Radial Spoke Lines */
+.spokesGroup {
+  pointer-events: none;
+}
+
 .spokeLine {
   stroke-dasharray: 4 3;
-  transition: stroke 0.3s ease, stroke-width 0.3s ease;
+  transition: stroke var(--transition), stroke-width var(--transition), opacity var(--transition);
 }
 
 /* Central Core Hub */
@@ -148,7 +164,7 @@
   fill: var(--surface-2);
   stroke: var(--accent);
   stroke-width: 1.5;
-  transition: all 0.3s ease;
+  transition: fill var(--transition), filter var(--transition);
 }
 
 .corePulseRing {
@@ -164,22 +180,35 @@
   50%      { r: 58px; opacity: 0.45; }
 }
 
-.coreGroup:hover .coreCircle {
+.coreGroup {
+  cursor: pointer;
+  outline: none;
+}
+
+.coreGroup:hover .coreCircle,
+.coreGroup:focus-visible .coreCircle {
   fill: var(--surface);
   filter: drop-shadow(0 0 16px var(--accent-glow));
 }
 
+.coreGroup:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
 .coreIconBox {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
 }
 
-.coreIcon {
-  font-size: 1.1rem;
+.coreGlyph {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .coreTitle {
@@ -200,13 +229,21 @@
 /* Nodes & Pods */
 .nodeGroup {
   transform-box: fill-box;
+  cursor: pointer;
+  outline: none;
+  transition: opacity var(--transition);
+}
+
+.nodeGroup:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .nodePod {
   fill: var(--surface-2);
   stroke: var(--border);
   stroke-width: 1;
-  transition: all 0.25s ease;
+  transition: fill var(--transition), stroke var(--transition), filter var(--transition);
 }
 
 .nodePodActive {
@@ -250,10 +287,6 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 7.2px;
   fill: var(--text-muted);
-}
-
-.nodeStatusDot {
-  animation: pulse-dot 2s ease-in-out infinite;
 }
 
 /* Info Banner Inspector */
@@ -320,13 +353,23 @@
   font-family: 'IBM Plex Mono', monospace;
 }
 
-.infoHintIcon {
-  font-size: 0.85rem;
-}
-
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
   50%      { opacity: 0.6; box-shadow: 0 0 2px rgba(74, 222, 128, 0.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusDot,
+  .corePulseRing {
+    animation: none;
+  }
+
+  .spokeLine,
+  .nodePod,
+  .nodeGroup,
+  .coreCircle {
+    transition: none;
+  }
 }
 
 /* ── Responsive ── */

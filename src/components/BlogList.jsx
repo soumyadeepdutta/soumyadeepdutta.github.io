@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import TransitionLink from './TransitionLink'
 import { blogs } from '../data/blogs'
 import styles from './Blog.module.css'
-import { useEffect } from 'react'
+import { blogTitleTransitionName } from '../utils/viewTransitions'
 
 export default function BlogList() {
   useEffect(() => {
@@ -9,39 +10,53 @@ export default function BlogList() {
   }, [])
 
   return (
-    <section className={styles.blogContainer}>
-      <div className="container">
-        <div className={styles.blogHeader}>
-          <h1>Blog</h1>
-          <p>Thoughts on software engineering, cloud architecture, and more.</p>
-        </div>
-        
-        <div className={styles.blogGrid}>
-          {blogs.map((blog) => (
-            <Link to={`/blog/${blog.slug}`} key={blog.slug} className={styles.blogCard}>
-              {blog.image && (
-                <div className={styles.imageWrapper}>
-                  <img src={blog.image} alt={blog.title} className={styles.blogImage} />
+    <main id="main">
+      <section className={styles.blogContainer}>
+        <div className="container">
+          <div className={styles.blogHeader}>
+            <h1>Blog</h1>
+            <p>Notes on pipelines, AWS, and the systems behind them.</p>
+          </div>
+
+          <div className={styles.blogGrid}>
+            {blogs.map((blog) => (
+              <TransitionLink to={`/blog/${blog.slug}`} key={blog.slug} className={styles.blogCard}>
+                {blog.image && (
+                  <div className={styles.imageWrapper}>
+                    <img
+                      src={blog.image}
+                      alt=""
+                      className={styles.blogImage}
+                      width="640"
+                      height="200"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className={styles.blogDate}>
+                  {new Date(blog.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
                 </div>
-              )}
-              <div className={styles.blogDate}>
-                {new Date(blog.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-              <h2 className={styles.blogTitle}>{blog.title}</h2>
-              <p className={styles.blogSummary}>{blog.summary}</p>
-              <div className={styles.tags}>
-                {blog.tags.map(tag => (
-                  <span key={tag} className={styles.tag}>{tag}</span>
-                ))}
-              </div>
-            </Link>
-          ))}
+                <h2
+                  className={styles.blogTitle}
+                  style={{ viewTransitionName: blogTitleTransitionName(blog.slug) }}
+                >
+                  {blog.title}
+                </h2>
+                <p className={styles.blogSummary}>{blog.summary}</p>
+                <div className={styles.tags}>
+                  {blog.tags.map(tag => (
+                    <span key={tag} className={styles.tag}>{tag}</span>
+                  ))}
+                </div>
+              </TransitionLink>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   )
 }

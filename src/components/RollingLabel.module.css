@@ -1,0 +1,15 @@
+.window {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.copy {
+  display: block;
+}
+
+.incoming {
+  position: absolute;
+  inset: 0;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { MotionConfig } from 'motion/react'
 import Navbar from './components/Navbar'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './components/Home'
@@ -23,8 +24,7 @@ export default function App() {
       setInitialLoading(false)
     }
 
-    // Fallback ensures loader always exits even if a load event is missed.
-    const fallbackTimer = window.setTimeout(finishInitialLoad, 1200)
+    const fallbackTimer = window.setTimeout(finishInitialLoad, 480)
 
     if (document.readyState === 'complete') {
       finishInitialLoad()
@@ -63,22 +63,18 @@ export default function App() {
 
   const location = useLocation()
 
-  // Intersection Observer for scroll-reveal animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible')
-            // Optionally unobserve if you only want the animation to happen once
-            // observer.unobserve(entry.target) 
           }
         })
       },
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     )
 
-    // Using a timeout allows the DOM to render the new route's elements before observing
     const timer = setTimeout(() => {
       const revealEls = document.querySelectorAll('.reveal')
       revealEls.forEach(el => observer.observe(el))
@@ -95,7 +91,8 @@ export default function App() {
   }
 
   return (
-    <>
+    <MotionConfig transition={{ type: 'spring', visualDuration: 0.4, bounce: 0 }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <div className="bg-dots" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
@@ -105,6 +102,6 @@ export default function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
       </Routes>
       <Footer />
-    </>
+    </MotionConfig>
   )
 }

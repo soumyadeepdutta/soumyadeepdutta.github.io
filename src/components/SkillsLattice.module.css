@@ -1,0 +1,142 @@
+.wrap {
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: min(640px, 72vh);
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, var(--accent-glow), transparent 68%),
+    var(--surface);
+  overflow: hidden;
+  box-shadow: inset 0 0 80px var(--accent-dim);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.chrome {
+  position: absolute;
+  top: 1rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chromeLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.chromeFlow {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-hover) 20%,
+    var(--accent) 50%,
+    var(--border-hover) 80%,
+    transparent
+  );
+  opacity: 0.55;
+}
+
+.hud {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 1rem;
+  pointer-events: none;
+  z-index: 2;
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  max-width: min(320px, 70%);
+  animation: hudIn 0.2s ease both;
+}
+
+.hud[data-locked] {
+  border-left-color: var(--text-heading);
+}
+
+.hudCat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hudLabel {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  letter-spacing: -0.02em;
+}
+
+.hudHint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin-top: 0.2rem;
+}
+
+.hint {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.85;
+}
+
+@keyframes hudIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud {
+    animation: none;
+  }
+}

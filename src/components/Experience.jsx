@@ -1,30 +1,31 @@
 import { experiences } from '../data/experiences'
 import ExperienceCard from './ExperienceCard'
 import ExperienceDiagram from './ExperienceDiagram'
+import MotionReveal, { MotionItem } from './MotionReveal'
 import styles from './Experience.module.css'
 
 export default function Experience() {
   return (
     <section className="section" id="experience">
       <div className="container">
-        <div className="section-header reveal reveal-1">
-          <p className="section-label">Where I've worked</p>
-          <h2 className="section-title">Experience</h2>
-          <div className="divider" />
-        </div>
+        <MotionReveal className="section-header">
+          <MotionItem as="p" className="section-label">Where I've worked</MotionItem>
+          <MotionItem as="h2" className="section-title">Experience</MotionItem>
+          <MotionItem className="divider" />
+        </MotionReveal>
 
-        {/* Interactive Production System Topology Diagram */}
         <ExperienceDiagram />
 
-        <div className={styles.timeline}>
+        <MotionReveal className={styles.timeline} amount={0.12}>
           {experiences.map((exp, i) => (
-            <ExperienceCard
-              key={`${exp.company}-${i}`}
-              {...exp}
-              isFirst={i === 0}
-            />
+            <MotionItem key={`${exp.company}-${i}`}>
+              <ExperienceCard
+                {...exp}
+                isFirst={i === 0}
+              />
+            </MotionItem>
           ))}
-        </div>
+        </MotionReveal>
       </div>
     </section>
   )

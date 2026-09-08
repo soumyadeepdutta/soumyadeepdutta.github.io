@@ -53,10 +53,31 @@
 .skillTag {
   min-height: 1.9rem;
   padding-inline: 0.75rem;
-  transition: border-color 0.2s ease;
-  cursor: default;
+  transition: border-color 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }
 
 .skillTag:hover {
   border-color: var(--border-hover);
+}
+
+.skillTagActive {
+  border-color: var(--accent) !important;
+  background: var(--accent-dim);
+  color: var(--text-heading);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.skillTagDim {
+  opacity: 0.4;
+}
+
+.latticeFallback {
+  height: min(640px, 72vh);
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
 }

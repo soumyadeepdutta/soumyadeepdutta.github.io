@@ -1,23 +1,21 @@
 import Hero from './Hero'
-import Skills from './Skills'
-import Experience from './Experience'
-import Projects from './Projects'
-import HandfulTools from './HandfulTools'
-import Certifications from './Certifications'
-import Education from './Education'
-import Contact from './Contact'
+import ProductionProof from './ProductionProof'
+import SystemsUnderPressure from './SystemsUnderPressure'
+import ProductionDisciplines from './ProductionDisciplines'
+import CareerReleaseStack from './CareerReleaseStack'
+import StubbornProblemContact from './StubbornProblemContact'
+import styles from './Home.module.css'
 
 export default function Home() {
   return (
-    <main>
+    <main id="main" className={styles.home}>
+      <div className={styles.spine} aria-hidden="true" />
       <Hero />
-      <Skills />
-      <Experience />
-      <Projects />
-      <HandfulTools />
-      <Certifications />
-      <Education />
-      <Contact />
+      <ProductionProof />
+      <SystemsUnderPressure />
+      <ProductionDisciplines />
+      <CareerReleaseStack />
+      <StubbornProblemContact />
     </main>
   )
 }

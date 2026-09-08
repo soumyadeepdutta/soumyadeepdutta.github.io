@@ -1,0 +1,399 @@
+.section {
+  --car-bg: #0d0f14;
+  --car-hand: #8ba3c7;
+  --car-title: #f4f4f5;
+  --car-intro: #a1a1aa;
+  --car-display: 'DM Sans', system-ui, sans-serif;
+  --car-sans: 'IBM Plex Sans', 'DM Sans', sans-serif;
+  --car-hand-font: 'Caveat', cursive;
+  --car-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+
+  /* Paper (KFin) */
+  --car-paper: #eef1f5;
+  --car-paper-company: #09090b;
+  --car-paper-meta: #2b3646;
+  --car-paper-lesson: #141a22;
+  --car-paper-stack: #263140;
+  --car-paper-year: #111722;
+
+  /* Panel tones (Airdit / Techno / 99ideas dark) */
+  --car-panel: #1b1f29;
+  --car-panel-alt: #20242e;
+  --car-deep: #151820;
+  --car-panel-company: #f4f4f5;
+  --car-panel-role: #8ba3c7;
+  --car-panel-muted: #a1a1aa;
+  --car-panel-year: #8ba3c744;
+
+  /* Steel (B.Tech dark) / chalk white (B.Tech light) */
+  --car-steel: #8ba3c7;
+  --car-steel-company: #09090b;
+  --car-steel-meta: #2b3646;
+  --car-steel-lesson: #141a22;
+  --car-steel-stack: #263140;
+  --car-steel-year: #111722;
+
+  background: var(--car-bg);
+  color: var(--car-title);
+  padding: clamp(4.5rem, 9vw, 6.875rem) clamp(1.25rem, 6vw, 6.25rem);
+  overflow: clip;
+}
+
+[data-theme='light'] .section {
+  --car-bg: #e8ecf1;
+  --car-hand: #5b6f8c;
+  --car-title: #18181b;
+  --car-intro: #52525b;
+  --car-shadow: 0 12px 32px rgba(24, 24, 27, 0.08);
+
+  --car-paper: #eef1f5;
+  --car-paper-company: #09090b;
+  --car-paper-meta: #2b3646;
+  --car-paper-lesson: #141a22;
+  --car-paper-stack: #263140;
+  --car-paper-year: #111722;
+
+  --car-panel: #eef1f5;
+  --car-panel-alt: #eef1f5;
+  --car-deep: #ffffff;
+  --car-panel-company: #18181b;
+  --car-panel-role: #5b6f8c;
+  --car-panel-muted: #52525b;
+  --car-panel-year: #5b6f8c55;
+
+  /* Light B.Tech: white card, dark ink — not steel fill */
+  --car-steel: #ffffff;
+  --car-steel-company: #09090b;
+  --car-steel-meta: #2b3646;
+  --car-steel-lesson: #141a22;
+  --car-steel-stack: #263140;
+  --car-steel-year: #111722;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 860px;
+}
+
+.hand {
+  margin: 0;
+  font-family: var(--car-hand-font);
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--car-hand);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--car-display);
+  font-size: clamp(2.6rem, 6.2vw, 4.375rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  color: var(--car-title);
+  text-wrap: balance;
+}
+
+.titleLine {
+  display: block;
+}
+
+.intro {
+  margin: 0;
+  font-family: var(--car-sans);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--car-intro);
+}
+
+/* —— Stage: flagship + 2×2 with design rotations —— */
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
+  grid-template-areas:
+    'kfin kfin'
+    'airdit techno'
+    'ideas btech';
+  gap: clamp(1.35rem, 2.8vw, 1.85rem);
+  align-items: stretch;
+  padding: 1.25rem 0.85rem 2rem;
+  overflow: visible;
+}
+
+.slot {
+  min-width: 0;
+  transform-origin: center center;
+}
+
+.slotKfin {
+  grid-area: kfin;
+  transform: rotate(-1deg);
+  z-index: 5;
+}
+
+.slotAirdit {
+  grid-area: airdit;
+  transform: rotate(1.2deg);
+  z-index: 4;
+}
+
+.slotTechno {
+  grid-area: techno;
+  transform: rotate(-1.1deg);
+  z-index: 3;
+}
+
+.slotIdeas {
+  grid-area: ideas;
+  transform: rotate(-1.6deg);
+  z-index: 2;
+}
+
+.slotBtech {
+  grid-area: btech;
+  transform: rotate(1.4deg);
+  z-index: 1;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.75rem;
+  height: 100%;
+  min-height: 254px;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: var(--car-shadow);
+}
+
+.cardKfin {
+  min-height: 300px;
+  padding: 36px;
+}
+
+.paper {
+  background: var(--car-paper);
+  --c-company: var(--car-paper-company);
+  --c-role: var(--car-paper-meta);
+  --c-dates: var(--car-paper-meta);
+  --c-lesson: var(--car-paper-lesson);
+  --c-stack: var(--car-paper-stack);
+  --c-year: var(--car-paper-year);
+}
+
+.panel {
+  background: var(--car-panel);
+  --c-company: var(--car-panel-company);
+  --c-role: var(--car-panel-role);
+  --c-dates: var(--car-panel-muted);
+  --c-lesson: var(--car-panel-muted);
+  --c-stack: var(--car-panel-company);
+  --c-year: var(--car-panel-year);
+}
+
+.panelAlt {
+  background: var(--car-panel-alt);
+  --c-company: var(--car-panel-company);
+  --c-role: var(--car-panel-role);
+  --c-dates: var(--car-panel-muted);
+  --c-lesson: var(--car-panel-muted);
+  --c-stack: var(--car-panel-company);
+  --c-year: var(--car-panel-year);
+}
+
+.deep {
+  background: var(--car-deep);
+  --c-company: var(--car-panel-company);
+  --c-role: var(--car-panel-role);
+  --c-dates: var(--car-panel-muted);
+  --c-lesson: var(--car-panel-muted);
+  --c-stack: var(--car-panel-company);
+  --c-year: var(--car-panel-year);
+}
+
+.steel {
+  background: var(--car-steel);
+  --c-company: var(--car-steel-company);
+  --c-role: var(--car-steel-meta);
+  --c-dates: var(--car-steel-meta);
+  --c-lesson: var(--car-steel-lesson);
+  --c-stack: var(--car-steel-stack);
+  --c-year: var(--car-steel-year);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.company {
+  margin: 0;
+  font-family: var(--car-display);
+  font-size: clamp(1.15rem, 2vw, 1.375rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--c-company);
+}
+
+.role {
+  margin: 0;
+  font-family: var(--car-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--c-role);
+}
+
+.dates {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: right;
+  color: var(--c-dates);
+  white-space: nowrap;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.25rem;
+}
+
+.footerCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.lesson {
+  margin: 0;
+  font-family: var(--car-sans);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--c-lesson);
+  max-width: 36rem;
+}
+
+.stack {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--c-stack);
+}
+
+.year {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: var(--car-display);
+  font-size: clamp(3rem, 5.5vw, 4.25rem);
+  font-weight: 650;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: var(--c-year);
+  opacity: 0.72;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 960px) {
+  .stage {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'kfin'
+      'airdit'
+      'techno'
+      'ideas'
+      'btech';
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .slotKfin,
+  .slotAirdit,
+  .slotTechno,
+  .slotIdeas,
+  .slotBtech {
+    transform: none;
+  }
+
+  .card,
+  .cardKfin {
+    min-height: 0;
+    padding: 26px;
+  }
+
+  .dates {
+    white-space: normal;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .year {
+    align-self: flex-end;
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding: 3.75rem 1.15rem;
+  }
+
+  .inner {
+    gap: 2rem;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .dates {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slotKfin,
+  .slotAirdit,
+  .slotTechno,
+  .slotIdeas,
+  .slotBtech {
+    transform: none;
+  }
+
+  .section * {
+    transition: none !important;
+  }
+}

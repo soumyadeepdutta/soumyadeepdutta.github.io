@@ -1,0 +1,53 @@
+.home {
+  position: relative;
+}
+
+.spine {
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .spine {
+    display: block;
+    position: fixed;
+    left: 1.15rem;
+    top: var(--nav-height);
+    bottom: 0;
+    width: 1px;
+    z-index: 40;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--accent) 12%,
+      rgba(180, 154, 110, 0.35) 50%,
+      var(--accent) 88%,
+      transparent
+    );
+    opacity: 0.55;
+  }
+
+  .spine::after {
+    content: '';
+    position: absolute;
+    left: -3px;
+    top: 12%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    animation: pulse-spine 2.8s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-spine {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.7); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spine::after {
+    animation: none;
+  }
+}

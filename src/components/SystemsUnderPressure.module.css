@@ -1,0 +1,556 @@
+.section {
+  --sys-bg: #09090b;
+  --sys-title: #f4f4f5;
+  --sys-intro: #a1a1aa;
+  --sys-lamf: #151820;
+  --sys-accent: #8ba3c7;
+  --sys-text: #f4f4f5;
+  --sys-muted: #a1a1aa;
+  --sys-lesson-border: #2a303b;
+  --sys-corridor: #0e1117;
+  --sys-stage: #1b1f29;
+  --sys-stage-query: #202838;
+  --sys-obs-rail: #8ba3c7;
+  --sys-obs-text: #11141a;
+  --sys-sip: #8ba3c7;
+  --sys-sip-name: #0a0c10;
+  --sys-sip-role: #263140;
+  --sys-sip-body: #141a22;
+  --sys-sip-value: #09090b;
+  --sys-sip-stack: #2b3646;
+  --sys-simplete: #1b1f29;
+  --sys-artha: #20242e;
+  --sys-lab-name: #f4f4f5;
+  --sys-lab-kind: #8ba3c7;
+  --sys-lab-body: #a1a1aa;
+  --sys-lab-stack: #f4f4f5;
+  --sys-display: 'DM Sans', system-ui, sans-serif;
+  --sys-sans: 'IBM Plex Sans', 'DM Sans', sans-serif;
+
+  background: var(--sys-bg);
+  color: var(--sys-text);
+  padding: clamp(4.5rem, 9vw, 7rem) clamp(1.25rem, 6vw, 6.25rem);
+}
+
+[data-theme='light'] .section {
+  --sys-bg: #f4f5f7;
+  --sys-title: #18181b;
+  --sys-intro: #52525b;
+  --sys-lamf: #ffffff;
+  --sys-accent: #5b6f8c;
+  --sys-text: #18181b;
+  --sys-muted: #52525b;
+  --sys-lesson-border: #cbd5e1;
+  --sys-corridor: #e8ecf1;
+  --sys-stage: #eef1f5;
+  --sys-stage-query: #e2e8f0;
+  --sys-obs-rail: #eef1f5;
+  --sys-obs-text: #11141a;
+  --sys-sip: #eef1f5;
+  --sys-sip-name: #0a0c10;
+  --sys-sip-role: #263140;
+  --sys-sip-body: #141a22;
+  --sys-sip-value: #09090b;
+  --sys-sip-stack: #2b3646;
+  --sys-simplete: #eef1f5;
+  --sys-artha: #eef1f5;
+  --sys-lab-name: #18181b;
+  --sys-lab-kind: #5b6f8c;
+  --sys-lab-body: #52525b;
+  --sys-lab-stack: #18181b;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 860px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(2.75rem, 6.5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+  color: var(--sys-title);
+  text-wrap: balance;
+}
+
+.titleLine {
+  display: block;
+}
+
+.intro {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: clamp(1.05rem, 1.7vw, 1.1875rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--sys-intro);
+  max-width: 42rem;
+}
+
+/* —— LAMF flagship —— */
+.lamf {
+  display: grid;
+  grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
+  gap: 48px;
+  padding: 42px;
+  border-radius: 24px;
+  background: var(--sys-lamf);
+}
+
+.lamfNarrative {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+  min-height: 100%;
+}
+
+.lamfIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lamfName {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(3.5rem, 8vw, 5.75rem);
+  font-weight: 650;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  color: var(--sys-accent);
+}
+
+.lamfStatement {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--sys-text);
+}
+
+.lamfStack {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--sys-muted);
+}
+
+.lamfLesson {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--sys-lesson-border);
+}
+
+.lessonLabel {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--sys-accent);
+}
+
+.lessonText {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--sys-text);
+}
+
+/* —— Signal corridor —— */
+.corridor {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--sys-corridor);
+  min-width: 0;
+}
+
+.metricHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.25rem;
+}
+
+.metricLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.eventValue {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--sys-text);
+}
+
+.eventLabel {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 0.9375rem;
+  color: var(--sys-muted);
+  line-height: 1.35;
+}
+
+.queryGain {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--sys-accent);
+  white-space: nowrap;
+}
+
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 64px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: var(--sys-stage);
+}
+
+.stageQuery {
+  background: var(--sys-stage-query);
+}
+
+.stageIndex {
+  flex-shrink: 0;
+  width: 1.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--sys-accent);
+}
+
+.stageRole {
+  flex-shrink: 0;
+  width: 5.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--sys-muted);
+}
+
+.stageName {
+  font-family: var(--sys-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--sys-text);
+}
+
+.obsRail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 10px;
+  background: var(--sys-obs-rail);
+  color: var(--sys-obs-text);
+}
+
+.obsLabel,
+.obsTools {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--sys-obs-text);
+}
+
+.obsTools {
+  font-weight: 500;
+  text-align: right;
+}
+
+/* —— Secondary casework —— */
+.secondary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.sip {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 520px;
+  padding: 38px;
+  border-radius: 22px;
+  background: var(--sys-sip);
+}
+
+.sipHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sipName {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--sys-sip-name);
+}
+
+.sipRole {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--sys-sip-role);
+}
+
+.sipSummary {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--sys-sip-body);
+  max-width: 28rem;
+}
+
+.sipProof {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.sipTeamValue {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 650;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--sys-sip-value);
+}
+
+.sipTeamLabel {
+  margin: 0.25rem 0 0;
+  font-family: var(--sys-sans);
+  font-size: 0.9375rem;
+  color: var(--sys-sip-body);
+}
+
+.sipShip {
+  text-align: right;
+}
+
+.sipShipValue {
+  margin: 0;
+  font-family: var(--sys-display);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--sys-sip-value);
+}
+
+.sipShipStack {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--sys-sip-stack);
+}
+
+.sipLesson {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--sys-sip-body);
+  max-width: 30rem;
+}
+
+.labs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 520px;
+}
+
+.lab {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex: 1;
+  min-height: 250px;
+  padding: 28px;
+  border-radius: 20px;
+}
+
+.labSimplete {
+  background: var(--sys-simplete);
+}
+
+.labArtha {
+  background: var(--sys-artha);
+}
+
+.labKind {
+  margin: 0 0 0.65rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--sys-lab-kind);
+}
+
+.labName {
+  margin: 0 0 0.75rem;
+  font-family: var(--sys-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.625rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--sys-lab-name);
+}
+
+.labBody {
+  margin: 0;
+  font-family: var(--sys-sans);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--sys-lab-body);
+}
+
+.labStack {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--sys-lab-stack);
+}
+
+@media (max-width: 1060px) {
+  .lamf {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .sip {
+    min-height: 0;
+  }
+
+  .labs {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 3.75rem 1.15rem;
+  }
+
+  .inner {
+    gap: 2rem;
+  }
+
+  .lamf {
+    padding: 28px;
+    gap: 28px;
+  }
+
+  .corridor {
+    padding: 20px;
+  }
+
+  .metricHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stage {
+    height: auto;
+    min-height: 56px;
+    padding: 14px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stageRole {
+    width: auto;
+  }
+
+  .obsRail {
+    height: auto;
+    min-height: 52px;
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .obsTools {
+    text-align: left;
+  }
+
+  .sip {
+    padding: 28px;
+  }
+
+  .sipProof {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sipShip {
+    text-align: left;
+  }
+
+  .lab {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section * {
+    transition: none !important;
+  }
+}

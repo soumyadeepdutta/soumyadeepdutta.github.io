@@ -1,34 +1,13 @@
 import styles from './Footer.module.css'
-import { navigateToTop } from '../utils/navigation'
-
-const commitDate = typeof __COMMIT_DATE__ !== 'undefined' ? __COMMIT_DATE__ : null
 
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
     <footer className={styles.footer}>
-      <div className="container">
-        <div className={styles.inner}>
-          <div className={styles.left}>
-            <p className={styles.text}>
-              © {new Date().getFullYear()} Soumyadeep Dutta. Built with React + Vite.
-            </p>
-            {commitDate && (
-              <p className={styles.updatedText}>
-                Last updated on {commitDate}
-              </p>
-            )}
-          </div>
-          <a
-            href="#"
-            className={`mono ${styles.topLink}`}
-            onClick={e => {
-              e.preventDefault()
-              navigateToTop()
-            }}
-          >
-            back to top ↑
-          </a>
-        </div>
+      <div className={styles.inner}>
+        <p className={styles.copy}>© {year} Soumyadeep Dutta</p>
+        <p className={styles.closing}>Thanks for reading past the hero.</p>
       </div>
     </footer>
   )

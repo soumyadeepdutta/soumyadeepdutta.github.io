@@ -1,74 +1,212 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  stagger,
+} from 'motion/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import styles from './Navbar.module.css'
 import { navigateToSection, navigateToTop } from '../utils/navigation'
+import { isModifiedClick, navigateTyped } from '../utils/viewTransitions'
+import {
+  DESK_DRAW_DELAY_MS,
+  PILL_EXPAND_MS,
+  startDeskDraw,
+} from '../utils/introChoreography'
 
 const NAV_LINKS = [
-  { href: '#about',          label: 'About'          },
-  { href: '#skills',         label: 'Skills'         },
-  { href: '#experience',     label: 'Experience'     },
-  { href: '#projects',       label: 'Projects'       },
-  { href: '#tools',          label: 'Tools'          },
-  { href: '#certifications', label: 'Certifications' },
-  { href: '#education',      label: 'Education'      },
-  { href: '#contact',        label: 'Contact'        },
-  { href: '/blog',           label: 'Blog'           },
+  { href: '#about', label: 'About' },
+  { href: '#experience', label: 'Story' },
+  { href: '/blog', label: 'Notes' },
+  { href: '#contact', label: 'Say hi' },
 ]
+
+const RESUME_HREF = 'https://www.linkedin.com/in/soumyadeep-dutta/'
+const DESKTOP_MQ = '(min-width: 821px)'
+
+const easeOut = [0.22, 1, 0.36, 1]
+const brandFlySpring = { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
+
+function readInitialIntroPhase() {
+  if (typeof window === 'undefined') return 'done'
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 'done'
+  }
+  const path = window.location.pathname.replace(/\/$/, '') || '/'
+  if (path !== '/') return 'done'
+  return 'hold'
+}
+
+function measureBrandFly(splashEl, brandEl) {
+  const from = splashEl.getBoundingClientRect()
+  const to = brandEl.getBoundingClientRect()
+  if (from.width < 1 || to.width < 1) return null
+
+  const scale = to.width / from.width
+  const x = to.left + to.width / 2 - (from.left + from.width / 2)
+  const y = to.top + to.height / 2 - (from.top + from.height / 2)
+  return { x, y, scale }
+}
 
 export default function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [pillHovered, setPillHovered] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(DESKTOP_MQ).matches : true
+  )
   const [activeSection, setActiveSection] = useState('')
+  const [introPhase, setIntroPhase] = useState(readInitialIntroPhase)
+  const [flyTarget, setFlyTarget] = useState(null)
+  const prefersReduced = useReducedMotion()
   const location = useLocation()
   const navigate = useNavigate()
+  const brandRef = useRef(null)
+  const splashWordRef = useRef(null)
+
+  const finishIntro = useCallback(() => {
+    setIntroPhase('done')
+  }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    if (prefersReduced && introPhase !== 'done') finishIntro()
+  }, [prefersReduced, introPhase, finishIntro])
+
+  // hold → fly into the real nav brand label
+  useEffect(() => {
+    if (introPhase !== 'hold') return undefined
+
+    let cancelled = false
+    let startTimer
+    let holdTimer
+
+    const beginHoldClock = () => {
+      holdTimer = window.setTimeout(() => {
+        if (cancelled) return
+        const splash = splashWordRef.current
+        const brand = brandRef.current
+        if (splash && brand) {
+          const next = measureBrandFly(splash, brand)
+          if (next) setFlyTarget(next)
+        }
+        setIntroPhase('fly')
+      }, 700)
+    }
+
+    startTimer = window.setTimeout(() => {
+      if (cancelled) return
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(() => {
+          if (!cancelled) beginHoldClock()
+        })
+      } else {
+        beginHoldClock()
+      }
+    }, 80)
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(startTimer)
+      window.clearTimeout(holdTimer)
+    }
+  }, [introPhase])
+
+  // desktop: wait for ~0.72s pill expand; mobile: shorter settle
+  useEffect(() => {
+    if (introPhase !== 'expanding') return undefined
+
+    const deskTimer = window.setTimeout(() => startDeskDraw(), DESK_DRAW_DELAY_MS)
+    const doneMs = isDesktop ? PILL_EXPAND_MS + 40 : 420
+    const doneTimer = window.setTimeout(() => finishIntro(), doneMs)
+
+    return () => {
+      window.clearTimeout(deskTimer)
+      window.clearTimeout(doneTimer)
+    }
+  }, [introPhase, isDesktop, finishIntro])
+
+  // intro skipped (reduced motion / non-home) — draw promptly
+  useEffect(() => {
+    if (introPhase === 'done') startDeskDraw()
+  }, [introPhase])
+
+  // hard safety cap
+  useEffect(() => {
+    if (introPhase === 'done') return undefined
+    const t = window.setTimeout(() => finishIntro(), 3600)
+    return () => window.clearTimeout(t)
+  }, [introPhase, finishIntro])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Highlight the active nav link based on scroll position
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_MQ)
+    const sync = () => {
+      setIsDesktop(mq.matches)
+      if (mq.matches) setMenuOpen(false)
+    }
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
   useEffect(() => {
     if (location.pathname !== '/') return
 
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(e => {
+      (entries) => {
+        entries.forEach((e) => {
           if (e.isIntersecting) setActiveSection(e.target.id)
         })
       },
       { threshold: 0.3 }
     )
-    NAV_LINKS.forEach(({ href }) => {
-      if (href.startsWith('#')) {
-        const el = document.querySelector(href)
-        if (el) observer.observe(el)
-      }
+
+    const sectionIds = NAV_LINKS.map(({ href }) => href).filter((href) =>
+      href.startsWith('#')
+    )
+
+    sectionIds.forEach((href) => {
+      const el = document.querySelector(href)
+      if (el) observer.observe(el)
     })
     return () => observer.disconnect()
   }, [location.pathname])
 
-  const handleNavClick = (href) => {
-    setMenuOpen(false)
-    if (href.startsWith('#')) {
-      if (location.pathname !== '/') {
-        navigate(`/${href}`)
-      } else {
-        navigateToSection(href)
-      }
-    } else {
-      navigate(href)
-    }
-  }
-
-  // Handle hash scrolling on page load/navigation if needed
   useEffect(() => {
     if (location.pathname === '/' && location.hash) {
       setTimeout(() => navigateToSection(location.hash), 100)
     }
   }, [location.pathname, location.hash])
+
+  const goToRoute = (href) => {
+    navigateTyped(navigate, href, location.pathname)
+  }
+
+  const handleNavClick = (event, href) => {
+    setMenuOpen(false)
+    if (href.startsWith('#')) {
+      if (location.pathname !== '/') {
+        if (isModifiedClick(event)) return
+        event.preventDefault()
+        goToRoute(`/${href}`)
+      } else {
+        event.preventDefault()
+        navigateToSection(href)
+      }
+    } else {
+      if (isModifiedClick(event)) return
+      event.preventDefault()
+      goToRoute(href)
+    }
+  }
 
   const isActive = (href) => {
     if (href.startsWith('#')) {
@@ -77,86 +215,259 @@ export default function Navbar({ theme, toggleTheme }) {
     return location.pathname.startsWith(href)
   }
 
-  return (
-    <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
-      <div className={`container ${styles.inner}`}>
-        {/* Logo with avatar */}
-        <a
-          href="/"
-          className={styles.logo}
-          onClick={e => {
-            e.preventDefault()
-            if (location.pathname !== '/') {
-              navigate('/')
-            } else {
-              navigateToTop()
+  const introBusy = introPhase !== 'done'
+  const splashVisible = introPhase === 'hold' || introPhase === 'fly'
+  const brandRevealed = introPhase === 'expanding' || introPhase === 'done'
+  const showExtras = brandRevealed
+  // Pill stays mounted during hold so we can measure brandLabel for the FLIP
+  const pillOpacity = introPhase === 'hold' ? 0 : 1
+
+  const chromeExpanded =
+    introPhase === 'expanding' ||
+    (introPhase === 'done' && (!scrolled || pillHovered || menuOpen))
+
+  const linksVisible = showExtras && isDesktop && chromeExpanded
+  const sheetOpen = !isDesktop && menuOpen && showExtras
+  const themeVisible = showExtras && chromeExpanded
+
+  const instant = prefersReduced ? { duration: 0 } : undefined
+
+  const wordAnimate =
+    introPhase === 'hold'
+      ? { opacity: 1, x: 0, y: 0, scale: 1 }
+      : introPhase === 'fly' && flyTarget
+        ? {
+            opacity: 1,
+            x: flyTarget.x,
+            y: flyTarget.y,
+            scale: flyTarget.scale,
+          }
+        : introPhase === 'fly'
+          ? { opacity: 1, x: 0, y: '-38vh', scale: 0.2 }
+          : {
+              opacity: 0,
+              x: flyTarget?.x ?? 0,
+              y: flyTarget?.y ?? 0,
+              scale: flyTarget?.scale ?? 0.2,
             }
-          }}
-        >
-          <img
-            src="/profile.png"
-            alt=""
-            className={styles.avatar}
-            width="28"
-            height="28"
-          />
-          <span className={styles.logoText}>SD</span>
-        </a>
 
-        {/* Desktop nav */}
-        <nav className={styles.desktopNav} aria-label="Main navigation">
-          {NAV_LINKS.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className={`${styles.navLink} ${isActive(href) ? styles.active : ''}`}
-              onClick={e => { e.preventDefault(); handleNavClick(href) }}
+  return (
+    <>
+      <AnimatePresence>
+        {splashVisible && (
+          <motion.div
+            key="nav-splash"
+            className={styles.splashOverlay}
+            aria-hidden="true"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: introPhase === 'fly' ? 0.55 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: prefersReduced ? 0 : 0.4, ease: easeOut }}
+          >
+            <motion.p
+              ref={splashWordRef}
+              className={styles.splashWord}
+              initial={{ opacity: 0, scale: 0.92, y: 12 }}
+              animate={wordAnimate}
+              transition={
+                prefersReduced
+                  ? instant
+                  : introPhase === 'hold'
+                    ? { duration: 0.45, ease: easeOut }
+                    : brandFlySpring
+              }
+              onAnimationComplete={() => {
+                if (introPhase === 'fly') setIntroPhase('expanding')
+              }}
             >
-              {label}
+              Soumyadeep
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <header
+        className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${
+          linksVisible || sheetOpen || themeVisible
+            ? styles.expanded
+            : styles.collapsed
+        } ${introBusy ? styles.introBusy : ''}`}
+      >
+        <div className={styles.wrap}>
+          <motion.div
+            className={styles.pill}
+            layout={false}
+            style={{ borderRadius: 999 }}
+            initial={false}
+            animate={{
+              opacity: pillOpacity,
+              scale: 1,
+            }}
+            transition={
+              prefersReduced
+                ? instant
+                : {
+                    opacity: { duration: 0.28, ease: easeOut },
+                    scale: { type: 'spring', visualDuration: 0.4, bounce: 0.1 },
+                  }
+            }
+            onMouseEnter={() =>
+              isDesktop && !introBusy && setPillHovered(true)
+            }
+            onMouseLeave={() =>
+              isDesktop && !introBusy && setPillHovered(false)
+            }
+            onClick={() => {
+              if (isDesktop || introBusy || !showExtras) return
+              setMenuOpen((open) => !open)
+            }}
+          >
+            <a
+              href="/"
+              className={styles.logo}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (isModifiedClick(e)) return
+                e.preventDefault()
+                setMenuOpen(false)
+                if (location.pathname !== '/') {
+                  goToRoute('/')
+                } else {
+                  navigateToTop()
+                }
+              }}
+            >
+              <motion.span
+                ref={brandRef}
+                className={styles.brandLabel}
+                aria-hidden={splashVisible ? true : undefined}
+                initial={false}
+                animate={{ opacity: brandRevealed || !splashVisible ? 1 : 0 }}
+                transition={{ duration: prefersReduced ? 0 : 0.12 }}
+              >
+                Soumyadeep
+              </motion.span>
             </a>
-          ))}
-        </nav>
 
-        <div className={styles.actions}>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            {isDesktop && (
+              <div
+                className={`${styles.desktopNavClip} ${
+                  linksVisible ? styles.desktopNavClipOpen : ''
+                }`}
+              >
+                <div className={styles.desktopNavClipInner}>
+                  <nav
+                    className={styles.desktopNav}
+                    aria-label="Main navigation"
+                    aria-hidden={linksVisible ? undefined : true}
+                  >
+                    <div className={styles.linkRow}>
+                      {NAV_LINKS.map(({ href, label }) => (
+                        <a
+                          key={href}
+                          href={href}
+                          tabIndex={linksVisible ? undefined : -1}
+                          className={`${styles.navLink} ${isActive(href) ? styles.active : ''}`}
+                          onClick={(e) => handleNavClick(e, href)}
+                        >
+                          {label}
+                        </a>
+                      ))}
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            )}
 
-          <a
-            href="https://github.com/soumyadeepdutta"
-            className="btn btn-outline"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ padding: '0.4rem 1rem', fontSize: '0.78rem' }}
-          >
-            GitHub
-          </a>
-
-          {/* Hamburger */}
-          <button
-            className={`${styles.hamburger} ${menuOpen ? styles.open : ''}`}
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-          >
-            <span /><span /><span />
-          </button>
+            <div
+              className={`${styles.navExtras} ${
+                brandRevealed ? '' : styles.navExtrasHidden
+              }`}
+              aria-hidden={brandRevealed ? undefined : true}
+            >
+              <div
+                className={`${styles.themeSlot} ${
+                  themeVisible ? styles.themeSlotOpen : ''
+                }`}
+                aria-hidden={themeVisible ? undefined : true}
+              >
+                <div className={styles.themeSlotInner}>
+                  <ThemeToggle
+                    theme={theme}
+                    toggleTheme={toggleTheme}
+                    tabIndex={themeVisible ? undefined : -1}
+                  />
+                </div>
+              </div>
+              <div className={styles.actions}>
+                <a
+                  href={RESUME_HREF}
+                  className={styles.resumeCta}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Resume
+                </a>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </div>
 
-      {/* Mobile nav */}
-      {menuOpen && (
-        <nav className={styles.mobileNav} aria-label="Mobile navigation">
-          {NAV_LINKS.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className={`${styles.mobileLink} ${isActive(href) ? styles.active : ''}`}
-              onClick={e => { e.preventDefault(); handleNavClick(href) }}
+        <AnimatePresence initial={false}>
+          {sheetOpen && (
+            <motion.nav
+              className={styles.mobileNav}
+              aria-label="Mobile navigation"
+              initial={prefersReduced ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReduced ? undefined : { opacity: 0, y: -6 }}
+              transition={
+                prefersReduced ? instant : { duration: 0.28, ease: easeOut }
+              }
             >
-              {label}
-            </a>
-          ))}
-        </nav>
-      )}
-    </header>
+              <motion.div
+                className={styles.mobileList}
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      delayChildren: stagger(0.05),
+                    },
+                  },
+                }}
+                initial={prefersReduced ? false : 'hidden'}
+                animate="show"
+              >
+                {NAV_LINKS.map(({ href, label }) => (
+                  <motion.a
+                    key={`${href}-${label}`}
+                    href={href}
+                    className={`${styles.mobileLink} ${isActive(href) ? styles.active : ''}`}
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        transition: prefersReduced
+                          ? instant
+                          : {
+                              type: 'spring',
+                              visualDuration: 0.34,
+                              bounce: 0,
+                            },
+                      },
+                    }}
+                    onClick={(e) => handleNavClick(e, href)}
+                  >
+                    {label}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   )
 }
