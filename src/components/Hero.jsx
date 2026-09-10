@@ -9,6 +9,7 @@ import {
 import styles from './Hero.module.css'
 import RollingLabel from './RollingLabel'
 import DeskSketch from './DeskSketch'
+import HandwrittenText from './HandwrittenText'
 import { revealTransition } from './MotionReveal'
 import { onDeskDrawStart } from '../utils/introChoreography'
 
@@ -116,9 +117,13 @@ export default function Hero() {
           initial={prefersReduced ? false : 'hidden'}
           animate={showCopy ? 'show' : 'hidden'}
         >
-          <motion.p className={styles.hand} variants={heroItem}>
+          <HandwrittenText
+            className={styles.hand}
+            active={showCopy}
+            delay={0.02}
+          >
             Hi. I build the quiet parts of products.
-          </motion.p>
+          </HandwrittenText>
 
           <motion.h1 className={styles.name} variants={heroItem}>
             <span className={styles.nameLine}>
@@ -227,9 +232,13 @@ export default function Hero() {
               initial={prefersReduced ? false : 'hidden'}
               animate={showCopy ? 'show' : 'hidden'}
             >
-              <motion.p className={styles.noteHand} variants={noteTextItem}>
+              <HandwrittenText
+                className={styles.noteHand}
+                active={showCopy}
+                delay={0.18}
+              >
                 a note from the desk
-              </motion.p>
+              </HandwrittenText>
               <DeskSketch />
               <motion.p className={styles.noteBody} variants={noteTextItem}>
                 Most days I am chasing a queue that should have drained an hour ago,

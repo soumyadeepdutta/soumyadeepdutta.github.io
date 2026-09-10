@@ -119,52 +119,52 @@
   color: var(--car-intro);
 }
 
-/* —— Stage: flagship + 2×2 with design rotations —— */
+/* —— Stage: asymmetric release ledger —— */
 .stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
-  grid-template-areas:
-    'kfin kfin'
-    'airdit techno'
-    'ideas btech';
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: clamp(1.35rem, 2.8vw, 1.85rem);
   align-items: stretch;
   padding: 1.25rem 0.85rem 2rem;
   overflow: visible;
+  perspective: 1200px;
 }
 
 .slot {
   min-width: 0;
-  transform-origin: center center;
+  transform-origin: 50% 12%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 .slotKfin {
-  grid-area: kfin;
-  transform: rotate(-1deg);
+  grid-column: 1 / 12;
+  grid-row: 1;
   z-index: 5;
 }
 
 .slotAirdit {
-  grid-area: airdit;
-  transform: rotate(1.2deg);
+  grid-column: 1 / 8;
+  grid-row: 2;
   z-index: 4;
 }
 
 .slotTechno {
-  grid-area: techno;
-  transform: rotate(-1.1deg);
+  grid-column: 8 / 13;
+  grid-row: 2;
   z-index: 3;
 }
 
 .slotIdeas {
-  grid-area: ideas;
-  transform: rotate(-1.6deg);
+  grid-column: 1 / 6;
+  grid-row: 3;
   z-index: 2;
 }
 
 .slotBtech {
-  grid-area: btech;
-  transform: rotate(1.4deg);
+  grid-column: 6 / 13;
+  grid-row: 3;
   z-index: 1;
 }
 
@@ -326,12 +326,6 @@
 @media (max-width: 960px) {
   .stage {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'kfin'
-      'airdit'
-      'techno'
-      'ideas'
-      'btech';
     gap: 1rem;
     padding: 0;
   }
@@ -341,6 +335,8 @@
   .slotTechno,
   .slotIdeas,
   .slotBtech {
+    grid-column: 1;
+    grid-row: auto;
     transform: none;
   }
 

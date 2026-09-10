@@ -3,6 +3,8 @@ import {
   motion,
   AnimatePresence,
   useReducedMotion,
+  useScroll,
+  useMotionValueEvent,
   stagger,
 } from 'motion/react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -37,6 +39,17 @@ const DESKTOP_MQ = '(min-width: 821px)'
 
 const easeOut = [0.22, 1, 0.36, 1]
 const brandFlySpring = { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
+const CLOUD_PATH =
+  'M95.16924 29.17054c-0.27692-15.13846-12.09231-29.16923-28.61539-29.16923-9.78462-0.09231-18.64615 4.70769-24.18462 13.84615l-0.55385 0.83077-0.73846-0.64615c-2.86154-1.66154-6.83077-2.30769-10.24615-1.84616-8.21539 1.10769-15.78462 7.84615-15.41538 18.27692-7.66154 2.58462-15.41539 10.24616-15.41539 21.5077 0 11.81539 9.04615 23.63076 22.52307 23.63076l73.56923 0c12 0.09232 22.24617-9.69231 22.24617-23.26153 0-13.56923-11.35385-23.26154-23.16924-23.16923z'
+const INTRO_PHASE_MS = {
+  draw: 920,
+  emerge: 720,
+  dissolve: 480,
+  highlight: 740,
+}
+const NAME_LETTERS = 'Soumyadeep'.split('')
+const CLOUD_VIEWBOX_W = 138.3385
+const CLOUD_VIEWBOX_H = 75.6013
 
 function readInitialIntroPhase(viewMode) {
   if (typeof window === 'undefined') return 'done'
@@ -46,7 +59,7 @@ function readInitialIntroPhase(viewMode) {
   }
   const path = window.location.pathname.replace(/\/$/, '') || '/'
   if (path !== '/') return 'done'
-  return 'hold'
+  return 'draw'
 }
 
 function measureBrandFly(splashEl, brandEl) {
@@ -60,13 +73,115 @@ function measureBrandFly(splashEl, brandEl) {
   return { x, y, scale }
 }
 
+function IntroCloud({ phase, prefersReduced, shift }) {
+  const drawing = phase === 'draw'
+  const visible = drawing || phase === 'emerge'
+  const shifted = phase === 'emerge' || phase === 'dissolve'
+  const evaporating = phase === 'dissolve'
+
+  return (
+    <motion.svg
+      className={styles.cloudMark}
+      viewBox={`0 0 ${CLOUD_VIEWBOX_W} ${CLOUD_VIEWBOX_H}`}
+      initial={prefersReduced ? false : { opacity: 0, scale: 0.94, y: 12 }}
+      animate={{
+        opacity: visible ? 1 : 0,
+        scale: evaporating ? 1.08 : 1,
+        x: shifted ? shift : 0,
+        y: evaporating ? -56 : 0,
+      }}
+      transition={
+        prefersReduced
+          ? { duration: 0 }
+          : {
+              opacity: drawing
+                ? { duration: 0.32, ease: easeOut }
+                : { duration: 0.46, ease: [0.4, 0, 0.6, 1] },
+              scale: { duration: 0.5, ease: easeOut },
+              y: drawing
+                ? { type: 'spring', visualDuration: 0.6, bounce: 0 }
+                : { duration: 0.5, ease: [0.4, 0, 0.7, 1] },
+              x: {
+                type: 'spring',
+                visualDuration: 0.72,
+                bounce: 0.04,
+              },
+            }
+      }
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="intro-cloud-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--cloud-top)" />
+          <stop offset="100%" stopColor="var(--cloud-bottom)" />
+        </linearGradient>
+        <clipPath id="intro-cloud-clip">
+          <motion.rect
+            x="-2"
+            width={CLOUD_VIEWBOX_W + 4}
+            initial={
+              prefersReduced ? false : { attrY: CLOUD_VIEWBOX_H + 2, height: 0 }
+            }
+            animate={{ attrY: -2, height: CLOUD_VIEWBOX_H + 4 }}
+            transition={
+              prefersReduced
+                ? { duration: 0 }
+                : { duration: 0.54, delay: 0.28, ease: [0.65, 0, 0.35, 1] }
+            }
+          />
+        </clipPath>
+      </defs>
+
+      <path
+        d={CLOUD_PATH}
+        className={styles.cloudGhost}
+        fill="none"
+        stroke="var(--cloud-stroke)"
+        strokeWidth="0.9"
+        strokeDasharray="2.2 3.4"
+      />
+
+      <motion.path
+        d={CLOUD_PATH}
+        fill="none"
+        stroke="var(--cloud-stroke)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={prefersReduced ? false : { pathLength: 0, opacity: 1 }}
+        animate={{ pathLength: 1, opacity: drawing ? 1 : 0 }}
+        transition={
+          prefersReduced
+            ? { duration: 0 }
+            : {
+                pathLength: {
+                  type: 'spring',
+                  duration: 0.78,
+                  bounce: 0,
+                },
+                opacity: { duration: 0.22, ease: easeOut },
+              }
+        }
+      />
+
+      <path
+        d={CLOUD_PATH}
+        fill="url(#intro-cloud-fill)"
+        clipPath="url(#intro-cloud-clip)"
+      />
+    </motion.svg>
+  )
+}
+
 export default function Navbar({
   theme,
   toggleTheme,
   viewMode = 'portfolio',
   onViewModeChange,
 }) {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(() =>
+    typeof window !== 'undefined' ? window.scrollY > 24 : false
+  )
   const [menuOpen, setMenuOpen] = useState(false)
   const [pillHovered, setPillHovered] = useState(false)
   const [isDesktop, setIsDesktop] = useState(() =>
@@ -82,6 +197,7 @@ export default function Navbar({
   const navigate = useNavigate()
   const brandRef = useRef(null)
   const splashWordRef = useRef(null)
+  const { scrollY } = useScroll()
   const navLinks = viewMode === 'brief' ? BRIEF_LINKS : PORTFOLIO_LINKS
 
   const finishIntro = useCallback(() => {
@@ -96,42 +212,51 @@ export default function Navbar({
     if (viewMode === 'brief' && introPhase !== 'done') finishIntro()
   }, [viewMode, introPhase, finishIntro])
 
-  // hold → fly into the real nav brand label
+  // Pencil storyboard: draw → emerge → dissolve → highlight → nav FLIP.
   useEffect(() => {
-    if (introPhase !== 'hold') return undefined
-
+    if (!(introPhase in INTRO_PHASE_MS)) return undefined
     let cancelled = false
-    let startTimer
-    let holdTimer
+    let phaseTimer
 
-    const beginHoldClock = () => {
-      holdTimer = window.setTimeout(() => {
+    const advance = () => {
+      phaseTimer = window.setTimeout(() => {
         if (cancelled) return
-        const splash = splashWordRef.current
-        const brand = brandRef.current
-        if (splash && brand) {
-          const next = measureBrandFly(splash, brand)
-          if (next) setFlyTarget(next)
+
+        if (introPhase === 'highlight') {
+          const splash = splashWordRef.current
+          const brand = brandRef.current
+          if (splash && brand) {
+            const next = measureBrandFly(splash, brand)
+            if (next) setFlyTarget(next)
+          }
+          setIntroPhase('fly')
+          return
         }
-        setIntroPhase('fly')
-      }, 700)
+
+        const nextPhase = {
+          draw: 'emerge',
+          emerge: 'dissolve',
+          dissolve: 'highlight',
+        }
+        setIntroPhase(nextPhase[introPhase])
+      }, INTRO_PHASE_MS[introPhase])
     }
 
-    startTimer = window.setTimeout(() => {
-      if (cancelled) return
+    if (introPhase === 'draw') {
       if (document.fonts?.ready) {
         document.fonts.ready.then(() => {
-          if (!cancelled) beginHoldClock()
+          if (!cancelled) advance()
         })
       } else {
-        beginHoldClock()
+        advance()
       }
-    }, 80)
+    } else {
+      advance()
+    }
 
     return () => {
       cancelled = true
-      window.clearTimeout(startTimer)
-      window.clearTimeout(holdTimer)
+      window.clearTimeout(phaseTimer)
     }
   }, [introPhase])
 
@@ -157,16 +282,14 @@ export default function Navbar({
   // hard safety cap
   useEffect(() => {
     if (introPhase === 'done') return undefined
-    const t = window.setTimeout(() => finishIntro(), 3600)
+    const t = window.setTimeout(() => finishIntro(), 6000)
     return () => window.clearTimeout(t)
   }, [introPhase, finishIntro])
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const next = latest > 24
+    setScrolled((current) => (current === next ? current : next))
+  })
 
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_MQ)
@@ -238,11 +361,17 @@ export default function Navbar({
   }
 
   const introBusy = introPhase !== 'done'
-  const splashVisible = introPhase === 'hold' || introPhase === 'fly'
+  const splashVisible = [
+    'draw',
+    'emerge',
+    'dissolve',
+    'highlight',
+    'fly',
+  ].includes(introPhase)
   const brandRevealed = introPhase === 'expanding' || introPhase === 'done'
   const showExtras = brandRevealed
-  // Pill stays mounted during hold so we can measure brandLabel for the FLIP
-  const pillOpacity = introPhase === 'hold' ? 0 : 1
+  // Pill stays mounted invisibly so its brand label can be measured for FLIP.
+  const pillOpacity = brandRevealed ? 1 : 0
 
   const chromeExpanded =
     introPhase === 'expanding' ||
@@ -256,24 +385,57 @@ export default function Navbar({
 
   const instant = prefersReduced ? { duration: 0 } : undefined
 
+  const cloudShift = isDesktop ? 236 : 104
+  const nameShift = isDesktop ? -206 : -66
+  const lettersHidden = introPhase === 'draw'
+  const locked = introPhase === 'highlight'
+  const flying = introPhase === 'fly'
+  const cloudOnStage = introPhase === 'draw' || introPhase === 'emerge'
+
   const wordAnimate =
-    introPhase === 'hold'
-      ? { opacity: 1, x: 0, y: 0, scale: 1 }
-      : introPhase === 'fly' && flyTarget
+    introPhase === 'draw'
+      ? { opacity: 0, x: 48, y: 0, scale: 1 }
+      : introPhase === 'emerge'
+        ? { opacity: 1, x: nameShift, y: 0, scale: 1 }
+        : introPhase === 'dissolve' || introPhase === 'highlight'
+          ? { opacity: 1, x: 0, y: 0, scale: 1 }
+          : introPhase === 'fly' && flyTarget
+            ? {
+                opacity: 1,
+                x: flyTarget.x,
+                y: flyTarget.y,
+                scale: flyTarget.scale,
+              }
+            : introPhase === 'fly'
+              ? { opacity: 1, x: 0, y: '-38vh', scale: 0.2 }
+              : {
+                  opacity: 0,
+                  x: flyTarget?.x ?? 0,
+                  y: flyTarget?.y ?? 0,
+                  scale: flyTarget?.scale ?? 0.2,
+                }
+
+  const wordTransition = prefersReduced
+    ? instant
+    : introPhase === 'fly'
+      ? brandFlySpring
+      : introPhase === 'emerge'
+        ? { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
+        : introPhase === 'dissolve'
+          ? { type: 'spring', visualDuration: 0.5, bounce: 0 }
+          : { duration: 0.2, ease: easeOut }
+
+  const letterTransition = (index) =>
+    prefersReduced
+      ? instant
+      : introPhase === 'emerge'
         ? {
-            opacity: 1,
-            x: flyTarget.x,
-            y: flyTarget.y,
-            scale: flyTarget.scale,
+            type: 'spring',
+            visualDuration: 0.4,
+            bounce: 0,
+            delay: 0.03 + index * 0.026,
           }
-        : introPhase === 'fly'
-          ? { opacity: 1, x: 0, y: '-38vh', scale: 0.2 }
-          : {
-              opacity: 0,
-              x: flyTarget?.x ?? 0,
-              y: flyTarget?.y ?? 0,
-              scale: flyTarget?.scale ?? 0.2,
-            }
+        : { duration: 0.18, ease: easeOut }
 
   return (
     <>
@@ -288,24 +450,99 @@ export default function Navbar({
             exit={{ opacity: 0 }}
             transition={{ duration: prefersReduced ? 0 : 0.4, ease: easeOut }}
           >
-            <motion.p
-              ref={splashWordRef}
-              className={styles.splashWord}
-              initial={{ opacity: 0, scale: 0.92, y: 12 }}
-              animate={wordAnimate}
-              transition={
-                prefersReduced
-                  ? instant
-                  : introPhase === 'hold'
-                    ? { duration: 0.45, ease: easeOut }
-                    : brandFlySpring
-              }
-              onAnimationComplete={() => {
-                if (introPhase === 'fly') setIntroPhase('expanding')
-              }}
-            >
-              Soumyadeep
-            </motion.p>
+            <div className={styles.splashStage}>
+              <motion.div
+                className={styles.splashBloom}
+                initial={prefersReduced ? false : { opacity: 0, scale: 0.7 }}
+                animate={{
+                  opacity: cloudOnStage ? 1 : 0,
+                  scale: cloudOnStage ? 1 : 1.25,
+                  x: introPhase === 'draw' ? 0 : cloudShift * 0.6,
+                }}
+                transition={
+                  prefersReduced
+                    ? instant
+                    : {
+                        opacity: { duration: 0.7, ease: easeOut },
+                        scale: { duration: 0.9, ease: easeOut },
+                        x: { type: 'spring', visualDuration: 0.72, bounce: 0 },
+                      }
+                }
+                aria-hidden="true"
+              />
+
+              <div className={styles.splashNameGroup}>
+                <div className={styles.splashLockup}>
+                  <div className={styles.splashWordWrap}>
+                    <motion.p
+                      ref={splashWordRef}
+                      className={styles.splashWord}
+                      initial={false}
+                      animate={wordAnimate}
+                      transition={wordTransition}
+                      onAnimationComplete={() => {
+                        if (introPhase === 'fly') setIntroPhase('expanding')
+                      }}
+                    >
+                      {NAME_LETTERS.map((letter, index) => (
+                        <motion.span
+                          key={`${letter}-${index}`}
+                          className={styles.splashLetter}
+                          initial={false}
+                          animate={{
+                            opacity: lettersHidden ? 0 : 1,
+                            x: lettersHidden ? 26 : 0,
+                          }}
+                          transition={letterTransition(index)}
+                        >
+                          {letter}
+                        </motion.span>
+                      ))}
+                    </motion.p>
+                  </div>
+                  <motion.span
+                    className={styles.splashRule}
+                    initial={false}
+                    style={{ originX: flying ? 1 : 0 }}
+                    animate={{
+                      scaleX: locked ? 1 : 0,
+                      opacity: locked ? 1 : 0,
+                    }}
+                    transition={
+                      prefersReduced
+                        ? instant
+                        : locked
+                          ? { duration: 0.46, ease: [0.65, 0, 0.35, 1] }
+                          : { duration: 0.24, ease: easeOut }
+                    }
+                    aria-hidden="true"
+                  />
+                  <motion.p
+                    className={styles.splashRole}
+                    initial={false}
+                    animate={{
+                      opacity: locked ? 1 : 0,
+                      y: locked ? 0 : 10,
+                    }}
+                    transition={
+                      prefersReduced
+                        ? instant
+                        : locked
+                          ? { duration: 0.42, delay: 0.22, ease: easeOut }
+                          : { duration: 0.2, ease: easeOut }
+                    }
+                  >
+                    Backend <span>&amp;</span> <strong>AWS</strong>
+                  </motion.p>
+                </div>
+              </div>
+
+              <IntroCloud
+                phase={introPhase}
+                prefersReduced={prefersReduced}
+                shift={cloudShift}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

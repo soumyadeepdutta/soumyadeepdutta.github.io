@@ -8,6 +8,11 @@
   --disc-featured-body: #202b3a;
   --disc-featured-stack: #1d2735;
   --disc-lane: #151820;
+  --disc-lane-edge: rgba(220, 228, 240, 0.12);
+  --disc-shell: rgba(139, 163, 199, 0.08);
+  --disc-stage: rgba(19, 23, 31, 0.62);
+  --disc-stage-edge: rgba(139, 163, 199, 0.1);
+  --disc-rule: rgba(139, 163, 199, 0.72);
   --disc-word: #f4f4f5;
   --disc-proof: #8ba3c7;
   --disc-body: #a1a1aa;
@@ -17,7 +22,8 @@
 
   background: var(--disc-bg);
   color: var(--disc-title);
-  padding: clamp(4.5rem, 9vw, 6.875rem) clamp(1.25rem, 6vw, 6.25rem);
+  padding: clamp(5rem, 10vw, 8rem) clamp(1.25rem, 6vw, 6.25rem) 4rem;
+  overflow: clip;
 }
 
 [data-theme='light'] .section {
@@ -30,6 +36,11 @@
   --disc-featured-body: #dce3ed;
   --disc-featured-stack: #cbd5e1;
   --disc-lane: #ffffff;
+  --disc-lane-edge: rgba(39, 50, 68, 0.1);
+  --disc-shell: rgba(91, 111, 140, 0.08);
+  --disc-stage: rgba(216, 222, 230, 0.72);
+  --disc-stage-edge: rgba(66, 81, 105, 0.1);
+  --disc-rule: rgba(91, 111, 140, 0.72);
   --disc-word: #18181b;
   --disc-proof: #5b6f8c;
   --disc-body: #52525b;
@@ -39,7 +50,7 @@
 .inner {
   display: flex;
   flex-direction: column;
-  gap: 52px;
+  gap: clamp(2.75rem, 6vw, 4.75rem);
   max-width: 1240px;
   margin: 0 auto;
   width: 100%;
@@ -76,25 +87,87 @@
   color: var(--disc-intro);
 }
 
+.deck {
+  position: relative;
+  height: clamp(36rem, 68vw, 43rem);
+}
+
+.stage {
+  position: relative;
+  height: 100%;
+  isolation: isolate;
+  perspective: 1200px;
+}
+
+.stageFrame {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--disc-stage-edge);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(139, 163, 199, 0.09), transparent 34%),
+    var(--disc-stage);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 -50px 100px rgba(2, 5, 10, 0.1);
+}
+
 .lanes {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  position: absolute;
+  inset: 1.15rem 2.25rem;
+  overflow: visible;
+}
+
+.laneShell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 2.5rem);
+  padding: 5px;
+  border: 1px solid var(--disc-lane-edge);
+  border-radius: 23px;
+  background: var(--disc-shell);
+  box-shadow: 0 24px 64px rgba(2, 5, 10, 0.24);
+  transform-origin: center top;
 }
 
 .lane {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(140px, 0.85fr) minmax(0, 1.35fr) minmax(140px, 0.7fr);
   align-items: center;
   gap: 28px;
-  min-height: 166px;
+  min-height: 162px;
   padding: 24px 30px;
-  border-radius: 16px;
+  border: 1px solid var(--disc-lane-edge);
+  border-radius: 17px;
   background: var(--disc-lane);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+}
+
+.lane::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: clamp(1.25rem, 4vw, 3.5rem);
+  width: 4.5rem;
+  height: 2px;
+  background: var(--disc-rule);
+  opacity: 0.5;
 }
 
 .laneFeatured {
   background: var(--disc-featured);
+}
+
+.wordWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
 }
 
 .word {
@@ -107,8 +180,26 @@
   color: var(--disc-word);
 }
 
+.wordRule {
+  display: block;
+  width: 42px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--disc-rule);
+  transform-origin: left center;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lane:hover .wordRule {
+  transform: scaleX(1.65);
+}
+
 .laneFeatured .word {
   color: var(--disc-featured-word);
+}
+
+.laneFeatured .wordRule {
+  background: rgba(9, 9, 11, 0.65);
 }
 
 .copy {
@@ -158,12 +249,58 @@
   color: var(--disc-featured-stack);
 }
 
+.mobileLanes {
+  display: none;
+}
+
+.deckReduced {
+  height: auto;
+  min-height: 0;
+}
+
+.deckReduced .stage {
+  position: relative;
+  top: auto;
+  height: auto;
+  min-height: 0;
+  padding: 1.25rem;
+}
+
+.deckReduced .stageFrame {
+  display: none;
+}
+
+.deckReduced .lanes {
+  position: relative;
+  inset: auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.deckReduced .laneShell {
+  position: relative;
+  width: 100%;
+}
+
 @media (max-width: 900px) {
+  .deck {
+    display: none;
+  }
+
+  .mobileLanes {
+    display: grid;
+    gap: 0.9rem;
+  }
+
   .lane {
     grid-template-columns: 1fr;
     gap: 16px;
     min-height: 0;
     padding: 22px 24px;
+  }
+
+  .wordWrap {
+    gap: 10px;
   }
 
   .copy {

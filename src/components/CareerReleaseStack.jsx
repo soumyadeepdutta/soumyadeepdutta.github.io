@@ -1,5 +1,14 @@
-import { motion, useReducedMotion, stagger } from 'motion/react'
+import { useRef } from 'react'
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  stagger,
+} from 'motion/react'
 import styles from './CareerReleaseStack.module.css'
+import HandwrittenText from './HandwrittenText'
 
 const CARDS = [
   {
@@ -14,6 +23,7 @@ const CARDS = [
     stack: 'FINTECH / AWS / TEAM OF 5 / MCP',
     tone: 'paper',
     card: 'cardKfin',
+    motion: { fromX: -72, fromY: 96, restRotate: -1 },
   },
   {
     id: 'airdit',
@@ -27,6 +37,7 @@ const CARDS = [
     stack: 'NODE.JS / POSTGRES / SAP BTP',
     tone: 'panel',
     card: 'cardAirdit',
+    motion: { fromX: 86, fromY: 120, restRotate: 1.2 },
   },
   {
     id: 'techno',
@@ -40,6 +51,7 @@ const CARDS = [
     stack: 'HEALTHCARE / STRIPE / WHISPER',
     tone: 'panelAlt',
     card: 'cardTechno',
+    motion: { fromX: -78, fromY: 138, restRotate: -1.1 },
   },
   {
     id: 'ideas',
@@ -52,6 +64,7 @@ const CARDS = [
     stack: 'NODE.JS / DJANGO / PANDAS',
     tone: 'deep',
     card: 'cardIdeas',
+    motion: { fromX: -96, fromY: 150, restRotate: -1.6 },
   },
   {
     id: 'btech',
@@ -65,6 +78,7 @@ const CARDS = [
     stack: 'CGPA 8.40 / KOLKATA',
     tone: 'steel',
     card: 'cardBtech',
+    motion: { fromX: 92, fromY: 170, restRotate: 1.4 },
   },
 ]
 
@@ -104,6 +118,68 @@ function CareerCard({ item }) {
   )
 }
 
+function CareerSlot({ item, index, prefersReduced }) {
+  const slotRef = useRef(null)
+  const entersFirst = index % 2 === 0
+  const { scrollYProgress } = useScroll({
+    target: slotRef,
+    offset: [
+      `start ${entersFirst ? 78 : 74}%`,
+      `start ${entersFirst ? 44 : 40}%`,
+    ],
+  })
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 170,
+    damping: 28,
+    mass: 0.38,
+    restDelta: 0.001,
+  })
+  const range = [0, 0.16, 1]
+  const x = useTransform(
+    progress,
+    range,
+    [item.motion.fromX * 0.58, item.motion.fromX * 0.4, 0]
+  )
+  const y = useTransform(
+    progress,
+    range,
+    [item.motion.fromY * 0.3, item.motion.fromY * 0.2, 0]
+  )
+  const rotate = useTransform(
+    progress,
+    range,
+    [
+      item.motion.restRotate * 3.8,
+      item.motion.restRotate * 2.8,
+      item.motion.restRotate,
+    ]
+  )
+  const rotateX = useTransform(progress, range, [-15, -10, 0])
+  const scale = useTransform(progress, range, [0.92, 0.95, 1])
+  const opacity = useTransform(progress, range, [0.28, 0.55, 1])
+
+  return (
+    <motion.div
+      ref={slotRef}
+      className={`${styles.slot} ${styles[item.slot]}`}
+      style={
+        prefersReduced
+          ? undefined
+          : {
+              x,
+              y,
+              rotate,
+              rotateX,
+              scale,
+              opacity,
+            }
+      }
+    >
+      <CareerCard item={item} />
+    </motion.div>
+  )
+}
+
 export default function CareerReleaseStack() {
   const prefersReduced = useReducedMotion()
 
@@ -124,9 +200,9 @@ export default function CareerReleaseStack() {
           whileInView="show"
           viewport={{ once: true, amount: 0.35 }}
         >
-          <motion.p className={styles.hand} variants={revealItem}>
+          <HandwrittenText className={styles.hand} delay={0.04}>
             I kept saying yes to the next layer
-          </motion.p>
+          </HandwrittenText>
           <motion.h2
             id="experience-title"
             className={styles.title}
@@ -141,26 +217,16 @@ export default function CareerReleaseStack() {
           </motion.p>
         </motion.header>
 
-        <motion.div
-          className={styles.stage}
-          variants={{
-            hidden: {},
-            show: { transition: { delayChildren: stagger(0.09) } },
-          }}
-          initial={prefersReduced ? false : 'hidden'}
-          whileInView="show"
-          viewport={{ once: true, amount: 0.12 }}
-        >
-          {CARDS.map((item) => (
-            <motion.div
+        <div className={styles.stage}>
+          {CARDS.map((item, index) => (
+            <CareerSlot
               key={item.id}
-              className={`${styles.slot} ${styles[item.slot]}`}
-              variants={revealItem}
-            >
-              <CareerCard item={item} />
-            </motion.div>
+              item={item}
+              index={index}
+              prefersReduced={prefersReduced}
+            />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

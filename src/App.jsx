@@ -26,7 +26,6 @@ function readViewMode() {
 export default function App() {
   const { theme, toggleTheme } = useTheme()
   const [viewMode, setViewMode] = useState(readViewMode)
-  const [initialLoading, setInitialLoading] = useState(true)
   const [internalLoading, setInternalLoading] = useState(false)
 
   const changeViewMode = (nextMode) => {
@@ -43,29 +42,6 @@ export default function App() {
       // Storage can be unavailable in privacy-restricted contexts.
     }
   }, [viewMode])
-
-  useEffect(() => {
-    let isDone = false
-
-    const finishInitialLoad = () => {
-      if (isDone) return
-      isDone = true
-      setInitialLoading(false)
-    }
-
-    const fallbackTimer = window.setTimeout(finishInitialLoad, 480)
-
-    if (document.readyState === 'complete') {
-      finishInitialLoad()
-    } else {
-      window.addEventListener('load', finishInitialLoad, { once: true })
-    }
-
-    return () => {
-      window.removeEventListener('load', finishInitialLoad)
-      window.clearTimeout(fallbackTimer)
-    }
-  }, [])
 
   useEffect(() => {
     let endTimer
@@ -113,14 +89,13 @@ export default function App() {
       clearTimeout(timer)
       observer.disconnect()
     }
-  }, [location.pathname, initialLoading])
-
-  if (initialLoading) {
-    return <Loader mode="initial" />
-  }
+  }, [location.pathname])
 
   return (
-    <MotionConfig transition={{ type: 'spring', visualDuration: 0.4, bounce: 0 }}>
+    <MotionConfig
+      reducedMotion="user"
+      transition={{ type: 'spring', visualDuration: 0.4, bounce: 0 }}
+    >
       <a href="#main" className="skip-link">Skip to content</a>
       <div className="bg-dots" aria-hidden="true" />
       {internalLoading && <Loader mode="internal" />}

@@ -2,11 +2,11 @@
   --proof-bg: #0d0f14;
   --proof-title: #f4f4f5;
   --proof-intro: #a1a1aa;
-  --proof-flagship: #8ba3c7;
-  --proof-flagship-context: #11141a;
-  --proof-flagship-value: #09090b;
-  --proof-flagship-label: #1e2530;
-  --proof-flagship-pipeline: #2b3646;
+  --proof-flagship: #151820;
+  --proof-flagship-context: #8ba3c7;
+  --proof-flagship-value: #f4f4f5;
+  --proof-flagship-label: #a1a1aa;
+  --proof-flagship-pipeline: #a1a1aa;
   --proof-traffic: #151820;
   --proof-traffic-value: #f4f4f5;
   --proof-traffic-label: #a1a1aa;
@@ -15,6 +15,11 @@
   --proof-mini-value: #f4f4f5;
   --proof-mini-label: #f4f4f5;
   --proof-mini-note: #a1a1aa;
+  --proof-active: #8ba3c7;
+  --proof-active-ink: #09090b;
+  --proof-active-muted: #202b3a;
+  --proof-frame: rgba(139, 163, 199, 0.055);
+  --proof-frame-edge: rgba(220, 228, 240, 0.1);
   --proof-display: 'DM Sans', system-ui, sans-serif;
   --proof-sans: 'IBM Plex Sans', 'DM Sans', sans-serif;
 
@@ -27,11 +32,11 @@
   --proof-bg: #e8ecf1;
   --proof-title: #18181b;
   --proof-intro: #52525b;
-  --proof-flagship: #5b6f8c;
-  --proof-flagship-context: #eef1f5;
-  --proof-flagship-value: #ffffff;
-  --proof-flagship-label: #e8ecf1;
-  --proof-flagship-pipeline: #cbd5e1;
+  --proof-flagship: #ffffff;
+  --proof-flagship-context: #5b6f8c;
+  --proof-flagship-value: #18181b;
+  --proof-flagship-label: #52525b;
+  --proof-flagship-pipeline: #52525b;
   --proof-traffic: #ffffff;
   --proof-traffic-value: #18181b;
   --proof-traffic-label: #52525b;
@@ -40,6 +45,11 @@
   --proof-mini-value: #18181b;
   --proof-mini-label: #18181b;
   --proof-mini-note: #52525b;
+  --proof-active: #5b6f8c;
+  --proof-active-ink: #ffffff;
+  --proof-active-muted: #e8ecf1;
+  --proof-frame: rgba(91, 111, 140, 0.07);
+  --proof-frame-edge: rgba(39, 50, 68, 0.1);
 }
 
 .inner {
@@ -83,10 +93,77 @@
 }
 
 .grid {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 12px;
   align-items: stretch;
+  padding: 7px;
+  border: 1px solid var(--proof-frame-edge);
+  border-radius: 27px;
+  background: var(--proof-frame);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 28px 80px rgba(2, 5, 10, 0.14);
+}
+
+.metricCard {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+}
+
+.metricCard > :not(.activeBackdrop) {
+  position: relative;
+  z-index: 1;
+}
+
+.metricCard:focus-visible {
+  outline: 2px solid var(--proof-active);
+  outline-offset: 4px;
+}
+
+.activeBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  border-radius: inherit;
+  background: var(--proof-active);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -18px 36px rgba(9, 9, 11, 0.1);
+}
+
+.metricCard[data-active='true'] .flagshipContext,
+.metricCard[data-active='true'] .flagshipValue,
+.metricCard[data-active='true'] .trafficValue,
+.metricCard[data-active='true'] .miniValue,
+.metricCard[data-active='true'] .miniLabel {
+  color: var(--proof-active-ink);
+}
+
+.metricCard[data-active='true'] .flagshipLabel,
+.metricCard[data-active='true'] .flagshipPipeline,
+.metricCard[data-active='true'] .trafficLabel,
+.metricCard[data-active='true'] .trafficNote,
+.metricCard[data-active='true'] .miniNote {
+  color: var(--proof-active-muted);
+}
+
+.flagshipContext,
+.flagshipValue,
+.flagshipLabel,
+.flagshipPipeline,
+.trafficValue,
+.trafficLabel,
+.trafficNote,
+.miniValue,
+.miniLabel,
+.miniNote {
+  transition: color 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .flagship {
@@ -146,7 +223,7 @@
 .cluster {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   min-height: 360px;
 }
 
@@ -200,7 +277,7 @@
 .efficiency {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 12px;
   flex: 1;
 }
 

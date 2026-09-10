@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Soumyadeep, Backend and AWS">
+  <defs>
+    <style>
+      .bg { fill: #09090b; }
+      .ink { fill: #f4f4f5; }
+      .muted { fill: #a1a1aa; }
+      .amp { fill: #a1a1aa; fill-opacity: 0.6; }
+      .aws { fill: #ff9900; }
+      .name, .tiny-s {
+        font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+        font-weight: 500;
+        font-synthesis: none;
+      }
+      .role {
+        font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+        font-synthesis: none;
+      }
+      .name {
+        font-size: 20px;
+        letter-spacing: -0.02em;
+      }
+      .role {
+        font-size: 9.6px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+      .tiny-s {
+        font-size: 72px;
+        letter-spacing: -0.06em;
+      }
+      .full { display: block; }
+      .tiny { display: none; }
+      @media (max-width: 48px) {
+        .full { display: none; }
+        .tiny { display: block; }
+      }
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #e8ecf1; }
+        .bloom { display: none; }
+        .ink { fill: #18181b; }
+        .muted { fill: #52525b; }
+        .amp { fill: #52525b; fill-opacity: 0.6; }
+        .aws { fill: #ec7211; }
+        .rule-a { stop-color: #5b6f8c; }
+        .rule-b { stop-color: #5b6f8c; }
+        .tiny-rule { fill: #ec7211; }
+      }
+    </style>
+    <radialGradient id="bloom" cx="50%" cy="46%" r="58%">
+      <stop offset="0" stop-color="#0f1218"/>
+      <stop offset="1" stop-color="#09090b"/>
+    </radialGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop class="rule-a" offset="0" stop-color="#8ba3c7"/>
+      <stop class="rule-b" offset="1" stop-color="#8ba3c7" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+
+  <rect class="bg" width="128" height="128"/>
+  <rect class="full bloom" width="128" height="128" fill="url(#bloom)"/>
+
+  <g class="full">
+    <text class="name ink" x="64" y="58" text-anchor="middle">Soumyadeep</text>
+    <rect x="18" y="68" width="92" height="1.6" rx="0.8" fill="url(#rule)"/>
+    <text class="role" x="64" y="88" text-anchor="middle">
+      <tspan class="muted">Backend </tspan>
+      <tspan class="amp">&amp;</tspan>
+      <tspan class="muted"> </tspan>
+      <tspan class="aws" font-weight="600">AWS</tspan>
+    </text>
+  </g>
+
+  <g class="tiny">
+    <text class="tiny-s ink" x="64" y="86" text-anchor="middle">S</text>
+    <rect class="tiny-rule" x="44" y="98" width="40" height="6" rx="2" fill="#ff9900"/>
+  </g>
+</svg>

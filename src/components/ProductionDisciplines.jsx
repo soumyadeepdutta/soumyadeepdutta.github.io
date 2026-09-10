@@ -1,4 +1,12 @@
-import { motion, useReducedMotion, stagger } from 'motion/react'
+import {
+  motion,
+  stagger,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'motion/react'
+import { useRef } from 'react'
 import styles from './ProductionDisciplines.module.css'
 
 const LANES = [
@@ -38,6 +46,169 @@ const revealItem = {
   },
 }
 
+const FINAL_X = [0, 26, 10, 38]
+const FINAL_ROTATION = [-0.7, 0.65, -0.45, 0.55]
+
+function LaneCard({ lane, index, progress, reduced = false }) {
+  const start = Math.max(0.03, 0.05 + (index - 1) * 0.19)
+  const end = Math.min(0.78, start + 0.23)
+  const finalY = index * 124
+
+  const y = useTransform(
+    progress,
+    index === 0 ? [0, 1] : [0, start, end, 1],
+    index === 0 ? [0, 0] : [0, 0, finalY, finalY],
+  )
+  const x = useTransform(
+    progress,
+    index === 0 ? [0, 0.82, 1] : [0, start, end, 1],
+    index === 0
+      ? [0, 0, FINAL_X[index]]
+      : [0, 0, FINAL_X[index], FINAL_X[index]],
+  )
+  const rotate = useTransform(
+    progress,
+    index === 0 ? [0, 0.82, 1] : [0, start, end, 1],
+    index === 0
+      ? [0, 0, FINAL_ROTATION[index]]
+      : [0, 0, FINAL_ROTATION[index], FINAL_ROTATION[index]],
+  )
+  const opacity = useTransform(
+    progress,
+    index === 0 ? [0, 1] : [0, start, start + 0.09, 1],
+    index === 0 ? [1, 1] : [0.18, 0.18, 1, 1],
+  )
+  const scale = useTransform(
+    progress,
+    index === 0 ? [0, 0.82, 1] : [0, start, end, 1],
+    index === 0 ? [1, 1, 0.985] : [0.965, 0.965, 1, 1],
+  )
+  return (
+    <motion.div
+      className={styles.laneShell}
+      role="listitem"
+      style={
+        reduced
+          ? undefined
+          : {
+              x,
+              y,
+              rotate,
+              opacity,
+              scale,
+              zIndex: LANES.length - index,
+            }
+      }
+    >
+      <motion.article
+        className={`${styles.lane} ${
+          lane.featured ? styles.laneFeatured : ''
+        }`}
+        aria-label={lane.word}
+        whileHover={reduced ? undefined : { x: 7, scale: 1.008 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 25 }}
+      >
+        <div className={styles.wordWrap}>
+          <p className={styles.word}>{lane.word}</p>
+          <span className={styles.wordRule} aria-hidden="true" />
+        </div>
+        <div className={styles.copy}>
+          <p className={styles.proof}>{lane.proof}</p>
+          <p className={styles.body}>{lane.body}</p>
+        </div>
+        <p className={`mono ${styles.stack}`}>{lane.stack}</p>
+      </motion.article>
+    </motion.div>
+  )
+}
+
+function DesktopDeck({ reduced }) {
+  const deckRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: deckRef,
+    offset: ['start 82%', 'end 52%'],
+  })
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  })
+
+  return (
+    <div
+      ref={deckRef}
+      className={`${styles.deck} ${reduced ? styles.deckReduced : ''}`}
+    >
+      <div className={styles.stage}>
+        <div className={styles.stageFrame} aria-hidden="true" />
+        <div className={styles.lanes} role="list">
+          {LANES.map((lane, index) => (
+            <LaneCard
+              key={lane.word}
+              lane={lane}
+              index={index}
+              progress={smoothProgress}
+              reduced={reduced}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MobileDeck({ reduced }) {
+  return (
+    <motion.div
+      className={styles.mobileLanes}
+      role="list"
+      initial={reduced ? false : 'hidden'}
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={{
+        hidden: {},
+        show: { transition: { delayChildren: stagger(0.08) } },
+      }}
+    >
+      {LANES.map((lane) => (
+        <motion.div
+          key={lane.word}
+          role="listitem"
+          variants={{
+            hidden: { opacity: 0, y: 28 },
+            show: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                type: 'spring',
+                visualDuration: 0.55,
+                bounce: 0.08,
+              },
+            },
+          }}
+        >
+          <article
+            className={`${styles.lane} ${
+              lane.featured ? styles.laneFeatured : ''
+            }`}
+            aria-label={lane.word}
+          >
+            <div className={styles.wordWrap}>
+              <p className={styles.word}>{lane.word}</p>
+              <span className={styles.wordRule} aria-hidden="true" />
+            </div>
+            <div className={styles.copy}>
+              <p className={styles.proof}>{lane.proof}</p>
+              <p className={styles.body}>{lane.body}</p>
+            </div>
+            <p className={`mono ${styles.stack}`}>{lane.stack}</p>
+          </article>
+        </motion.div>
+      ))}
+    </motion.div>
+  )
+}
+
 export default function ProductionDisciplines() {
   const prefersReduced = useReducedMotion()
 
@@ -71,36 +242,8 @@ export default function ProductionDisciplines() {
           </motion.p>
         </motion.header>
 
-        <motion.div
-          className={styles.lanes}
-          role="list"
-          variants={{
-            hidden: {},
-            show: { transition: { delayChildren: stagger(0.08) } },
-          }}
-          initial={prefersReduced ? false : 'hidden'}
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-        >
-          {LANES.map((lane) => (
-            <motion.article
-              key={lane.word}
-              className={`${styles.lane} ${
-                lane.featured ? styles.laneFeatured : ''
-              }`}
-              role="listitem"
-              variants={revealItem}
-              aria-label={lane.word}
-            >
-              <p className={styles.word}>{lane.word}</p>
-              <div className={styles.copy}>
-                <p className={styles.proof}>{lane.proof}</p>
-                <p className={styles.body}>{lane.body}</p>
-              </div>
-              <p className={`mono ${styles.stack}`}>{lane.stack}</p>
-            </motion.article>
-          ))}
-        </motion.div>
+        <DesktopDeck reduced={prefersReduced} />
+        <MobileDeck reduced={prefersReduced} />
       </div>
     </section>
   )
