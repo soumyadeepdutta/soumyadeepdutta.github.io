@@ -45,8 +45,6 @@
   --splash-steel: #8ba3c7;
   --splash-steel-rgb: 139, 163, 199;
   --splash-amber: #ff9900;
-  --cloud-top: #aebfd6;
-  --cloud-bottom: #7f98bf;
   --cloud-stroke: #c9d4e3;
 
   position: fixed;
@@ -85,8 +83,6 @@
   --splash-steel: #5b6f8c;
   --splash-steel-rgb: 91, 111, 140;
   --splash-amber: #ec7211;
-  --cloud-top: #7a8fad;
-  --cloud-bottom: #5b6f8c;
   --cloud-stroke: #405169;
 }
 
@@ -216,13 +212,9 @@
   aspect-ratio: 138.3385 / 75.6013;
   translate: -50% -50%;
   overflow: visible;
-  filter: drop-shadow(0 22px 40px rgba(var(--splash-steel-rgb), 0.22));
+  filter: drop-shadow(0 0 14px rgba(var(--splash-steel-rgb), 0.28));
   transform-origin: center center;
   will-change: transform, opacity;
-}
-
-.cloudGhost {
-  opacity: 0.22;
 }
 
 .brandLabel {
@@ -259,7 +251,7 @@
   -webkit-backdrop-filter: none;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
   overflow: hidden;
-  /* Match brandFlySpring visualDuration 0.72; ease approximates soft spring settle */
+  /* Match spring.fly visualDuration 0.72 (utils/motionTokens.js); ease approximates soft spring settle */
   transition: gap 0.72s cubic-bezier(0.22, 1, 0.36, 1),
     padding 0.72s cubic-bezier(0.22, 1, 0.36, 1);
 }

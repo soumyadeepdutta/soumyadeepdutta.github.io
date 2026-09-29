@@ -1,11 +1,5 @@
 import { motion, useReducedMotion, stagger } from 'motion/react'
-
-/** Serious-site spring: no overshoot (Motion docs: bounce 0 for trading/engineering UIs). */
-export const revealTransition = {
-  type: 'spring',
-  visualDuration: 0.4,
-  bounce: 0,
-}
+import { revealItem } from '../utils/motionTokens'
 
 export const revealContainer = {
   hidden: {},
@@ -13,15 +7,6 @@ export const revealContainer = {
     transition: {
       delayChildren: stagger(0.07),
     },
-  },
-}
-
-export const revealItem = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: revealTransition,
   },
 }
 

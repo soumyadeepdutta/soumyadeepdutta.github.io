@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import styles from './HandwrittenText.module.css'
+import { ease, instant } from '../utils/motionTokens'
 
 const hidden = {
   clipPath: 'inset(-0.2em 100% -0.2em 0)',
@@ -37,9 +38,7 @@ export default function HandwrittenText({
         initial={prefersReduced ? false : hidden}
         {...(prefersReduced ? { animate: visible } : motionProps)}
         transition={
-          prefersReduced
-            ? { duration: 0 }
-            : { duration, delay, ease: [0.65, 0, 0.35, 1] }
+          prefersReduced ? instant : { duration, delay, ease: ease.inOut }
         }
       >
         {children}

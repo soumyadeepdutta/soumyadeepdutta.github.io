@@ -13,14 +13,21 @@ import styles from './Navbar.module.css'
 import { navigateToSection, navigateToTop } from '../utils/navigation'
 import { isModifiedClick, navigateTyped } from '../utils/viewTransitions'
 import {
-  DESK_DRAW_DELAY_MS,
+  LANDING_DELAY_MS,
   PILL_EXPAND_MS,
-  startDeskDraw,
+  STORY,
+  startLanding,
 } from '../utils/introChoreography'
+import { schedulePen } from '../utils/penSchedule'
+import {
+  CLOUD_SKETCH_PATHS,
+  CLOUD_SKETCH_VIEWBOX,
+} from '../assets/cloudSketchPaths'
+import { ease, spring } from '../utils/motionTokens'
 
 const PORTFOLIO_LINKS = [
   { href: '#about', label: 'About' },
-  { href: '#experience', label: 'Story' },
+  { href: '#experience', label: 'Experience' },
   { href: '/blog', label: 'Notes' },
   { href: '#contact', label: 'Say hi' },
 ]
@@ -37,19 +44,7 @@ const BRIEF_LINKS = [
 const RESUME_HREF = 'https://www.linkedin.com/in/soumyadeep-dutta/'
 const DESKTOP_MQ = '(min-width: 821px)'
 
-const easeOut = [0.22, 1, 0.36, 1]
-const brandFlySpring = { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
-const CLOUD_PATH =
-  'M95.16924 29.17054c-0.27692-15.13846-12.09231-29.16923-28.61539-29.16923-9.78462-0.09231-18.64615 4.70769-24.18462 13.84615l-0.55385 0.83077-0.73846-0.64615c-2.86154-1.66154-6.83077-2.30769-10.24615-1.84616-8.21539 1.10769-15.78462 7.84615-15.41538 18.27692-7.66154 2.58462-15.41539 10.24616-15.41539 21.5077 0 11.81539 9.04615 23.63076 22.52307 23.63076l73.56923 0c12 0.09232 22.24617-9.69231 22.24617-23.26153 0-13.56923-11.35385-23.26154-23.16924-23.16923z'
-const INTRO_PHASE_MS = {
-  draw: 920,
-  emerge: 720,
-  dissolve: 480,
-  highlight: 740,
-}
 const NAME_LETTERS = 'Soumyadeep'.split('')
-const CLOUD_VIEWBOX_W = 138.3385
-const CLOUD_VIEWBOX_H = 75.6013
 
 function readInitialIntroPhase(viewMode) {
   if (typeof window === 'undefined') return 'done'
@@ -73,6 +68,32 @@ function measureBrandFly(splashEl, brandEl) {
   return { x, y, scale }
 }
 
+// Widths are viewBox units (~4px each at desktop size). Kept in viewBox
+// space because non-scaling-stroke breaks Motion's pathLength dash maths.
+const CLOUD_STROKE_STYLE = {
+  outline: { width: 0.42, opacity: 1 },
+  retrace: { width: 0.3, opacity: 0.4 },
+  detail: { width: 0.3, opacity: 0.55 },
+  wind: { width: 0.3, opacity: 0.5 },
+}
+
+// Outline strokes chain end-to-end so the pen reads as one continuous loop;
+// accents follow on a short stagger (see STORY.signature.pen).
+const { strokes: CLOUD_STROKES, end: CLOUD_DRAW_END } = schedulePen(
+  CLOUD_SKETCH_PATHS,
+  STORY.signature.pen,
+)
+
+const INTRO_PHASE_MS = {
+  draw: Math.round(
+    (CLOUD_DRAW_END + STORY.signature.holdAfterDraw) * 1000,
+  ),
+  emerge: STORY.signature.emergeMs,
+  dissolve: STORY.signature.dissolveMs,
+  highlight: STORY.signature.lockupMs,
+  fly: STORY.arrival.flyMs,
+}
+
 function IntroCloud({ phase, prefersReduced, shift }) {
   const drawing = phase === 'draw'
   const visible = drawing || phase === 'emerge'
@@ -82,8 +103,8 @@ function IntroCloud({ phase, prefersReduced, shift }) {
   return (
     <motion.svg
       className={styles.cloudMark}
-      viewBox={`0 0 ${CLOUD_VIEWBOX_W} ${CLOUD_VIEWBOX_H}`}
-      initial={prefersReduced ? false : { opacity: 0, scale: 0.94, y: 12 }}
+      viewBox={CLOUD_SKETCH_VIEWBOX}
+      initial={prefersReduced ? false : { opacity: 0, scale: 0.97, y: 8 }}
       animate={{
         opacity: visible ? 1 : 0,
         scale: evaporating ? 1.08 : 1,
@@ -95,80 +116,45 @@ function IntroCloud({ phase, prefersReduced, shift }) {
           ? { duration: 0 }
           : {
               opacity: drawing
-                ? { duration: 0.32, ease: easeOut }
+                ? { duration: 0.2, ease: ease.out }
                 : { duration: 0.46, ease: [0.4, 0, 0.6, 1] },
-              scale: { duration: 0.5, ease: easeOut },
+              scale: { duration: 0.5, ease: ease.out },
               y: drawing
-                ? { type: 'spring', visualDuration: 0.6, bounce: 0 }
+                ? spring.slow
                 : { duration: 0.5, ease: [0.4, 0, 0.7, 1] },
-              x: {
-                type: 'spring',
-                visualDuration: 0.72,
-                bounce: 0.04,
-              },
+              x: spring.fly,
             }
       }
       aria-hidden="true"
     >
-      <defs>
-        <linearGradient id="intro-cloud-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--cloud-top)" />
-          <stop offset="100%" stopColor="var(--cloud-bottom)" />
-        </linearGradient>
-        <clipPath id="intro-cloud-clip">
-          <motion.rect
-            x="-2"
-            width={CLOUD_VIEWBOX_W + 4}
-            initial={
-              prefersReduced ? false : { attrY: CLOUD_VIEWBOX_H + 2, height: 0 }
-            }
-            animate={{ attrY: -2, height: CLOUD_VIEWBOX_H + 4 }}
+      {CLOUD_STROKES.map((stroke, index) => {
+        const look = CLOUD_STROKE_STYLE[stroke.kind]
+        return (
+          <motion.path
+            key={index}
+            d={stroke.d}
+            fill="none"
+            stroke="var(--cloud-stroke)"
+            strokeWidth={look.width}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={prefersReduced ? false : { pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: look.opacity }}
             transition={
               prefersReduced
                 ? { duration: 0 }
-                : { duration: 0.54, delay: 0.28, ease: [0.65, 0, 0.35, 1] }
+                : {
+                    pathLength: {
+                      duration: stroke.duration,
+                      delay: stroke.delay,
+                      ease: stroke.kind === 'outline' ? 'linear' : 'easeInOut',
+                    },
+                    opacity: { duration: 0.12, delay: stroke.delay },
+                  }
             }
           />
-        </clipPath>
-      </defs>
-
-      <path
-        d={CLOUD_PATH}
-        className={styles.cloudGhost}
-        fill="none"
-        stroke="var(--cloud-stroke)"
-        strokeWidth="0.9"
-        strokeDasharray="2.2 3.4"
-      />
-
-      <motion.path
-        d={CLOUD_PATH}
-        fill="none"
-        stroke="var(--cloud-stroke)"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={prefersReduced ? false : { pathLength: 0, opacity: 1 }}
-        animate={{ pathLength: 1, opacity: drawing ? 1 : 0 }}
-        transition={
-          prefersReduced
-            ? { duration: 0 }
-            : {
-                pathLength: {
-                  type: 'spring',
-                  duration: 0.78,
-                  bounce: 0,
-                },
-                opacity: { duration: 0.22, ease: easeOut },
-              }
-        }
-      />
-
-      <path
-        d={CLOUD_PATH}
-        fill="url(#intro-cloud-fill)"
-        clipPath="url(#intro-cloud-clip)"
-      />
+        )
+      })}
     </motion.svg>
   )
 }
@@ -237,6 +223,7 @@ export default function Navbar({
           draw: 'emerge',
           emerge: 'dissolve',
           dissolve: 'highlight',
+          fly: 'expanding',
         }
         setIntroPhase(nextPhase[introPhase])
       }, INTRO_PHASE_MS[introPhase])
@@ -264,25 +251,37 @@ export default function Navbar({
   useEffect(() => {
     if (introPhase !== 'expanding') return undefined
 
-    const deskTimer = window.setTimeout(() => startDeskDraw(), DESK_DRAW_DELAY_MS)
+    const landingTimer = window.setTimeout(() => startLanding(), LANDING_DELAY_MS)
     const doneMs = isDesktop ? PILL_EXPAND_MS + 40 : 420
     const doneTimer = window.setTimeout(() => finishIntro(), doneMs)
 
     return () => {
-      window.clearTimeout(deskTimer)
+      window.clearTimeout(landingTimer)
       window.clearTimeout(doneTimer)
     }
   }, [introPhase, isDesktop, finishIntro])
 
-  // intro skipped (reduced motion / non-home) — draw promptly
+  // intro skipped (reduced motion / non-home / visitor skip) — land promptly
   useEffect(() => {
-    if (introPhase === 'done') startDeskDraw()
+    if (introPhase === 'done') startLanding()
   }, [introPhase])
+
+  // Visitor control: any click, key or scroll during the splash skips it.
+  useEffect(() => {
+    if (introPhase === 'done' || introPhase === 'expanding') return undefined
+    const skip = () => finishIntro()
+    const events = ['pointerdown', 'keydown', 'wheel', 'touchmove']
+    events.forEach((type) =>
+      window.addEventListener(type, skip, { once: true, passive: true })
+    )
+    return () =>
+      events.forEach((type) => window.removeEventListener(type, skip))
+  }, [introPhase, finishIntro])
 
   // hard safety cap
   useEffect(() => {
     if (introPhase === 'done') return undefined
-    const t = window.setTimeout(() => finishIntro(), 6000)
+    const t = window.setTimeout(() => finishIntro(), STORY.safetyCapMs)
     return () => window.clearTimeout(t)
   }, [introPhase, finishIntro])
 
@@ -418,24 +417,19 @@ export default function Navbar({
   const wordTransition = prefersReduced
     ? instant
     : introPhase === 'fly'
-      ? brandFlySpring
+      ? spring.fly
       : introPhase === 'emerge'
-        ? { type: 'spring', visualDuration: 0.72, bounce: 0.04 }
+        ? spring.fly
         : introPhase === 'dissolve'
-          ? { type: 'spring', visualDuration: 0.5, bounce: 0 }
-          : { duration: 0.2, ease: easeOut }
+          ? spring.slow
+          : { duration: 0.2, ease: ease.out }
 
   const letterTransition = (index) =>
     prefersReduced
       ? instant
       : introPhase === 'emerge'
-        ? {
-            type: 'spring',
-            visualDuration: 0.4,
-            bounce: 0,
-            delay: 0.03 + index * 0.026,
-          }
-        : { duration: 0.18, ease: easeOut }
+        ? { ...spring.base, delay: 0.03 + index * 0.026 }
+        : { duration: 0.18, ease: ease.out }
 
   return (
     <>
@@ -448,7 +442,7 @@ export default function Navbar({
             initial={{ opacity: 1 }}
             animate={{ opacity: introPhase === 'fly' ? 0.55 : 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: prefersReduced ? 0 : 0.4, ease: easeOut }}
+            transition={{ duration: prefersReduced ? 0 : 0.4, ease: ease.out }}
           >
             <div className={styles.splashStage}>
               <motion.div
@@ -463,9 +457,9 @@ export default function Navbar({
                   prefersReduced
                     ? instant
                     : {
-                        opacity: { duration: 0.7, ease: easeOut },
-                        scale: { duration: 0.9, ease: easeOut },
-                        x: { type: 'spring', visualDuration: 0.72, bounce: 0 },
+                        opacity: { duration: 0.7, ease: ease.out },
+                        scale: { duration: 0.9, ease: ease.out },
+                        x: spring.fly,
                       }
                 }
                 aria-hidden="true"
@@ -480,9 +474,6 @@ export default function Navbar({
                       initial={false}
                       animate={wordAnimate}
                       transition={wordTransition}
-                      onAnimationComplete={() => {
-                        if (introPhase === 'fly') setIntroPhase('expanding')
-                      }}
                     >
                       {NAME_LETTERS.map((letter, index) => (
                         <motion.span
@@ -512,8 +503,8 @@ export default function Navbar({
                       prefersReduced
                         ? instant
                         : locked
-                          ? { duration: 0.46, ease: [0.65, 0, 0.35, 1] }
-                          : { duration: 0.24, ease: easeOut }
+                          ? { duration: 0.46, ease: ease.inOut }
+                          : { duration: 0.24, ease: ease.out }
                     }
                     aria-hidden="true"
                   />
@@ -528,8 +519,8 @@ export default function Navbar({
                       prefersReduced
                         ? instant
                         : locked
-                          ? { duration: 0.42, delay: 0.22, ease: easeOut }
-                          : { duration: 0.2, ease: easeOut }
+                          ? { duration: 0.42, delay: 0.22, ease: ease.out }
+                          : { duration: 0.2, ease: ease.out }
                     }
                   >
                     Backend <span>&amp;</span> <strong>AWS</strong>
@@ -568,8 +559,8 @@ export default function Navbar({
               prefersReduced
                 ? instant
                 : {
-                    opacity: { duration: 0.28, ease: easeOut },
-                    scale: { type: 'spring', visualDuration: 0.4, bounce: 0.1 },
+                    opacity: { duration: 0.28, ease: ease.out },
+                    scale: spring.pop,
                   }
             }
             onMouseEnter={() =>
@@ -729,7 +720,7 @@ export default function Navbar({
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReduced ? undefined : { opacity: 0, y: -6 }}
               transition={
-                prefersReduced ? instant : { duration: 0.28, ease: easeOut }
+                prefersReduced ? instant : { duration: 0.28, ease: ease.out }
               }
             >
               <motion.div
@@ -757,11 +748,7 @@ export default function Navbar({
                         y: 0,
                         transition: prefersReduced
                           ? instant
-                          : {
-                              type: 'spring',
-                              visualDuration: 0.34,
-                              bounce: 0,
-                            },
+                          : spring.snappy,
                       },
                     }}
                     onClick={(e) => handleNavClick(e, href)}

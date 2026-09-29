@@ -289,7 +289,7 @@
   width: 100%;
   min-height: 174px;
   padding: 12px 0 8px;
-  perspective: 1200px;
+  perspective: 1100px;
 }
 
 .pipelineRoute {
@@ -465,6 +465,22 @@
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: 20px;
   align-items: stretch;
+}
+
+.caseSlot {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Labs slide out from behind Group SIP. */
+.sipSlot {
+  z-index: 2;
+}
+
+.caseSlot > .caseCard {
+  flex: 1;
 }
 
 .caseCard {
