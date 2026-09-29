@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   motion,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -8,35 +9,32 @@ import {
 } from 'motion/react'
 import styles from './Hero.module.css'
 import RollingLabel from './RollingLabel'
-import DeskSketch from './DeskSketch'
+import DeskSketch, { DESK_DRAW_DURATION } from './DeskSketch'
 import HandwrittenText from './HandwrittenText'
-import { revealTransition } from './MotionReveal'
-import { onDeskDrawStart } from '../utils/introChoreography'
+import {
+  follow,
+  idleFloat,
+  instant,
+  revealItem,
+  spring,
+} from '../utils/motionTokens'
+import { STORY, onLandingStart } from '../utils/introChoreography'
 
 const RESUME_HREF = 'https://www.linkedin.com/in/soumyadeep-dutta/'
 const WRITE_HREF = 'mailto:imsoumyadeepdutta@gmail.com'
 
 const PROOF = [
   { value: '5+ yrs', label: 'shipping' },
-  { value: '700k+', label: 'req/day' },
-  { value: '10M+', label: 'events' },
+  { value: '23', label: 'AMCs served' },
+  { value: '~₹1 Cr', label: 'a day' },
 ]
-
-const heroItem = {
-  hidden: { opacity: 0, y: 22 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', visualDuration: 0.45, bounce: 0 },
-  },
-}
 
 const noteTextItem = {
   hidden: { opacity: 0, y: 14 },
   show: {
     opacity: 1,
     y: 0,
-    transition: revealTransition,
+    transition: spring.reveal,
   },
 }
 
@@ -53,8 +51,8 @@ function MagneticCta({
   const prefersReduced = useReducedMotion()
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 220, damping: 18, mass: 0.4 })
-  const springY = useSpring(y, { stiffness: 220, damping: 18, mass: 0.4 })
+  const springX = useSpring(x, follow.magnetic)
+  const springY = useSpring(y, follow.magnetic)
 
   const handleMove = (event) => {
     if (prefersReduced || !ref.current) return
@@ -93,17 +91,44 @@ function MagneticCta({
 
 export default function Hero() {
   const prefersReduced = useReducedMotion()
-  const [contentReady, setContentReady] = useState(() => !!prefersReduced)
+  const noteRef = useRef(null)
+  const noteInView = useInView(noteRef, { once: true, amount: 0.35 })
+  const [landedAt, setLandedAt] = useState(() =>
+    prefersReduced ? 0 : null
+  )
+  const [cardDelay, setCardDelay] = useState(null)
+  const [noteTextReady, setNoteTextReady] = useState(() => !!prefersReduced)
+  const [deskDrawn, setDeskDrawn] = useState(() => !!prefersReduced)
 
+  // Act 3: the nav hands over — headline copy starts now.
   useEffect(() => {
     if (prefersReduced) {
-      setContentReady(true)
+      setLandedAt(0)
       return undefined
     }
-    return onDeskDrawStart(() => setContentReady(true))
+    return onLandingStart(() => setLandedAt(performance.now()))
   }, [prefersReduced])
 
-  const showCopy = prefersReduced || contentReady
+  // Act 4: the card rises once we have landed AND it is on screen. If it was
+  // already visible it waits its turn after the headline; if the visitor
+  // scrolls to it later it starts right away.
+  useEffect(() => {
+    if (landedAt === null || !noteInView || cardDelay !== null) return
+    const sinceLanding = (performance.now() - landedAt) / 1000
+    setCardDelay(Math.max(0, STORY.desk.cardAt - sinceLanding))
+  }, [landedAt, noteInView, cardDelay])
+
+  const showCopy = prefersReduced || landedAt !== null
+  const showCard = prefersReduced || cardDelay !== null
+  const deskDelay = (cardDelay ?? 0) + STORY.desk.drawAfterCard
+
+  // Note text and chips arrive as the last strokes land, not before.
+  useEffect(() => {
+    if (prefersReduced || cardDelay === null) return undefined
+    const at = deskDelay + DESK_DRAW_DURATION - STORY.desk.textLeadIn
+    const timer = window.setTimeout(() => setNoteTextReady(true), at * 1000)
+    return () => window.clearTimeout(timer)
+  }, [prefersReduced, cardDelay, deskDelay])
 
   return (
     <section className={styles.hero} id="about">
@@ -112,7 +137,9 @@ export default function Hero() {
           className={styles.content}
           variants={{
             hidden: {},
-            show: { transition: { delayChildren: stagger(0.07) } },
+            show: {
+              transition: { delayChildren: stagger(STORY.headline.stagger) },
+            },
           }}
           initial={prefersReduced ? false : 'hidden'}
           animate={showCopy ? 'show' : 'hidden'}
@@ -125,21 +152,14 @@ export default function Hero() {
             Hi. I build the quiet parts of products.
           </HandwrittenText>
 
-          <motion.h1 className={styles.name} variants={heroItem}>
+          <motion.h1 className={styles.name} variants={revealItem}>
             <span className={styles.nameLine}>
               <motion.span
                 className={styles.nameWord}
                 initial={prefersReduced ? false : { y: '115%' }}
                 animate={showCopy ? { y: '0%' } : { y: '115%' }}
                 transition={
-                  prefersReduced
-                    ? { duration: 0 }
-                    : {
-                        type: 'spring',
-                        visualDuration: 0.5,
-                        bounce: 0,
-                        delay: 0.06,
-                      }
+                  prefersReduced ? instant : { ...spring.slow, delay: 0.06 }
                 }
               >
                 Soumyadeep
@@ -151,14 +171,7 @@ export default function Hero() {
                 initial={prefersReduced ? false : { y: '115%' }}
                 animate={showCopy ? { y: '0%' } : { y: '115%' }}
                 transition={
-                  prefersReduced
-                    ? { duration: 0 }
-                    : {
-                        type: 'spring',
-                        visualDuration: 0.5,
-                        bounce: 0,
-                        delay: 0.14,
-                      }
+                  prefersReduced ? instant : { ...spring.slow, delay: 0.14 }
                 }
               >
                 Dutta
@@ -166,18 +179,18 @@ export default function Hero() {
             </span>
           </motion.h1>
 
-          <motion.p className={styles.role} variants={heroItem}>
-            Backend engineer · Node.js + AWS · fintech, healthcare, SaaS
+          <motion.p className={styles.role} variants={revealItem}>
+            Backend engineer at KFin Technologies · Node.js, Python, AWS
           </motion.p>
 
-          <motion.p className={styles.bio} variants={heroItem}>
-            Five years making Node.js and AWS stacks hold up under real load.
-            Fintech traffic, healthcare APIs, SaaS backends. On the side I build
-            MCP servers and a local RAG system, because the quiet parts of
-            products keep getting smarter.
+          <motion.p className={styles.bio} variants={revealItem}>
+            Five years in backend. Today I run production AWS for LAMF, a
+            loan-against-mutual-fund platform used by 23 AMCs that moves close
+            to ₹1 crore a day. On the side I build MCP servers and a local RAG
+            system, because the quiet parts of products keep getting smarter.
           </motion.p>
 
-          <motion.div className={styles.ctaRow} variants={heroItem}>
+          <motion.div className={styles.ctaRow} variants={revealItem}>
             <MagneticCta
               href={RESUME_HREF}
               className={styles.ctaPrimary}
@@ -198,83 +211,86 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
+          ref={noteRef}
           className={styles.noteStage}
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-          animate={
-            showCopy ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
-          }
+          animate={showCard ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={
-            prefersReduced
-              ? { duration: 0 }
-              : { type: 'spring', visualDuration: 0.55, bounce: 0 }
+            prefersReduced ? instant : { ...spring.slow, delay: cardDelay ?? 0 }
           }
         >
           <motion.aside
             className={styles.noteCard}
             aria-label="A note from the desk"
-            animate={prefersReduced ? undefined : { y: [0, -8, 0] }}
+            // Idle float only once the drawing is finished, so the pen's
+            // lines never drift while they are being drawn.
+            animate={
+              prefersReduced || !deskDrawn ? { y: 0 } : { y: idleFloat.y }
+            }
             transition={
-              prefersReduced
-                ? undefined
-                : {
-                    duration: 5.5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                    delay: showCopy ? 0.9 : 0,
-                  }
+              prefersReduced || !deskDrawn
+                ? instant
+                : idleFloat.transition
             }
           >
-            <motion.div
-              variants={{
-                hidden: {},
-                show: { transition: { delayChildren: stagger(0.08) } },
-              }}
-              initial={prefersReduced ? false : 'hidden'}
-              animate={showCopy ? 'show' : 'hidden'}
-            >
+            {/* single child keeps the card's existing spacing */}
+            <div>
               <HandwrittenText
                 className={styles.noteHand}
-                active={showCopy}
-                delay={0.18}
+                active={showCard}
+                delay={(cardDelay ?? 0) + STORY.desk.captionAfterCard}
               >
                 a note from the desk
               </HandwrittenText>
-              <DeskSketch />
-              <motion.p className={styles.noteBody} variants={noteTextItem}>
-                Most days I am chasing a queue that should have drained an hour ago,
-                or watching Athena turn a messy log lake into something a human can
-                query. I like that kind of problem.
-              </motion.p>
+              <DeskSketch
+                play={showCard}
+                delay={deskDelay}
+                onDrawn={() => setDeskDrawn(true)}
+              />
               <motion.div
-                className={styles.proofRow}
                 variants={{
                   hidden: {},
-                  show: {
-                    transition: {
-                      delayChildren: stagger(0.08, { startDelay: 0.12 }),
-                    },
-                  },
+                  show: { transition: { delayChildren: stagger(0.08) } },
                 }}
+                initial={prefersReduced ? false : 'hidden'}
+                animate={noteTextReady ? 'show' : 'hidden'}
               >
-                {PROOF.map((item) => (
-                  <motion.div
-                    key={item.label}
-                    className={styles.proofChip}
-                    variants={{
-                      hidden: { opacity: 0, y: 10 },
-                      show: {
-                        opacity: 1,
-                        y: 0,
-                        transition: revealTransition,
+                <motion.p className={styles.noteBody} variants={noteTextItem}>
+                  Most days I am chasing a queue that should have drained an hour ago,
+                  or watching Athena turn a messy log lake into something a human can
+                  query. I like that kind of problem.
+                </motion.p>
+                <motion.div
+                  className={styles.proofRow}
+                  variants={{
+                    hidden: {},
+                    show: {
+                      transition: {
+                        delayChildren: stagger(0.08, { startDelay: 0.12 }),
                       },
-                    }}
-                  >
-                    <span className={styles.proofValue}>{item.value}</span>
-                    <span className={`mono ${styles.proofLabel}`}>{item.label}</span>
-                  </motion.div>
-                ))}
+                    },
+                  }}
+                >
+                  {PROOF.map((item) => (
+                    <motion.div
+                      key={item.label}
+                      className={styles.proofChip}
+                      variants={{
+                        hidden: { opacity: 0, y: 10 },
+                        show: {
+                          opacity: 1,
+                          y: 0,
+                          transition: spring.reveal,
+                        },
+                      }}
+                    >
+                      <span className={styles.proofValue}>{item.value}</span>
+                      <span className={`mono ${styles.proofLabel}`}>{item.label}</span>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </motion.div>
-            </motion.div>
+            </div>
           </motion.aside>
         </motion.div>
       </div>

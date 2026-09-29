@@ -1,5 +1,8 @@
 import { motion, useReducedMotion } from 'motion/react'
 import styles from './RollingLabel.module.css'
+import { ease } from '../utils/motionTokens'
+
+const roll = { duration: 0.28, ease: ease.out }
 
 /**
  * Rolling label hover — two clipped copies (Motion text-animation guide).
@@ -21,7 +24,7 @@ export default function RollingLabel({ children }) {
           rest: { y: '0%' },
           hover: { y: '110%' },
         }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        transition={roll}
       >
         {children}
       </motion.span>
@@ -32,7 +35,7 @@ export default function RollingLabel({ children }) {
           rest: { y: '-110%' },
           hover: { y: '0%' },
         }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        transition={roll}
       >
         {children}
       </motion.span>

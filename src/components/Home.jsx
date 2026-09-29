@@ -7,6 +7,7 @@ import CareerReleaseStack from './CareerReleaseStack'
 import StubbornProblemContact from './StubbornProblemContact'
 import SimpleResumeView from './SimpleResumeView'
 import styles from './Home.module.css'
+import { instant, viewSwap } from '../utils/motionTokens'
 
 export default function Home({ viewMode = 'portfolio' }) {
   const reduce = useReducedMotion()
@@ -22,11 +23,7 @@ export default function Home({ viewMode = 'portfolio' }) {
           initial={reduce ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reduce ? undefined : { opacity: 0, y: -8 }}
-          transition={
-            reduce
-              ? { duration: 0 }
-              : { duration: 0.32, ease: [0.16, 1, 0.3, 1] }
-          }
+          transition={reduce ? instant : viewSwap}
         >
           {simple ? (
             <SimpleResumeView />

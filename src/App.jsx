@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import Loader from './components/Loader'
 import { useTheme } from './hooks/useTheme'
 import { appNavigationEvents } from './utils/navigation'
+import { spring } from './utils/motionTokens'
 
 const VIEW_MODE_KEY = 'portfolio-view-mode'
 
@@ -94,7 +95,7 @@ export default function App() {
   return (
     <MotionConfig
       reducedMotion="user"
-      transition={{ type: 'spring', visualDuration: 0.4, bounce: 0 }}
+      transition={spring.base}
     >
       <a href="#main" className="skip-link">Skip to content</a>
       <div className="bg-dots" aria-hidden="true" />

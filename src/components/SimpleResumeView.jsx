@@ -1,5 +1,11 @@
 import { motion, useReducedMotion } from 'motion/react'
 import styles from './SimpleResumeView.module.css'
+import {
+  revealItem,
+  rhythm,
+  staggerGroup,
+  viewport,
+} from '../utils/motionTokens'
 
 const EXPERIENCE = [
   {
@@ -8,10 +14,12 @@ const EXPERIENCE = [
     role: 'Software Engineer',
     dates: 'Jul 2024 - Present',
     points: [
-      'Own Group SIP backend delivery with a five-engineer team, plus AWS deployment for LAMF, a top-10 KFin product processing 700,000+ requests each day.',
-      'Built a Firehose, Glue, S3 Parquet, and Athena log pipeline processing 10,000,000+ events/day and reduced analytical queries from 15 seconds to under 3 seconds.',
-      'Reduced CI build time by 60% with ECR layer caching and provision infrastructure through AWS CDK across ECS, Lambda, SQS, Firehose, Glue, API Gateway, NLB, and ASG.',
-      'Delivered mTLS, JWE/JWS, and CERSAI KYC integrations at 30,000+ requests/day, plus MCP and Athena tooling for support and production debugging.',
+      'Run AWS deployment for LAMF (Loan Against Mutual Fund), a top-10 KFin product used by 23 AMCs and moving close to ₹1 crore a day; built its SQS + Lambda notification service with DLQ-based failure handling.',
+      'Led a five-engineer team to build the Group SIP corporate investment portal end to end (NestJS, MongoDB, ECS, CDK); the product is now in its sales phase. Currently mentoring two interns across three projects.',
+      "Built an MCP server that lets the LAMF support team's AI agent resolve six recurring client queries (unprocessed requests, KYC status, folio mode of holding, blocked funds), plus an Athena query runner for debugging.",
+      'Built a Firehose, Glue, S3 Parquet, and Athena log pipeline for 10M+ events a day, cutting log queries from 15 seconds to under 3.',
+      'Cut CI builds from 12–14 minutes to 3–5 with ECR layer caching; infrastructure in AWS CDK across ECS, Lambda, SQS, Firehose, Glue, API Gateway, NLB, and ASG.',
+      'Built an mTLS-secured wrapper for CERSAI KYC in the KFin NPS product, with JWE/JWS protection for financial payloads.',
     ],
   },
   {
@@ -40,7 +48,8 @@ const EXPERIENCE = [
     role: 'Software Development Engineer',
     dates: 'Jan 2021 - Aug 2022',
     points: [
-      'Built Node.js APIs for national academic admissions and analytics dashboards with Python, Pandas, and Django.',
+      'Joined as a contract developer (Jan–Jul 2021), then full-time from Aug 2021.',
+      'Built Node.js APIs for national PGDM admissions (merit lists, fee payments across institutions) and analytics dashboards with Python, Pandas, and Django.',
     ],
   },
 ]
@@ -51,13 +60,13 @@ const SYSTEM_GROUPS = [
     items: [
       {
         name: 'LAMF',
-        meta: '700K+ requests/day · 10M+ events/day · queries under 3s',
+        meta: '23 AMCs · ~₹1 Cr/day · log queries under 3s',
         text: 'Lending infrastructure spanning deployment, asynchronous workflows, log analytics, observability, and internal support tooling.',
       },
       {
         name: 'Group SIP',
         meta: 'NestJS · MongoDB · ECS · CDK',
-        text: 'Corporate investment portal delivered end to end with team leadership, backend ownership, infrastructure, and CI/CD.',
+        text: 'Salary-linked SIPs across multiple AMCs, built end to end with team leadership, backend ownership, infrastructure, and CI/CD. Now in its sales phase.',
       },
       {
         name: 'Doctorscan',
@@ -82,7 +91,7 @@ const SYSTEM_GROUPS = [
       {
         name: 'LAMF support MCP',
         meta: 'MCP · Athena · production support',
-        text: 'Internal agent tooling that helps support answer client queries and developers inspect bounded log windows.',
+        text: "Lets the support team's AI agent resolve six recurring client queries on its own, and gives developers bounded log windows for debugging.",
       },
     ],
   },
@@ -115,28 +124,32 @@ const SKILL_GROUPS = [
   },
 ]
 
-const reveal = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-}
+const group = staggerGroup(rhythm.cards)
 
-function Reveal({ children, className = '', amount = 0.16 }) {
+// Brief is Rise only: a group fades up once, item by item, on springs.
+function Reveal({ children, className = '', amount }) {
   const reduce = useReducedMotion()
 
   return (
     <motion.div
       className={className}
-      variants={reveal}
+      variants={group}
       initial={reduce ? false : 'hidden'}
-      whileInView={reduce ? undefined : 'visible'}
-      viewport={{ once: true, amount }}
+      whileInView={reduce ? undefined : 'show'}
+      viewport={amount ? { ...viewport.group, amount } : viewport.group}
     >
       {children}
     </motion.div>
+  )
+}
+
+function Item({ children, as = 'div', ...rest }) {
+  const Tag = motion[as]
+
+  return (
+    <Tag variants={revealItem} {...rest}>
+      {children}
+    </Tag>
   )
 }
 
@@ -145,11 +158,11 @@ export default function SimpleResumeView() {
     <article className={styles.simpleView}>
       <header className={styles.hero} id="simple-profile">
         <Reveal className={styles.heroGrid} amount={0.4}>
-          <div className={styles.heroCopy}>
-            <p className={styles.kicker}>Backend engineer</p>
+          <Item className={styles.heroCopy}>
+            <p className={styles.kicker}>Backend engineer at KFin Technologies</p>
             <h1>Soumyadeep Dutta</h1>
             <p className={styles.role}>
-              Node.js and AWS systems for fintech, healthcare, and SaaS.
+              Node.js, Python, and AWS systems for fintech, healthcare, and SaaS.
             </p>
             <p className={styles.summary}>
               Five years owning backend work from API design through deployment,
@@ -174,9 +187,9 @@ export default function SimpleResumeView() {
                 LinkedIn
               </a>
             </div>
-          </div>
+          </Item>
 
-          <dl className={styles.profileFacts}>
+          <Item as="dl" className={styles.profileFacts}>
             <div>
               <dt>Current</dt>
               <dd>KFin Technologies</dd>
@@ -189,20 +202,20 @@ export default function SimpleResumeView() {
               <dt>Location</dt>
               <dd>Kolkata, India</dd>
             </div>
-          </dl>
+          </Item>
         </Reveal>
 
         <Reveal className={styles.metrics}>
           {[
             ['5+', 'years shipping'],
-            ['700K+', 'requests / day'],
-            ['10M+', 'events / day'],
-            ['<3s', 'analytics queries'],
+            ['23', 'AMCs on LAMF'],
+            ['~₹1 Cr', 'moved / day'],
+            ['3–5 min', 'CI builds, from 12–14'],
           ].map(([value, label]) => (
-            <div className={styles.metric} key={label}>
+            <Item className={styles.metric} key={label}>
               <strong>{value}</strong>
               <span>{label}</span>
-            </div>
+            </Item>
           ))}
         </Reveal>
       </header>
@@ -213,16 +226,18 @@ export default function SimpleResumeView() {
         aria-labelledby="simple-experience-title"
       >
         <Reveal className={styles.sectionHeading}>
-          <h2 id="simple-experience-title">Professional experience</h2>
-          <p>
+          <Item as="h2" id="simple-experience-title">
+            Professional experience
+          </Item>
+          <Item as="p">
             Backend delivery that expanded into infrastructure, security,
             observability, and team ownership.
-          </p>
+          </Item>
         </Reveal>
 
-        <div className={styles.experienceList}>
+        <Reveal className={styles.experienceList}>
           {EXPERIENCE.map((job) => (
-            <Reveal className={styles.job} key={job.company}>
+            <Item className={styles.job} key={job.company}>
               <div className={styles.jobMeta}>
                 <h3>{job.company}</h3>
                 <p>{job.location}</p>
@@ -236,9 +251,9 @@ export default function SimpleResumeView() {
                   ))}
                 </ul>
               </div>
-            </Reveal>
+            </Item>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section
@@ -247,22 +262,24 @@ export default function SimpleResumeView() {
         aria-labelledby="simple-systems-title"
       >
         <Reveal className={styles.sectionHeading}>
-          <h2 id="simple-systems-title">Selected systems</h2>
-          <p>
+          <Item as="h2" id="simple-systems-title">
+            Selected systems
+          </Item>
+          <Item as="p">
             The products and internal tools behind the production numbers.
-          </p>
+          </Item>
         </Reveal>
 
         <div className={styles.systemGroups}>
           {SYSTEM_GROUPS.map((group) => (
             <Reveal className={styles.systemGroup} key={group.title}>
-              <h3>{group.title}</h3>
+              <Item as="h3">{group.title}</Item>
               {group.items.map((item) => (
-                <article className={styles.system} key={item.name}>
+                <Item as="article" className={styles.system} key={item.name}>
                   <h4>{item.name}</h4>
                   <p>{item.text}</p>
                   <span>{item.meta}</span>
-                </article>
+                </Item>
               ))}
             </Reveal>
           ))}
@@ -275,12 +292,14 @@ export default function SimpleResumeView() {
         aria-labelledby="simple-skills-title"
       >
         <Reveal className={styles.sectionHeading}>
-          <h2 id="simple-skills-title">Technical range</h2>
+          <Item as="h2" id="simple-skills-title">
+            Technical range
+          </Item>
         </Reveal>
 
-        <div className={styles.skillGroups}>
+        <Reveal className={styles.skillGroups}>
           {SKILL_GROUPS.map((group) => (
-            <Reveal className={styles.skillGroup} key={group.title}>
+            <Item className={styles.skillGroup} key={group.title}>
               <h3>{group.title}</h3>
               <dl>
                 {group.rows.map(([label, value]) => (
@@ -290,9 +309,9 @@ export default function SimpleResumeView() {
                   </div>
                 ))}
               </dl>
-            </Reveal>
+            </Item>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section
@@ -301,7 +320,7 @@ export default function SimpleResumeView() {
         aria-labelledby="simple-contact-title"
       >
         <Reveal className={styles.credentials}>
-          <div>
+          <Item>
             <h2>Credentials</h2>
             <dl>
               <div>
@@ -319,8 +338,8 @@ export default function SimpleResumeView() {
                 <dd>Bengali, English, Hindi</dd>
               </div>
             </dl>
-          </div>
-          <div className={styles.contactBlock}>
+          </Item>
+          <Item className={styles.contactBlock}>
             <h2 id="simple-contact-title">Contact</h2>
             <p>
               Open to comparing notes on backend systems, infrastructure, and
@@ -332,7 +351,7 @@ export default function SimpleResumeView() {
             >
               Email me <span aria-hidden="true">↗</span>
             </a>
-          </div>
+          </Item>
         </Reveal>
       </section>
     </article>

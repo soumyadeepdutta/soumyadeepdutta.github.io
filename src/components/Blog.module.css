@@ -25,12 +25,23 @@
   gap: 2rem;
 }
 
+.blogItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.blogItem > .blogCard {
+  flex: 1;
+}
+
 .blogCard {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition:
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -39,16 +50,11 @@
 }
 
 .blogCard:hover {
-  transform: translateY(-4px);
   border-color: var(--accent);
   box-shadow: var(--shadow-card);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blogCard:hover {
-    transform: none;
-  }
-
   .blogCard:hover .blogImage {
     transform: none;
   }
@@ -65,7 +71,7 @@
   height: 200px;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .blogCard:hover .blogImage {

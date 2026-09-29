@@ -1,14 +1,26 @@
 import { useRef } from 'react'
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  stagger,
-} from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import styles from './CareerReleaseStack.module.css'
 import HandwrittenText from './HandwrittenText'
+import { useDealCard, useDealProgress } from '../hooks/useDeal'
+import {
+  respond,
+  revealItem,
+  spring,
+  staggerGroup,
+  viewport,
+} from '../utils/motionTokens'
+
+const headerGroup = staggerGroup()
+
+// Cards are released onto the table slightly askew: the held pose leans
+// further (capped) and settles into each card's own restRotate.
+const MAX_LEAN = 3
+
+function heldPose({ fromX, fromY, restRotate }) {
+  const lean = Math.max(-MAX_LEAN, Math.min(MAX_LEAN, restRotate * 2.5))
+  return { x: fromX * 0.5, y: fromY * 0.35, rotate: lean, rotateX: -6, scale: 0.94 }
+}
 
 const CARDS = [
   {
@@ -19,8 +31,8 @@ const CARDS = [
     dates: 'JUL 2024 - NOW',
     year: 'NOW',
     lesson:
-      'At KFin, the job grew beyond backend delivery. I now lead a five-person team and own AWS infrastructure, CI/CD, observability, and support tooling.',
-    stack: 'FINTECH / AWS / TEAM OF 5 / MCP',
+      'At KFin, the job grew beyond backend delivery. I led a five-person team on Group SIP, own AWS for LAMF, and now mentor two interns across three projects.',
+    stack: 'FINTECH / AWS / 23 AMCS / MCP',
     tone: 'paper',
     card: 'cardKfin',
     motion: { fromX: -72, fromY: 96, restRotate: -1 },
@@ -33,7 +45,7 @@ const CARDS = [
     dates: 'OCT 2023 - MAY 2024',
     year: '23',
     lesson:
-      'Airdit moved me between SaaS, Azure AI, and SAP BTP. It taught me how different enterprise constraints can be.',
+      'Airdit moved me between a SaaS backend with Azure AI and an enterprise app on SAP BTP. Enterprise constraints differ more than you expect.',
     stack: 'NODE.JS / POSTGRES / SAP BTP',
     tone: 'panel',
     card: 'cardAirdit',
@@ -47,7 +59,7 @@ const CARDS = [
     dates: 'SEP 2022 - SEP 2023',
     year: '22',
     lesson:
-      'Healthcare work made API design and real-time integrations less abstract. It also gave me my first chance to prototype AI-assisted prescriptions.',
+      'A telehealth backend with live video, payments, and time-zone scheduling made real-time APIs concrete. I also prototyped AI-drafted prescriptions.',
     stack: 'HEALTHCARE / STRIPE / WHISPER',
     tone: 'panelAlt',
     card: 'cardTechno',
@@ -57,10 +69,10 @@ const CARDS = [
     id: 'ideas',
     slot: 'slotIdeas',
     company: '99ideas',
-    role: 'Software Development Engineer',
+    role: 'Contract developer, then SDE',
     dates: 'JAN 2021 - AUG 2022',
     year: '21',
-    lesson: 'Admissions traffic made reliability practical very quickly.',
+    lesson: 'National PGDM admissions, with merit lists and fee payments across institutions, made reliability practical very quickly.',
     stack: 'NODE.JS / DJANGO / PANDAS',
     tone: 'deep',
     card: 'cardIdeas',
@@ -75,27 +87,21 @@ const CARDS = [
     year: '17',
     lesson:
       'The foundation was computer science, patient debugging, and the habit of pulling systems apart to understand them.',
-    stack: 'CGPA 8.40 / KOLKATA',
+    stack: 'CGPA 8.40 / WEST BENGAL',
     tone: 'steel',
     card: 'cardBtech',
     motion: { fromX: 92, fromY: 170, restRotate: 1.4 },
   },
 ]
 
-const revealItem = {
-  hidden: { opacity: 0, y: 22 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', visualDuration: 0.48, bounce: 0 },
-  },
-}
-
-function CareerCard({ item }) {
+function CareerCard({ item, reduced }) {
   return (
-    <article
+    <motion.article
       className={`${styles.card} ${styles[item.card]} ${styles[item.tone]}`}
       aria-label={`${item.company}, ${item.role}`}
+      whileHover={reduced ? undefined : respond.lift}
+      whileTap={reduced ? undefined : respond.press}
+      transition={spring.hover}
     >
       <div className={styles.cardHeader}>
         <div className={styles.identity}>
@@ -114,68 +120,31 @@ function CareerCard({ item }) {
           {item.year}
         </p>
       </div>
-    </article>
+    </motion.article>
   )
 }
 
 function CareerSlot({ item, index, prefersReduced }) {
   const slotRef = useRef(null)
   const entersFirst = index % 2 === 0
-  const { scrollYProgress } = useScroll({
-    target: slotRef,
+  const progress = useDealProgress(slotRef, {
     offset: [
       `start ${entersFirst ? 78 : 74}%`,
       `start ${entersFirst ? 44 : 40}%`,
     ],
   })
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 170,
-    damping: 28,
-    mass: 0.38,
-    restDelta: 0.001,
+  const dealStyle = useDealCard(progress, {
+    from: heldPose(item.motion),
+    to: { rotate: item.motion.restRotate },
   })
-  const range = [0, 0.16, 1]
-  const x = useTransform(
-    progress,
-    range,
-    [item.motion.fromX * 0.58, item.motion.fromX * 0.4, 0]
-  )
-  const y = useTransform(
-    progress,
-    range,
-    [item.motion.fromY * 0.3, item.motion.fromY * 0.2, 0]
-  )
-  const rotate = useTransform(
-    progress,
-    range,
-    [
-      item.motion.restRotate * 3.8,
-      item.motion.restRotate * 2.8,
-      item.motion.restRotate,
-    ]
-  )
-  const rotateX = useTransform(progress, range, [-15, -10, 0])
-  const scale = useTransform(progress, range, [0.92, 0.95, 1])
-  const opacity = useTransform(progress, range, [0.28, 0.55, 1])
 
   return (
     <motion.div
       ref={slotRef}
       className={`${styles.slot} ${styles[item.slot]}`}
-      style={
-        prefersReduced
-          ? undefined
-          : {
-              x,
-              y,
-              rotate,
-              rotateX,
-              scale,
-              opacity,
-            }
-      }
+      style={dealStyle}
     >
-      <CareerCard item={item} />
+      <CareerCard item={item} reduced={prefersReduced} />
     </motion.div>
   )
 }
@@ -192,13 +161,10 @@ export default function CareerReleaseStack() {
       <div className={styles.inner}>
         <motion.header
           className={styles.header}
-          variants={{
-            hidden: {},
-            show: { transition: { delayChildren: stagger(0.08) } },
-          }}
+          variants={headerGroup}
           initial={prefersReduced ? false : 'hidden'}
           whileInView="show"
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={viewport.text}
         >
           <HandwrittenText className={styles.hand} delay={0.04}>
             I kept saying yes to the next layer

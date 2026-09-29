@@ -12,3 +12,22 @@
   width: 100%;
   height: 100%;
 }
+
+/* Spotlight while the pen is drawing; eases back once the sketch lands. */
+.frame {
+  transition:
+    box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.frame[data-drawing='true'] {
+  box-shadow:
+    0 0 0 1px rgba(139, 163, 199, 0.22),
+    0 0 42px rgba(139, 163, 199, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}

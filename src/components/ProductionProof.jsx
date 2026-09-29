@@ -1,121 +1,31 @@
-import { useState } from 'react'
-import {
-  LayoutGroup,
-  motion,
-  useReducedMotion,
-  stagger,
-} from 'motion/react'
+import { useRef, useState } from 'react'
+import { LayoutGroup, motion, useReducedMotion } from 'motion/react'
 import styles from './ProductionProof.module.css'
+import DealSlot from './DealSlot'
+import { useDealProgress } from '../hooks/useDeal'
+import {
+  instant,
+  respond,
+  revealItem,
+  spring,
+  staggerGroup,
+  viewport,
+} from '../utils/motionTokens'
 
-const revealItem = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', visualDuration: 0.45, bounce: 0 },
-  },
-}
+const headerGroup = staggerGroup()
 
-const metricSpring = {
-  type: 'spring',
-  stiffness: 155,
-  damping: 21,
-  mass: 0.72,
-}
-
-const metricTransition = {
-  default: metricSpring,
-  opacity: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
-}
-
-const flagshipReveal = {
-  hidden: { opacity: 0, y: 28, scale: 0.9, rotate: -1.2 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    rotate: 0,
-    transition: metricTransition,
-  },
-}
-
-const clusterReveal = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: stagger(0.11, { startDelay: 0.1 }),
-    },
-  },
-}
-
-const efficiencyReveal = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: stagger(0.09, { startDelay: 0.06 }),
-    },
-  },
-}
-
-const trafficReveal = {
-  hidden: {
-    opacity: 0,
-    x: '-58%',
-    y: 96,
-    scale: 0.7,
-    rotate: -3.5,
-    transformOrigin: '0% 65%',
-  },
-  show: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotate: 0,
-    transition: metricTransition,
-  },
-}
-
-const queryReveal = {
-  hidden: {
-    opacity: 0,
-    x: '-125%',
-    y: -44,
-    scale: 0.64,
-    rotate: 4,
-    transformOrigin: '0% 0%',
-  },
-  show: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotate: 0,
-    transition: metricTransition,
-  },
-}
-
-const buildReveal = {
-  hidden: {
-    opacity: 0,
-    x: '-185%',
-    y: -38,
-    scale: 0.6,
-    rotate: -4.5,
-    transformOrigin: '0% 0%',
-  },
-  show: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotate: 0,
-    transition: metricTransition,
-  },
+// Cards start gathered toward the flagship and fan out into the grid.
+const POSES = {
+  lamf: { y: 28, scale: 0.97 },
+  traffic: { x: -56, y: 20, rotate: -1.5, scale: 0.94 },
+  query: { x: -64, y: -12, rotate: 1.5, scale: 0.94 },
+  build: { x: -72, y: -12, rotate: -1.5, scale: 0.94 },
 }
 
 export default function ProductionProof() {
   const prefersReduced = useReducedMotion()
+  const gridRef = useRef(null)
+  const progress = useDealProgress(gridRef)
   const [activeMetric, setActiveMetric] = useState('lamf')
 
   const metricInteraction = (id) => ({
@@ -124,6 +34,9 @@ export default function ProductionProof() {
     onPointerEnter: () => setActiveMetric(id),
     onFocus: () => setActiveMetric(id),
     onClick: () => setActiveMetric(id),
+    whileHover: prefersReduced ? undefined : respond.lift,
+    whileTap: prefersReduced ? undefined : respond.press,
+    transition: spring.hover,
   })
 
   const activeBackdrop = (
@@ -135,11 +48,7 @@ export default function ProductionProof() {
         boxShadow:
           'inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -18px 36px rgba(9, 9, 11, 0.1)',
       }}
-      transition={
-        prefersReduced
-          ? { duration: 0 }
-          : { type: 'spring', stiffness: 310, damping: 30, mass: 0.7 }
-      }
+      transition={prefersReduced ? instant : spring.highlight}
       aria-hidden="true"
     />
   )
@@ -149,13 +58,10 @@ export default function ProductionProof() {
       <div className={styles.inner}>
         <motion.header
           className={styles.header}
-          variants={{
-            hidden: {},
-            show: { transition: { delayChildren: stagger(0.08) } },
-          }}
+          variants={headerGroup}
           initial={prefersReduced ? false : 'hidden'}
           whileInView="show"
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={viewport.text}
         >
           <motion.h2
             id="proof-title"
@@ -166,89 +72,109 @@ export default function ProductionProof() {
             <span className={styles.titleLine}>I am proud of.</span>
           </motion.h2>
           <motion.p className={styles.intro} variants={revealItem}>
-            All from systems I have helped build or run.
+            All from systems I built or run in production.
           </motion.p>
         </motion.header>
 
         <LayoutGroup id="production-proof">
-          <motion.div
+          <div
+            ref={gridRef}
             className={styles.grid}
-            variants={{
-              hidden: {},
-              show: { transition: { delayChildren: stagger(0.14) } },
-            }}
-            initial={prefersReduced ? false : 'hidden'}
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
+            onPointerLeave={() => setActiveMetric('lamf')}
           >
-            <motion.article
-              className={`${styles.metricCard} ${styles.flagship}`}
-              variants={flagshipReveal}
-              aria-label="LAMF log pipeline"
-              {...metricInteraction('lamf')}
+            <DealSlot
+              className={styles.dealSlot}
+              progress={progress}
+              index={0}
+              count={4}
+              from={POSES.lamf}
             >
-              {activeMetric === 'lamf' && activeBackdrop}
-              <p className={`mono ${styles.flagshipContext}`}>LAMF LOG PIPELINE</p>
-              <div className={styles.flagshipMid}>
-                <p className={styles.flagshipValue}>10M+</p>
-                <p className={styles.flagshipLabel}>
-                  log events processed each day
-                </p>
-              </div>
-              <p className={`mono ${styles.flagshipPipeline}`}>
-                FIREHOSE &nbsp;&gt;&nbsp; GLUE &nbsp;&gt;&nbsp; S3 PARQUET &nbsp;&gt;&nbsp; ATHENA
-              </p>
-            </motion.article>
-
-            <motion.div className={styles.cluster} variants={clusterReveal}>
               <motion.article
-                className={`${styles.metricCard} ${styles.traffic}`}
-                variants={trafficReveal}
-                aria-label="Traffic"
-                {...metricInteraction('traffic')}
+                className={`${styles.metricCard} ${styles.flagship}`}
+                aria-label="LAMF daily volume"
+                {...metricInteraction('lamf')}
               >
-                {activeMetric === 'traffic' && activeBackdrop}
-                <div className={styles.trafficCopy}>
-                  <p className={styles.trafficValue}>700K+</p>
-                  <p className={styles.trafficLabel}>requests / day</p>
+                {activeMetric === 'lamf' && activeBackdrop}
+                <p className={`mono ${styles.flagshipContext}`}>LAMF · LOAN AGAINST MUTUAL FUND</p>
+                <div className={styles.flagshipMid}>
+                  <p className={styles.flagshipValue}>~₹1 Cr</p>
+                  <p className={styles.flagshipLabel}>
+                    moving through the platform most days
+                  </p>
                 </div>
-                <p className={`mono ${styles.trafficNote}`}>TOP-10 KFIN PRODUCT</p>
+                <p className={`mono ${styles.flagshipPipeline}`}>
+                  AWS &nbsp;/&nbsp; EVENT-DRIVEN &nbsp;/&nbsp; I RUN THE DEPLOYMENT
+                </p>
               </motion.article>
+            </DealSlot>
 
-              <motion.div
-                className={styles.efficiency}
-                variants={efficiencyReveal}
+            <div className={styles.cluster}>
+              <DealSlot
+                className={styles.dealSlot}
+                progress={progress}
+                index={1}
+                count={4}
+                from={POSES.traffic}
               >
                 <motion.article
-                  className={`${styles.metricCard} ${styles.mini}`}
-                  variants={queryReveal}
-                  aria-label="Query speed"
-                  {...metricInteraction('query')}
+                  className={`${styles.metricCard} ${styles.traffic}`}
+                  aria-label="AMCs served"
+                  {...metricInteraction('traffic')}
                 >
-                  {activeMetric === 'query' && activeBackdrop}
-                  <div>
-                    <p className={styles.miniValue}>&lt;3s</p>
-                    <p className={styles.miniLabel}>analytics query</p>
+                  {activeMetric === 'traffic' && activeBackdrop}
+                  <div className={styles.trafficCopy}>
+                    <p className={styles.trafficValue}>23</p>
+                    <p className={styles.trafficLabel}>AMCs on LAMF</p>
                   </div>
-                  <p className={`mono ${styles.miniNote}`}>from 15 seconds</p>
+                  <p className={`mono ${styles.trafficNote}`}>TOP-10 KFIN PRODUCT</p>
                 </motion.article>
+              </DealSlot>
 
-                <motion.article
-                  className={`${styles.metricCard} ${styles.mini}`}
-                  variants={buildReveal}
-                  aria-label="Build speed"
-                  {...metricInteraction('build')}
+              <div className={styles.efficiency}>
+                <DealSlot
+                  className={styles.dealSlot}
+                  progress={progress}
+                  index={2}
+                  count={4}
+                  from={POSES.query}
                 >
-                  {activeMetric === 'build' && activeBackdrop}
-                  <div>
-                    <p className={styles.miniValue}>60%</p>
-                    <p className={styles.miniLabel}>faster builds</p>
-                  </div>
-                  <p className={`mono ${styles.miniNote}`}>ECR layer cache</p>
-                </motion.article>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+                  <motion.article
+                    className={`${styles.metricCard} ${styles.mini}`}
+                    aria-label="Query speed"
+                    {...metricInteraction('query')}
+                  >
+                    {activeMetric === 'query' && activeBackdrop}
+                    <div>
+                      <p className={styles.miniValue}>&lt;3s</p>
+                      <p className={styles.miniLabel}>log queries</p>
+                    </div>
+                    <p className={`mono ${styles.miniNote}`}>from 15 seconds</p>
+                  </motion.article>
+                </DealSlot>
+
+                <DealSlot
+                  className={styles.dealSlot}
+                  progress={progress}
+                  index={3}
+                  count={4}
+                  from={POSES.build}
+                >
+                  <motion.article
+                    className={`${styles.metricCard} ${styles.mini}`}
+                    aria-label="Build speed"
+                    {...metricInteraction('build')}
+                  >
+                    {activeMetric === 'build' && activeBackdrop}
+                    <div>
+                      <p className={styles.miniValue}>3–5m</p>
+                      <p className={styles.miniLabel}>CI builds</p>
+                    </div>
+                    <p className={`mono ${styles.miniNote}`}>from 12–14 min</p>
+                  </motion.article>
+                </DealSlot>
+              </div>
+            </div>
+          </div>
         </LayoutGroup>
       </div>
     </section>

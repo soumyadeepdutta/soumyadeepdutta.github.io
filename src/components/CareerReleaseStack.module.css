@@ -127,7 +127,7 @@
   align-items: stretch;
   padding: 1.25rem 0.85rem 2rem;
   overflow: visible;
-  perspective: 1200px;
+  perspective: 1100px;
 }
 
 .slot {
@@ -337,7 +337,6 @@
   .slotBtech {
     grid-column: 1;
     grid-row: auto;
-    transform: none;
   }
 
   .card,
